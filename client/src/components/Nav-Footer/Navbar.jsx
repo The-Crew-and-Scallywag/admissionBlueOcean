@@ -1,12 +1,24 @@
 import React, { useState } from "react";
 import logo from "../../assets/galvanize-logo.webp";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { AiOutlineClose } from "react-icons/ai";
+import { LuPanelLeftOpen } from "react-icons/lu";
 import { CiSettings } from "react-icons/ci";
+import { AiFillHome, AiFillProfile } from "react-icons/ai";
+import {
+  BsFileEarmarkPersonFill,
+  BsFillCalendarMinusFill,
+} from "react-icons/bs";
+
 import Navmenu from "./Navmenu.jsx";
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(true);
+
+  const logos = [
+    { AiFillHome },
+    { BsFileEarmarkPersonFill },
+    { BsFillCalendarMinusFill },
+    { AiFillProfile },
+  ];
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -16,11 +28,7 @@ const Navbar = () => {
     <div className="bg-bg top-0 w-full mx-auto text-text-light-gray">
       <div className="mx-auto py-10 flex justify-between align-middle">
         <div className="text-[24px] cursor-pointer left-12 relative">
-          {showMenu ? (
-            <AiOutlineClose onClick={toggleMenu} />
-          ) : (
-            <GiHamburgerMenu onClick={toggleMenu} />
-          )}
+          <LuPanelLeftOpen onClick={toggleMenu} />
         </div>
         <img className="relative mx-auto h-9" src={logo} alt="Logo" />
         <div className="text-[24px]">
@@ -28,10 +36,10 @@ const Navbar = () => {
         </div>
       </div>
       <div
-        className={`top-[-100px] relative transform transition-all duration-300 ${
+        className={`top-[-10px] absolute transition duration-500 ${
           showMenu
-            ? "opacity-100 translate-x-0"
-            : "opacity-0 -translate-x-12 -z-50"
+            ? "opacity-100 translate-x-0 "
+            : "opacity-0 -translate-x-[500px]"
         }`}
       >
         <Navmenu showMenu={showMenu} setShowMenu={setShowMenu} />
