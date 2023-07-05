@@ -4,7 +4,7 @@ Welcome to the Admissions App! This is a powerful and user-friendly application 
 
 ## Our Objective
 
-This project was a brief 2-week sprint where our team aimed to complete an interview admission MVP app for our client, Danny.
+This project was a brief 2-week sprint where our team aimed to complete an interview admission MVP app for our client, Danny Andrews.
 
 ## The Team
 
