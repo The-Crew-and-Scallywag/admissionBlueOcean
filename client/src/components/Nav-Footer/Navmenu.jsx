@@ -14,10 +14,10 @@ const Navmenu = ({ showMenu, setShowMenu }) => {
   };
 
   const logos = [
-    <AiFillHome style={{ fontSize: "24px" }} />,
-    <BsFileEarmarkPersonFill style={{ fontSize: "24px" }} />,
-    <BsFillCalendarMinusFill style={{ fontSize: "24px" }} />,
-    <AiFillProfile style={{ fontSize: "24px" }} />,
+    <AiFillHome className="text-[20px] bottom-[-2px] relative" />,
+    <BsFileEarmarkPersonFill className="text-[20px] bottom-[-2px] relative" />,
+    <BsFillCalendarMinusFill className="text-[20px] bottom-[-2px] relative" />,
+    <AiFillProfile className="text-[20px] bottom-[-2px] relative" />,
   ];
 
   return (
