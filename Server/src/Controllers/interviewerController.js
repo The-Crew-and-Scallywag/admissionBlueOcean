@@ -1,4 +1,4 @@
-import { db } from "../src/database/database.js"
+import { db } from "../Database/database.js"
 import { allStudents, postResult } from "./queries.js"
 
 // fetches all students
