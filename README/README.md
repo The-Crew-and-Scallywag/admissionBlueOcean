@@ -19,6 +19,8 @@ This project was a brief 2-week sprint where our team aimed to complete an inter
 
 This project is licensed under the MIT License.
 
+## wireframe
+
 ## Technologies Used
 
 - **Front-end:** HTML, CSS, JavaScript, React.js
