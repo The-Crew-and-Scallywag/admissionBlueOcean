@@ -6,13 +6,14 @@ const StudentInfo = () => {
   const [studentData, setStudentData] = useState(TEMP_STUDENT_DATA);
   const [currentStudent, setCurrentStudent] = useState(TEMP_STUDENT_DATA[0]);
   const [editMode, setEditMode] = useState(false);
+  const [updatedStudent, setUpdatedStudent] = useState({});
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
   };
 
   return (
-    <div className="grid grid-cols-1 w-[600px] mx-auto my-12">
+    <div className="grid grid-cols-1 w-[650px] mx-auto my-20">
       <div className="text-white text-2xl text-center">
         Selected Student:{" "}
         <span className="text-accent">{currentStudent.Name}</span>
@@ -33,9 +34,30 @@ const StudentInfo = () => {
           {Object.entries(currentStudent)
             .splice(1)
             .map(([key, value]) => (
-              <div key={key} className="flex flex-col md:flex-row">
+              <div
+                key={key}
+                className="flex flex-col md:flex-row justify-between align-middle"
+              >
                 <div className="font-bold px-3 text-white text-lg">{key}:</div>
-                <div className="text-accent text-lg">{value}</div>
+                {!editMode ? (
+                  <div className="text-accent text-lg ">{value}</div>
+                ) : (
+                  <input
+                    value={value}
+                    className="bg-secondary text-white text-lg mt-1 p-1 rounded-md w-[175px]"
+                    type={
+                      key === "Email"
+                        ? "email"
+                        : key === "Interview Date"
+                        ? "date"
+                        : key === "Phone"
+                        ? "tel"
+                        : key === "Interview Time"
+                        ? "time"
+                        : "text"
+                    }
+                  ></input>
+                )}
               </div>
             ))}
         </div>

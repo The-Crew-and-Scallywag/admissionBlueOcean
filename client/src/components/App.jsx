@@ -2,17 +2,19 @@ import React from "react";
 import Navbar from "./Nav-Footer/Navbar.jsx";
 import Dashboard from "./Dashboard/Dashboard.jsx";
 import { Routes, Route } from "react-router-dom";
+import Footer from "./Nav-Footer/Footer.jsx";
 
 const App = () => {
   return (
-    <div className="h-full w-full">
+    <>
       <Navbar />
-      <div className="max-w-[2560px] mx-auto">
+      <div className="max-w-[2560px] mx-auto overflow-auto">
         <Routes>
           <Route exact path="/" element={<Dashboard />} />
         </Routes>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 

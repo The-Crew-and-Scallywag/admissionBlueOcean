@@ -6,7 +6,7 @@ import { CiSettings } from "react-icons/ci";
 import Navmenu from "./Navmenu.jsx";
 
 const Navbar = () => {
-  const [showMenu, setShowMenu] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <div className="bg-bg top-0 w-full mx-auto text-text-light-gray shadow-lg shadow-black">
-      <div className="max-w-[2560px] mx-auto">
+      <div className="w-full md:max-w-[2560px] mx-auto">
         <div className="mx-auto py-10 flex justify-between align-middle">
           <div className="text-[24px] cursor-pointer left-12 relative">
             <LuPanelLeftOpen onClick={toggleMenu} />
