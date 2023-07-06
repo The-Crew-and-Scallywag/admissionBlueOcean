@@ -1,8 +1,37 @@
-import { EditorView, keymap } from "@codemirror/view";
-import { defaultKeymap } from "@codemirror/commands";
-// https://codemirror.net/docs/ref/#state.EditorStateConfig.extensions Where I'm working from
-let myView = new EditorView({
-  doc: "hello",
-  extensions: [keymap.of(defaultKeymap)],
-  parent: document.body,
-});
+import React, { useEffect, useRef } from "react";
+import "codemirror/lib/codemirror.css"; // Import CodeMirror styles
+import CodeMirror from "codemirror"; // Import the CodeMirror library
+import "codemirror/mode/htmlmixed/htmlmixed";
+import "codemirror/mode/css/css";
+import "codemirror/mode/javascript/javascript";
+
+const Editor = () => {
+  const editorRef = useRef(null);
+
+  useEffect(() => {
+    // Initialize CodeMirror once mounted
+    const editor = CodeMirror.fromTextArea(editorRef.current, {
+      lineNumbers: true,
+      mode: "htmlmixed",
+    });
+
+    // Handle editor changes if needed
+    editor.on("change", (instance) => {
+      // Access the code content using instance.getValue()
+      console.log(instance.getValue());
+    });
+
+    // Clean up instance when unmounted
+    return () => {
+      editor.toTextArea();
+    };
+  }, []);
+
+  return (
+    <div>
+      <textarea ref={editorRef} />
+    </div>
+  );
+};
+
+export default Editor;
