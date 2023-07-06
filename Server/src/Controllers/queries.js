@@ -22,4 +22,5 @@ WHERE interviewers.id = $1`;
 /**
  * Queries For Logging In and Out
  */
+export const emailCheck = `SELECT email FROM interviewers`;
 export const login = `SELECT email, password FROM interviewers WHERE email = $1`;
