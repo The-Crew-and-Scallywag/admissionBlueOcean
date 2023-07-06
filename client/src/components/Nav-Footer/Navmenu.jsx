@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { LuPanelLeftClose } from "react-icons/lu";
 import { NAVLINKS } from "./utils";
 import { Link } from "react-router-dom";
@@ -13,6 +13,22 @@ const Navmenu = ({ showMenu, setShowMenu }) => {
     setShowMenu(!showMenu);
   };
 
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setShowMenu(false);
+      }
+    };
+    if (showMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showMenu, setShowMenu]);
+
   const logos = [
     <AiFillHome className="text-[20px] bottom-[-2px] relative" />,
     <BsFileEarmarkPersonFill className="text-[20px] bottom-[-2px] relative" />,
@@ -21,17 +37,20 @@ const Navmenu = ({ showMenu, setShowMenu }) => {
   ];
 
   return (
-    <div className="bg-secondary h-screen w-[400px] absolute top-0 left-0 border-r-[1px] border-accent my-2">
+    <div
+      className="bg-bg/80 h-screen w-[400px] absolute top-0 left-0 border-r-[1px] border-accent my-2 shadow-2xl shadow-black backdrop-blur-lg"
+      ref={menuRef}
+    >
       <div className="flex flex-col justify-center align-middle">
         <div className="text-[24px] cursor-pointer absolute right-0 top-0 p-4">
           <LuPanelLeftClose onClick={toggleMenu} />
         </div>
       </div>
       <div className="flex flex-col align-middle items-center my-12 p-4">
-        <div className="p-1 text-galv-orange font-bold text-[32px] cursor-default">
+        <div className="p-1 text-galv-orange font-bold text-[32px] cursor-default leading-3 py-2 tracking-wide">
           John Doe
         </div>
-        <div className="text-[18px] text-white lowercase italic cursor-default">
+        <div className="text-[18px] text-white italic cursor-default py-2 tracking-wide">
           Instructor
         </div>
       </div>
@@ -44,7 +63,7 @@ const Navmenu = ({ showMenu, setShowMenu }) => {
             className="p-3 cursor-default flex align-bottom flex-row"
           >
             {logos[link.id - 1]} &nbsp;
-            <span className="text-[18px] text-white hover:text-galv-orange hover:transition-transform hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+            <span className="text-[18px] text-white hover:text-galv-orange hover:transition-transform transition-all duration-300 ease-in-out cursor-pointer">
               &nbsp; {link.name}
             </span>
           </Link>
@@ -52,7 +71,7 @@ const Navmenu = ({ showMenu, setShowMenu }) => {
       </div>
       <div className="border-b-accent border-b-[1px] mx-10"></div>
       <div className="w-full my-12 mx-28">
-        <button className="bg-galv-blue rounded-md p-3 w-40 border-[1px] border-accent hover:border-galv-orange hover:scale-105 transition-all transform-gpu duration-300 text-white">
+        <button className="bg-galv-blue rounded-md p-3 w-40 hover:border-[1px] hover:border-galv-orange hover:scale-105 transition transform-gpu duration-300 text-white ease-in-out">
           Logout
         </button>
       </div>

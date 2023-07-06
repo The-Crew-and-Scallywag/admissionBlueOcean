@@ -6,14 +6,14 @@ import { CiSettings } from "react-icons/ci";
 import Navmenu from "./Navmenu.jsx";
 
 const Navbar = () => {
-  const [showMenu, setShowMenu] = useState(false);
+  const [showMenu, setShowMenu] = useState(true);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
 
   return (
-    <div className="bg-bg top-0 w-full mx-auto text-text-light-gray">
+    <div className="bg-bg top-0 w-full mx-auto text-text-light-gray shadow-lg shadow-black">
       <div className="max-w-[2560px] mx-auto">
         <div className="mx-auto py-10 flex justify-between align-middle">
           <div className="text-[24px] cursor-pointer left-12 relative">
@@ -26,9 +26,7 @@ const Navbar = () => {
         </div>
         <div
           className={`top-[-10px] absolute transition duration-300 ${
-            showMenu
-              ? "opacity-100 translate-x-0 "
-              : "opacity-0 -translate-x-[500px]"
+            showMenu ? "translate-x-0 " : "-translate-x-[2000px]"
           }`}
         >
           <Navmenu showMenu={showMenu} setShowMenu={setShowMenu} />

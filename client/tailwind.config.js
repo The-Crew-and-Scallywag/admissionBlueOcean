@@ -6,8 +6,8 @@ export default {
       colors: {
         "galv-orange": "#ff6900",
         "galv-blue": "#0000ee",
-        bg: "#080806",
-        secondary: "#242124",
+        bg: "#0A0B0B",
+        secondary: "#1A1A1A",
         text: "#333333",
         "text-gray": "#666666",
         "text-light-gray": "#999999",
