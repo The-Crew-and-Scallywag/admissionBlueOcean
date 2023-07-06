@@ -6,6 +6,7 @@ import "codemirror/mode/css/css";
 import "codemirror/mode/javascript/javascript";
 
 // Feel free to change and style as needed- "Scallywag"
+// Edit ln 34 via tailwind to style - "Scallywag"
 
 const Editor = () => {
   const editorRef = useRef(null);
