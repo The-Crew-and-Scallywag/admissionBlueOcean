@@ -4,9 +4,10 @@ import CodeMirror from "codemirror"; // Import the CodeMirror library
 import "codemirror/mode/htmlmixed/htmlmixed";
 import "codemirror/mode/css/css";
 import "codemirror/mode/javascript/javascript";
+// Code mirror documentation for reference: https://codemirror.net/
 
 // Feel free to change and style as needed- "Scallywag"
-// Edit ln 34 via tailwind to style - "Scallywag"
+// Edit ln 34 via tailwind to style text - "Scallywag"
 
 const Editor = () => {
   const editorRef = useRef(null);
