@@ -4,7 +4,7 @@ import CodeMirror from "codemirror";
 import "codemirror/mode/htmlmixed/htmlmixed";
 import "codemirror/mode/css/css";
 import "codemirror/mode/javascript/javascript";
-// code mirror documentation. Feel free to style on ln 41 https://codemirror.net/  - "Scallywag"
+
 const Editor = () => {
   const editorRef = useRef(null);
   const [output, setOutput] = useState("");
@@ -30,7 +30,7 @@ const Editor = () => {
 
     try {
       const result = eval(code);
-      setOutput(result);
+      setOutput(String(result)); // Convert the result to a string before setting the output state
     } catch (error) {
       setOutput(`Error: ${error.message}`);
     }
