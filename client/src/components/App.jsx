@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "./Nav-Footer/Navbar.jsx";
 import Dashboard from "./Dashboard/Dashboard.jsx";
+import Footer from "./Nav-Footer/Footer.jsx";
 import { Routes, Route } from "react-router-dom";
 
 const App = () => {
@@ -11,7 +12,6 @@ const App = () => {
         <Routes>
           <Route exact path="/" element={<Dashboard />} />
         </Routes>
-        <Editor />
       </div>
       <Footer />
     </>
