@@ -18,6 +18,7 @@ export const getAllStudents = async (req, res) => {
   }
 };
 
+// fetches students by id
 export const getStudentByID = async (req, res) => {
   try {
     const id = Number(req.params.id);
