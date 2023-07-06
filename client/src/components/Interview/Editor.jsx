@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "codemirror/lib/codemirror.css";
-import "codemirror/addon/edit/closebrackets"; // Import the bracket closing addon
-import "codemirror/addon/edit/matchbrackets"; // Import the bracket matching addon
+import "codemirror/addon/edit/closebrackets";
+import "codemirror/addon/edit/matchbrackets";
 import "codemirror/mode/htmlmixed/htmlmixed";
 import "codemirror/mode/css/css";
 import "codemirror/mode/javascript/javascript";
@@ -15,13 +15,16 @@ const Editor = () => {
     const editor = CodeMirror.fromTextArea(editorRef.current, {
       lineNumbers: true,
       mode: "htmlmixed",
-      autoCloseBrackets: true, // Enable auto-closing of brackets
-      matchBrackets: true, // Enable bracket matching
+      autoCloseBrackets: true,
+      matchBrackets: true,
     });
 
     editor.on("change", (instance) => {
       console.log(instance.getValue());
     });
+
+    // TAILWIND ISN'T WORKING AH
+    editor.getWrapperElement().classList.add("bg-gray-900", "text-white");
 
     return () => {
       editor.toTextArea();
@@ -34,7 +37,7 @@ const Editor = () => {
 
     try {
       const result = eval(code);
-      setOutput(String(result)); // Convert the result to a string before setting the output state
+      setOutput(String(result));
     } catch (error) {
       setOutput(`Error: ${error.message}`);
     }
