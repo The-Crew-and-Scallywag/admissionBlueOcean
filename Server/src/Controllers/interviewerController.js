@@ -1,10 +1,5 @@
 import { db } from "../Database/database.js";
-import {
-  allStudents,
-  interviewerNotes,
-  postResult,
-  student,
-} from "./queries.js";
+import { allStudents, postResult, student } from "./queries.js";
 
 // fetches all students
 export const getAllStudents = async (req, res) => {
@@ -25,7 +20,7 @@ export const getStudentByID = async (req, res) => {
 
     const results = await db.query(student, [id]);
 
-    res.status(200).json(results.rows);
+    res.status(200).json(results.rows[0]);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Student Not Found" });
@@ -35,20 +30,19 @@ export const getStudentByID = async (req, res) => {
 // post interview results to db
 export const postStudentResults = async (req, res) => {
   try {
-    let { status } = req.body;
+    let { result, notes } = req.body;
     const id = Number(req.params.id); // will get from token later
-    console.log(status);
-    if (status.toLowerCase() == "true") {
-      status = true;
-    } else if (status.toLowerCase() == "false") {
-      status = false;
+    if (result.toLowerCase() == "true") {
+      result = true;
+    } else if (result.toLowerCase() == "false") {
+      result = false;
     } else {
       return res
         .status(400)
         .json({ message: "Result should be a boolean value" });
     }
 
-    const results = await db.query(postResult, [status, id]);
+    const results = await db.query(postResult, [notes, result, id]);
 
     res.status(200).json(results.rows);
   } catch (error) {
@@ -58,15 +52,16 @@ export const postStudentResults = async (req, res) => {
 };
 
 // get interviewers notes from a specific interview
-export const getInterviewNotes = async (req, res) => {
+export const addResults = async (req, res) => {
   try {
+    const { notes, result } = req.body;
     const id = Number(req.params.id); // will get from token later
-    console.log(id);
-    const results = await db.query(interviewerNotes, [id]);
+
+    const results = await db.query(postResult, [notes, result, id]);
 
     res.status(200).json(results.rows);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "ERROR Fetching Notes" });
+    return res.status(500).json({ message: "ERROR Sending Results" });
   }
 };
