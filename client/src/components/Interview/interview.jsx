@@ -1,14 +1,18 @@
 import React from "react";
 import Editor from "./Editor";
+import Challenge from "./Challenge";
 
 const Interview = () => {
   return (
-    <div className="grid grid-cols-4 gap-4 pt-8">
-      <div id="left-column" className="col-span-3">
+    <div className="flex flex-row">
+      <div id="editor-container" className="w-[800px] mx-[80px]">
         <Editor />
       </div>
-      <div id="right-column" className="col-span-1">
-        {/* Add your other components here */}
+      <div id="challenge-container" className="ml-[80px] text-center">
+        <div className="text-white text-3xl pt-4">Challenges</div>
+        <Challenge />
+        <Challenge />
+        <Challenge />
       </div>
     </div>
   );
