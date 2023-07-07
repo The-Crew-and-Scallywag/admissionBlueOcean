@@ -45,7 +45,7 @@ const Editor = () => {
 
   return (
     <>
-      <div className="w-1/2 mx-auto overflow-auto">
+      <div className="w-full mx-auto overflow-auto pt-7">
         <textarea ref={editorRef} />
         <button onClick={runCode}>Run</button>
       </div>
