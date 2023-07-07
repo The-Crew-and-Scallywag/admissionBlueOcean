@@ -1,6 +1,8 @@
 import React from "react";
+import StudentList from "./StudentList.jsx";
 
-const Upcoming = () => {
+const Upcoming = ({ students, currentStudent, setCurrentStudent }) => {
+  console.log(students);
   return (
     <div className="flex-col mt-12 mx-auto text-lg w-[400px]">
       <h1 className="text-2xl font-bold tracking-wide my-4 text-center">
@@ -14,8 +16,12 @@ const Upcoming = () => {
           </div>
           <div>Interviewee Name</div>
         </div>
-        <div></div>
       </div>
+      <StudentList
+        students={students}
+        currentStudent={currentStudent}
+        setCurrentStudent={setCurrentStudent}
+      />
     </div>
   );
 };

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import "codemirror/lib/codemirror.css";
-import CodeMirror from "codemirror";
-import "codemirror/mode/htmlmixed/htmlmixed";
-import "codemirror/mode/css/css";
-import "codemirror/mode/javascript/javascript";
-
+// import "codemirror/lib/codemirror.css";
+import * as CodeMirror from "codemirror";
+// import "codemirror/mode/htmlmixed/htmlmixed";
+// import "codemirror/mode/css/css";
+// import "codemirror/mode/javascript/javascript";
+console.log(CodeMirror);
 const Editor = () => {
   const editorRef = useRef(null);
   const [output, setOutput] = useState("");
