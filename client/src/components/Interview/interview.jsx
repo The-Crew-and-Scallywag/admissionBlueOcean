@@ -10,9 +10,9 @@ const Interview = () => {
       </div>
       <div id="challenge-container" className="ml-[80px] text-center">
         <div className="text-white text-3xl pt-4">Challenges</div>
-        <Challenge />
-        <Challenge />
-        <Challenge />
+        {[...Array(5)].map((star) => {
+        return <Challenge />
+        })}
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Question from './Question';
 import Answer from './Answer';
+import StarRating from './StarRating';
 
 export default function Challenge() {
   const [notes, setNotes] = useState('');
@@ -13,6 +14,7 @@ export default function Challenge() {
     <div className='flex flex-col justify-center pt-2 w-[700px] border-b-2 border-gray-500'>
       <Question />
       <Answer />
+      <StarRating />
       <textarea
         value={notes}
         onChange={handleNotesChange}
