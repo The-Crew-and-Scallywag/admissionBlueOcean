@@ -10,7 +10,7 @@ export const logUserIn = async (req, res) => {
     }
 
     const results = await db.query(login, [email]);
-    if (results.rowCount === 0) {
+    if (results.rowCount === 0 || results.rows[0].password !== password) {
       return res.status(400).json({ message: "Incorrect Email or Password" });
     }
 

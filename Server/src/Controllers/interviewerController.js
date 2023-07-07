@@ -20,7 +20,7 @@ export const getStudentByID = async (req, res) => {
 
     const results = await db.query(student, [id]);
 
-    res.status(200).json(results.rows);
+    res.status(200).json(results.rows[0]);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Student Not Found" });

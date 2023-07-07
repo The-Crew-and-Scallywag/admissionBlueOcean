@@ -18,4 +18,4 @@ export const postResults = `UPDATE students set notes= ARRAY_APPEND($1, notes) A
  * Queries For Logging In and Out
  */
 export const emailCheck = `SELECT email FROM interviewers`;
-export const login = `SELECT id, email, password FROM interviewers WHERE email = $1`;
+export const login = `SELECT * FROM interviewers WHERE email = $1`;
