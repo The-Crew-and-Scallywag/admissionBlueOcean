@@ -13,7 +13,7 @@ const Dashboard = () => {
         const res = await axios.get("/api/students");
         const data = res.data;
         console.log(data);
-        setStudents([...students, data]);
+        setStudents(data);
       } catch (err) {
         console.log(err);
       }
