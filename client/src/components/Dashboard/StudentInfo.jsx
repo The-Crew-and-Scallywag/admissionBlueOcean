@@ -14,24 +14,50 @@ const StudentInfo = ({ students, currentStudent, changeCurrentStudent }) => {
 
   const formatDateTime = (dateTimeString) => {
     const dateTime = new Date(dateTimeString);
-    const formattedDate = dateTime.toLocaleDateString("en-US", {
+    return dateTime.toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
-    });
-    const formattedTime = dateTime.toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "numeric",
       hour12: true,
     });
-    return `${formattedDate} at ${formattedTime}`;
   };
 
   useEffect(() => {
-    if (students.length > 0) {
-      setLoading(false);
-    }
+    setLoading(students.length === 0);
   }, [students]);
+
+  const renderField = (label, value, inputProps) => {
+    const isEditable = editMode && inputProps;
+    const fieldValue = isEditable ? updatedStudent[label] || value : value;
+
+    return (
+      <div
+        className={`text-white text-xl font-bold ${
+          label === "Interview Date" && "col-span-2"
+        }`}
+      >
+        {label}:{" "}
+        {!isEditable ? (
+          <span className="text-accent font-normal">{fieldValue}</span>
+        ) : (
+          <input
+            type="text"
+            className={`text-white bg-secondary rounded-md p-1 shadow-md shadow-black focus:border-accent text-lg tracking-wider ml-2 font-normal`}
+            placeholder={fieldValue}
+            onChange={(e) =>
+              setUpdatedStudent({
+                ...updatedStudent,
+                [label]: e.target.value,
+              })
+            }
+            {...inputProps}
+          />
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="grid grid-cols-1 w-[700px] mx-auto my-20">
@@ -66,108 +92,18 @@ const StudentInfo = ({ students, currentStudent, changeCurrentStudent }) => {
         <div className="mt-4 mb-12 p-6">
           {!loading && (
             <div className="grid grid-cols-2 gap-4 justify-items-start">
-              <div className="text-white text-xl font-bold">
-                First Name:{" "}
-                {!editMode ? (
-                  <span className="text-accent text-xl font-normal">
-                    {student.first_name}
-                  </span>
-                ) : (
-                  <input
-                    type="text"
-                    className="text-white bg-secondary rounded-md p-1 shadow-md shadow-black focus:border-accent text-lg tracking-wider ml-2 font-normal"
-                    placeholder={student.first_name}
-                    onChange={(e) =>
-                      setUpdatedStudent({
-                        ...updatedStudent,
-                        first_name: e.target.value,
-                      })
-                    }
-                  />
+              {renderField("First Name", student.first_name, { type: "text" })}
+              {renderField("Last Name", student.last_name, { type: "text" })}
+              {renderField("Email", student.email, { type: "email" })}
+              {renderField("Phone", student.phone, { type: "tel" })}
+              {student.interview_date &&
+                renderField(
+                  "Interview Date",
+                  formatDateTime(student.interview_date),
+                  {
+                    type: "datetime-local",
+                  }
                 )}
-              </div>
-              <div className="text-white text-xl font-bold">
-                Last Name:{" "}
-                {!editMode ? (
-                  <span className="text-accent text-xl font-normal">
-                    {student.last_name}
-                  </span>
-                ) : (
-                  <input
-                    type="text"
-                    className="text-white bg-secondary rounded-md p-1 shadow-md shadow-black focus:border-accent text-lg tracking-wider ml-2 font-normal"
-                    placeholder={student.last_name}
-                    onChange={(e) =>
-                      setUpdatedStudent({
-                        ...updatedStudent,
-                        last_name: e.target.value,
-                      })
-                    }
-                  />
-                )}
-              </div>
-              <div className="text-white text-xl font-bold">
-                Email:{" "}
-                {!editMode ? (
-                  <span className="text-accent text-xl font-normal">
-                    {student.email}
-                  </span>
-                ) : (
-                  <input
-                    type="email"
-                    className="text-white bg-secondary rounded-md p-1 shadow-md shadow-black focus:border-accent text-lg tracking-wider ml-2 font-normal"
-                    placeholder={student.email}
-                    onChange={(e) =>
-                      setUpdatedStudent({
-                        ...updatedStudent,
-                        email: e.target.value,
-                      })
-                    }
-                  />
-                )}
-              </div>
-              <div className="text-white text-xl font-bold">
-                Phone:{" "}
-                {!editMode ? (
-                  <span className="text-accent text-xl font-normal">
-                    {student.phone}
-                  </span>
-                ) : (
-                  <input
-                    type="tel"
-                    className="text-white bg-secondary rounded-md p-1 shadow-md shadow-black focus:border-accent text-lg tracking-wider ml-2 font-normal"
-                    placeholder={student.phone}
-                    onChange={(e) =>
-                      setUpdatedStudent({
-                        ...updatedStudent,
-                        phone: e.target.value,
-                      })
-                    }
-                  />
-                )}
-              </div>
-              {student.interview_date && (
-                <div className="text-white text-xl font-bold col-span-2">
-                  Interview Date:{" "}
-                  {!editMode ? (
-                    <span className="text-accent text-xl font-normal">
-                      {formatDateTime(student.interview_date)}
-                    </span>
-                  ) : (
-                    <input
-                      type="datetime-local"
-                      className="text-white bg-secondary rounded-md p-1 shadow-md shadow-black focus:border-accent text-lg tracking-wider ml-2 font-normal"
-                      placeholder={formatDateTime(student.interview_date)}
-                      onChange={(e) =>
-                        setUpdatedStudent({
-                          ...updatedStudent,
-                          interview_date: e.target.value,
-                        })
-                      }
-                    />
-                  )}
-                </div>
-              )}
             </div>
           )}
         </div>
