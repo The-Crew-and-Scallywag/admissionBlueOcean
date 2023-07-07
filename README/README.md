@@ -23,7 +23,7 @@ This project is licensed under the MIT License.
 
 ## Technologies Used
 
-- **Front-end:** HTML, CSS, JavaScript, React.js
+- **Front-end:** HTML, CSS, JavaScript, React.js, Tailwind
 - **Back-end:** Node.js, Express.js, MongoDB
 - **Authentication:** JSON Web Tokens (JWT)
 
