@@ -8,19 +8,14 @@ export const student = `SELECT * FROM students WHERE id = $1`;
 // get all interviewers
 // export const
 // post attempt
-export const postResult = `UPDATE students SET prev_attempt = ARRAY_APPEND(prev_attempt, $1) WHERE id = $2 RETURNING prev_attempt`;
+export const postResult = `UPDATE students set notes= ARRAY_APPEND(notes,$1 ), results = ARRAY_APPEND(results, $2 ) WHERE id = $3`;
 // adds attempts to the databaseh
 // get attempt
-export const interviewerNotes = `SELECT notes.note FROM notes JOIN interviewers ON notes.interviewers_id = interviewers.id WHERE interviewers.id = $1`;
+export const interviewerNotes = `SELECT students.notes FROM students JOIN interviewers ON students.id = interviewers.students_id WHERE interviewers.id = $1`;
 // get notes from interviews
-export const notes = `
-SELECT notes.note FROM notes
-JOIN interviewers ON notes.interviewers_id = interviewers.id
-JOIN attempts.attempt_count ON notes.student_attempts = attempt.attempt_count
-WHERE interviewers.id = $1`;
-
+export const postResults = `UPDATE students set notes= ARRAY_APPEND($1, notes) AND set results = ARRAY_APPEND($2, results)`;
 /**
  * Queries For Logging In and Out
  */
 export const emailCheck = `SELECT email FROM interviewers`;
-export const login = `SELECT email, password FROM interviewers WHERE email = $1`;
+export const login = `SELECT * FROM interviewers WHERE email = $1`;

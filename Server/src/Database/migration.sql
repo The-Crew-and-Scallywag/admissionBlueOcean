@@ -11,9 +11,9 @@ CREATE TABLE students (
   phone               INT NOT NULL,
   results             BOOLEAN[],
   notes               TEXT[],
-  interview_date      DATE
+  interview_date      DATE,
+  interview_time      TIMETZ
 );
-
 
 CREATE TABLE interviewers (
   id                  SERIAL PRIMARY KEY,
@@ -27,5 +27,4 @@ CREATE TABLE interviewers (
 CREATE TABLE questions  (
   id                  SERIAL PRIMARY KEY,
   questions           TEXT NOT NULL
-)
-
+);
