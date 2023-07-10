@@ -31,7 +31,6 @@ const StudentInfo = ({ students, currentStudent, changeCurrentStudent }) => {
   const renderField = (label, value, inputProps) => {
     const isEditable = editMode && inputProps;
     const fieldValue = isEditable ? updatedStudent[label] || value : value;
-
     return (
       <div
         className={`text-white text-xl font-bold ${
