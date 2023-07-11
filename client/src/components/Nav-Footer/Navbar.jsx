@@ -42,10 +42,10 @@ const Navbar = () => {
   }, [showSettings, setShowSettings]);
 
   return (
-    <div className="bg-bg top-0 w-full mx-auto text-text-light-gray shadow-lg shadow-black">
-      <div className="w-full md:max-w-[2560px] mx-auto">
+    <div className="bg-bg top-0 w-full md:mx-auto text-text-light-gray shadow-lg shadow-black">
+      <div className="w-fullmx-auto">
         <div className="mx-auto py-10 flex justify-between align-middle">
-          <div className="text-[24px] cursor-pointer left-12 relative">
+          <div className="text-[24px] cursor-pointer left-3 sm:left-12 relative">
             {auth.token && <LuPanelLeftOpen onClick={toggleMenu} />}
           </div>
           <img

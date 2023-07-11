@@ -3,7 +3,7 @@ import { FOOTER_LINKS_1, FOOTER_LINKS_2 } from "./utils";
 
 const Footer = () => {
   return (
-    <footer className="absolute top-auto bottom-0 right-0 left-0 w-full h-auto bg-bg mt-12">
+    <footer className=" bottom-0 right-0 left-0 w-full h-auto bg-bg mt-12">
       <div className="px-32 py-8">
         <div className=" border-b-[1px] border-accent">
           <div className="flex-row text-left my-4">
