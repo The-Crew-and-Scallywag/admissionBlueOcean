@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -6,6 +6,7 @@ const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,15 +16,19 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const handleLogin = async (username, password) => {
+  const handleLogin = async (email, password) => {
     try {
       const res = await axios.post("/api/login", {
-        username,
+        email,
         password,
       });
+      console.log(res);
       const token = res.data.token;
+      const user = res.data.user;
       localStorage.setItem("token", token);
       setAuth({ token });
+      const name = { firstName: user.first_name, lastName: user.last_name };
+      localStorage.setItem("name", JSON.stringify(name));
       navigate("/");
     } catch (err) {
       console.log(err);
@@ -32,12 +37,13 @@ export const AuthProvider = ({ children }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("name");
     setAuth({});
     navigate("/login");
   };
 
   return (
-    <AuthContext.Provider value={{ auth, handleLogin, handleLogout }}>
+    <AuthContext.Provider value={{ auth, handleLogin, handleLogout, name }}>
       {children}
     </AuthContext.Provider>
   );

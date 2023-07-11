@@ -16,6 +16,7 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database/${POSTGRES_DB}
       NODE_ENV: development
       PORT: 80
+      INTERVIEWER_TOKEN: special-awesome-stinky-smelly-super-secret-unique-access-token
     depends_on:
       - database
     ports:

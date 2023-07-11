@@ -16,7 +16,7 @@ export const logUserIn = async (req, res) => {
 
     const token = generateToken(results.rows[0]);
     console.log(token);
-    res.status(200).json(results.rows[0]);
+    res.status(200).json({ token: token, user: results.rows[0] });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error Logging User In" });
