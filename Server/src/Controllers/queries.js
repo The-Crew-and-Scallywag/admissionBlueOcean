@@ -23,7 +23,8 @@ students.first_name AS s_first_name, students.last_name AS s_last_name,
 interviews.notes AS notes, interviews.results AS results, interviews.interview_date
 FROM interviews 
 JOIN interviewers ON interviewers.id = interviews.interviewers_id 
-JOIN students ON students.id = interviews.students_id`;
+JOIN students ON students.id = interviews.students_id
+ORDER BY interviews.interview_date DESC`;
 
 // Patch interview data
 export const patchInterviewData = `UPDATE interviews SET notes = COALESCE ($1, notes), results = COALESCE($2, results) WHERE id = $3 RETURNING *`;
