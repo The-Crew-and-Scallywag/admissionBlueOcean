@@ -4,6 +4,7 @@ import Logo2 from "../../assets/Logo2.png";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorText, setErrorText] = useState("");
   const [transition, setTransition] = useState(true);
 
   useEffect(() => {
@@ -33,15 +34,21 @@ const Login = () => {
       <div className="h-[800px] w-[600px] my-[120px] mx-auto rounded-md bg-bg flex-col shadow-xl shadow-black">
         <div
           id="logo"
-          className={`${transitionClassDown} w-full mx-auto relative transform transition-all duration-300 ease-in-out`}
+          className={`${transitionClassDown} w-full mx-auto relative transform transition-all duration-300 ease-in-out mt-2`}
         >
-          <img src={Logo2} alt="Logo" className="w-[75px] mx-auto py-8 my-2" />
+          <img src={Logo2} alt="Logo" className="w-[75px] mx-auto pt-12" />
         </div>
         <h2
           className={`mx-auto w-full text-4xl font-bold tracking-wide text-center p-8 my-2 text-galv-orange ${transitionClassDown} transition-all duration-300 ease-in-out`}
         >
           Login
         </h2>
+        <p
+          className={`text-center text-white italic tracking-wide ${transitionClassDown} transition-all duration-300 ease-in-out`}
+        >
+          Admissions Portal
+        </p>
+        <div className="border-t-[.5px] border-white/70 w-2/3 mx-auto my-10"></div>
         <div
           id="form"
           className={`mx-auto w-full relative ${transitionClassUp} duration-300 transition-all ease-in-out`}
@@ -86,7 +93,16 @@ const Login = () => {
             </div>
           </form>
         </div>
-        <div id="help"></div>
+        <div className="border-t-[.5px] border-white/70 w-2/3 mx-auto my-10"></div>
+        <div id="error">{errorText}</div>
+        <div id="help" className="mx-auto w-full my-4">
+          <p className="text-white text-center p-2 tracking-wide">
+            To create an account, <br /> please contact the{" "}
+            <a href="#" className="text-accent underline">
+              admissions office.
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
