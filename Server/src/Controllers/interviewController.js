@@ -3,6 +3,7 @@ import {
   allInterviews,
   interviewsByStudents,
   patchInterviewData,
+  postInterview,
 } from "./queries.js";
 
 export const getAllInterviews = async (req, res) => {
@@ -52,5 +53,23 @@ export const updateInterviewData = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error updating Interview Data" });
+  }
+};
+
+export const addInterview = async (req, res) => {
+  try {
+    const { studentId, interviewerId, date } = req.body;
+    console.log(studentId, interviewerId);
+
+    const results = await db.query(postInterview, [
+      parseInt(studentId),
+      parseInt(interviewerId),
+      date,
+    ]);
+
+    res.status(200).json(results.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error Adding Interview To Schedule" });
   }
 };
