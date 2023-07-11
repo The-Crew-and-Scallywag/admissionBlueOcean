@@ -35,7 +35,7 @@ const StudentInfo = ({ students, currentStudent, setCurrentStudent }) => {
   };
 
   const formatPhoneNumber = (phoneNumber) => {
-    const cleaned = String(phoneNumber).replace(/\D/g, "");
+    const cleaned = phoneNumber.replace(/\D/g, "");
     const formattedPhoneNumber = cleaned.replace(
       /(\d{1})(\d{3})(\d{3})(\d{4})/,
       "$1($2)$3-$4"
@@ -104,7 +104,7 @@ const StudentInfo = ({ students, currentStudent, setCurrentStudent }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 w-[700px] mx-auto my-20">
+    <div className="flex flex-col w-[290px] sm:w-[420px] lg:w-[800px] mx-auto my-20">
       <div className="text-white text-2xl text-center">
         Student:{" "}
         {!loading && (
@@ -139,7 +139,7 @@ const StudentInfo = ({ students, currentStudent, setCurrentStudent }) => {
         )}
         <div className="mt-4 mb-12 p-6">
           {!loading && (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {renderField("First Name", student.first_name, { type: "text" })}
               {renderField("Last Name", student.last_name, { type: "text" })}
               {renderField("Email", student.email, { type: "email" })}

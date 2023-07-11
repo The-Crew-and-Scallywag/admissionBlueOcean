@@ -15,6 +15,7 @@ export const logUserIn = async (req, res) => {
     }
 
     const token = generateToken(results.rows[0]);
+
     res.status(200).json({
       results: {
         id: results.rows[0].id,
