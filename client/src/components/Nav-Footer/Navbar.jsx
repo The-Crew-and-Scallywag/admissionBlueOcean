@@ -2,14 +2,19 @@ import React, { useState } from "react";
 import logo from "../../assets/galvanize-logo.webp";
 import { LuPanelLeftOpen } from "react-icons/lu";
 import { CiSettings } from "react-icons/ci";
-
+import { useNavigate } from "react-router-dom";
 import Navmenu from "./Navmenu.jsx";
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
+  };
+
+  const handleLogoClick = () => {
+    navigate("/");
   };
 
   return (
@@ -19,8 +24,13 @@ const Navbar = () => {
           <div className="text-[24px] cursor-pointer left-12 relative">
             <LuPanelLeftOpen onClick={toggleMenu} />
           </div>
-          <img className="relative mx-auto h-9" src={logo} alt="Logo" />
-          <div className="text-[24px]">
+          <img
+            className="relative mx-auto h-9 cursor-pointer"
+            onClick={handleLogoClick}
+            src={logo}
+            alt="Logo"
+          />
+          <div className="text-[24px] mr-12">
             <CiSettings />
           </div>
         </div>

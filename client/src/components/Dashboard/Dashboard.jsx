@@ -12,19 +12,13 @@ const Dashboard = () => {
       try {
         const res = await axios.get("/api/students");
         const data = res.data;
-        console.log(data);
         setStudents(data);
       } catch (err) {
         console.log(err);
       }
     };
-    console.log(students);
     hello();
   }, []);
-
-  const changeCurrentStudent = (id) => {
-    setCurrentStudent(id);
-  };
 
   return (
     <div className="h-full w-full">
@@ -37,7 +31,7 @@ const Dashboard = () => {
         <StudentInfo
           students={students}
           currentStudent={currentStudent}
-          setCurrentStudent={changeCurrentStudent}
+          setCurrentStudent={setCurrentStudent}
         />
       </div>
     </div>
