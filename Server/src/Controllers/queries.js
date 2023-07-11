@@ -1,11 +1,22 @@
 /**
- * Queries For The Interviewer
+ * Queries For The Students
  */
 // get all student
 export const allStudents = `SELECT * FROM students`;
+
 // get student by id
 export const student = `SELECT * FROM students WHERE id = $1`;
-// get all interviewers
+
+/**
+ * Queries For The interviewers
+ */
+// GET all interiewers
+export const allInterviewers = `SELECT first_name, last_name, email FROM interviewers`;
+
+// GET interviewers by id
+export const interiewersById = `SELECT first_name, last_name, email FROM interviewers WHERE id = $1`;
+
+// GETs all Interviews
 export const allInterviews = `
 SELECT interviewers.first_name AS i_first_name, interviewers.last_name AS i_last_name, interviewers.email AS i_email,
 students.first_name AS s_first_name, students.last_name AS s_last_name,
@@ -13,21 +24,23 @@ interviews.notes AS notes, interviews.results AS results, interviews.interview_d
 FROM interviews 
 JOIN interviewers ON interviewers.id = interviews.interviewers_id 
 JOIN students ON students.id = interviews.students_id`;
-export const interview = `
+
+// Patch interview data
+export const patchInterviewData = `UPDATE interviews SET notes = COALESCE ($1, notes), results = COALESCE($2, results) WHERE id = $3 RETURNING *`;
+
+// GETs all interviews for a specific student
+export const interviewsByStudents = `
 SELECT interviewers.first_name AS i_first_name, interviewers.last_name AS i_last_name, interviewers.email AS i_email,
 students.first_name AS s_first_name, students.last_name AS s_last_name,
-interviews.notes AS notes, interviews.results AS results, interviews.interview_date
+interviews.notes AS notes, interviews.results AS results, interviews.interview_date, interviews.id AS interview_id
 FROM interviews 
 JOIN interviewers ON interviewers.id = interviews.interviewers_id 
 JOIN students ON students.id = interviews.students_id
 WHERE students.id = $1`;
-// post attempt
-export const postResult = `UPDATE students set notes= ARRAY_APPEND(notes,$1 ), results = ARRAY_APPEND(results, $2 ) WHERE id = $3`;
-// adds attempts to the databaseh
-// get attempt
-export const interviewerNotes = `SELECT students.notes FROM students JOIN interviewers ON students.id = interviewers.students_id WHERE interviewers.id = $1`;
-// get notes from interviews
-export const postResults = `UPDATE students set notes= ARRAY_APPEND($1, notes) AND set results = ARRAY_APPEND($2, results)`;
+
+// post an interview
+export const postInterview = `INSERT INTO interviews(students_id, interviewers_id, interview_date)
+VALUES($1, $2, $3)`;
 /**
  * Queries For Logging In and Out
  */

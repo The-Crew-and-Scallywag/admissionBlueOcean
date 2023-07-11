@@ -2,22 +2,25 @@ import { Router } from "express";
 import {
   getAllStudents,
   getStudentByID,
-  postStudentResults,
 } from "../Controllers/interviewerController.js";
 import { logUserIn } from "../Controllers/logController.js";
 import {
   getAllInterviews,
   getInterview,
+  updateInterviewData,
 } from "../Controllers/interviewController.js";
 
 export const router = Router();
 
-router.get("/students", getAllStudents);
-router.get("/interview/:id", getInterview);
-router.get("/student/:id", getStudentByID);
-router.post("/results/:id", postStudentResults);
-router.get("/notes/:id", postStudentResults);
-router.get("/interviews", getAllInterviews);
+router.get("/students", getAllStudents); // list of all students
+
+router.get("/interview/:id", getInterview); // list of interviews by student id
+
+router.patch("/interview/:id", updateInterviewData); // update interview notes and result
+
+router.get("/student/:id", getStudentByID); // fetch single student
+
+router.get("/interviews", getAllInterviews); // list of all interviews
 
 /**
  * LOGIN ROUTE
