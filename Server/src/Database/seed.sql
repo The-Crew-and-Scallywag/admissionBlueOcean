@@ -1,6 +1,6 @@
 INSERT INTO students(first_name, last_name, email, phone)
-VALUES('Ronnie', 'Miller', 'Ronnie@gg.com', 1234567890),
-('Fitz', 'Sicat', 'Fitz@email.com', 1334567890);
+VALUES('Ronnie', 'Miller', 'Ronnie@gg.com', '12345678901'),
+('Fitz', 'Sicat', 'Fitz@email.com', '13345678902');
 -- ('Mathew', 'Guy', 'Mathew@yes.com', ARRAY[FALSE, FALSE, FALSE, TRUE], ARRAY[1,2,3,4]),
 -- ('La Shonta', 'Gal', 'lshonta@email.com', ARRAY[FALSE, FALSE, FALSE, TRUE], ARRAY[1,2,3,4]),
 -- ('Triston', 'Scallywag', 'Triston@Scallywag.com', ARRAY[FALSE, FALSE, FALSE, TRUE], ARRAY[1,2,3,4]);
