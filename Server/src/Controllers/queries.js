@@ -40,7 +40,7 @@ WHERE students.id = $1`;
 
 // post an interview
 export const postInterview = `INSERT INTO interviews(students_id, interviewers_id, interview_date)
-VALUES($1, $2, $3)`;
+VALUES($1, $2, $3) RETURNING *`;
 /**
  * Queries For Logging In and Out
  */
