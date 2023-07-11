@@ -4,6 +4,8 @@ import Dashboard from "./Dashboard/Dashboard.jsx";
 import Footer from "./Nav-Footer/Footer.jsx";
 import { Routes, Route } from "react-router-dom";
 import Login from "./Login/Login.jsx";
+import Editor from "./Interview/Editor.jsx";
+import Interview from "./Interview/interview.jsx";
 
 const App = () => {
   return (
@@ -13,6 +15,7 @@ const App = () => {
         <Routes>
           <Route exact path="/" element={<Dashboard />} />
           <Route exact path="/login" element={<Login />} />
+          <Route exact path="/interview" element={<Interview />} />
         </Routes>
       </div>
       <Footer />
