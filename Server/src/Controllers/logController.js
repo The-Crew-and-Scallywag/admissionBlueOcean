@@ -15,8 +15,16 @@ export const logUserIn = async (req, res) => {
     }
 
     const token = generateToken(results.rows[0]);
-    console.log(token);
-    res.status(200).json(results.rows[0]);
+    res.status(200).json({
+      results: {
+        id: results.rows[0].id,
+        student_id: results.rows[0].student_id,
+        first_name: results.rows[0].first_name,
+        last_name: results.rows[0].last_name,
+        email: results.rows[0].email,
+      },
+      token: token,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error Logging User In" });
