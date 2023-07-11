@@ -4,8 +4,7 @@ import Dashboard from "./Dashboard/Dashboard.jsx";
 import Footer from "./Nav-Footer/Footer.jsx";
 import { Routes, Route } from "react-router-dom";
 import Login from "./Login/Login.jsx";
-import Editor from "./Interview/Editor.jsx";
-import Interview from "./Interview/interview.jsx";
+import Interview from "./Interview/Interview.jsx";
 
 const App = () => {
   return (

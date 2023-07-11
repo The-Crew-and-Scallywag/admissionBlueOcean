@@ -4,35 +4,36 @@ import * as CodeMirror from "codemirror";
 import "codemirror/mode/htmlmixed/htmlmixed";
 import "codemirror/mode/css/css";
 import "codemirror/mode/javascript/javascript";
-console.log(CodeMirror);
-const Editor = () => {
+
+const Editor = ({ handleOutput }) => {
   const editorRef = useRef(null);
   const [output, setOutput] = useState("");
+  const [editor, setEditor] = useState(null);
 
   useEffect(() => {
-    const editor = CodeMirror.fromTextArea(editorRef.current, {
+    const newEditor = CodeMirror.fromTextArea(editorRef.current, {
       lineNumbers: true,
       mode: "htmlmixed",
     });
+    setEditor(newEditor);
 
-    editor.on("change", (instance) => {
-      console.log(instance.getValue());
-    });
+    newEditor.on("change", (instance) => {});
 
     return () => {
-      editor.toTextArea();
+      newEditor.toTextArea();
     };
   }, []);
 
   const runCode = () => {
-    const code = editorRef.current.value;
+    const code = editor.getValue();
     setOutput("");
 
     try {
-      const result = eval(code);
+      const result = Function(code)();
       setOutput(result);
+      handleOutput(result); // DISPLAY
     } catch (error) {
-      setOutput(`Error: ${error.message}`);
+      setOutput(`Error: ${error.message}`); // DISPLAY ERROR
     }
   };
 
