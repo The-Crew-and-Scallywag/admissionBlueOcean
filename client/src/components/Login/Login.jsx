@@ -1,19 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Logo2 from "../../assets/Logo2.png";
 import AuthContext from "../Context/AuthProvider";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorText, setErrorText] = useState("");
   const [transition, setTransition] = useState(true);
-  const { handleLogin } = React.useContext(AuthContext);
+  const [errorTransition, setErrorTransition] = useState(true);
+  const [errorText, setErrorText] = useState("");
+  const { handleLogin } = useContext(AuthContext);
 
   useEffect(() => {
-    setInterval(() => {
+    setTimeout(() => {
       setTransition(false);
     }, 300);
   }, []);
+
+  useEffect(() => {
+    if (errorText) {
+      setTimeout(() => {
+        setErrorTransition(false);
+      }, 300);
+    }
+  }, [errorText]);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -26,10 +35,23 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await handleLogin(email, password);
+      const success = await handleLogin(email, password);
+      if (success) {
+        setErrorText(success);
+      }
     } catch (err) {
-      console.log(errorText);
+      console.log(err);
+      !err.response
+        ? setErrorText("Network Error")
+        : setErrorText(err.response.data.message);
     }
+  };
+
+  const handleResetError = () => {
+    setErrorTransition(true);
+    setTimeout(() => {
+      setErrorText("");
+    }, 300);
   };
 
   const transitionClassUp = transition
@@ -76,10 +98,15 @@ const Login = () => {
               <input
                 type="email"
                 value={email}
-                className="my-4 py-2 px-2 text-white rounded-md focus:ring-2 focus:ring-accent focus:outline-none border-none w-1/2 bg-secondary"
+                className={`my-4 py-2 px-2 text-white rounded-md focus:ring-2 focus:ring-accent focus:outline-none w-1/2 bg-secondary transition-all duration-150 ease-in-out ${
+                  errorText !== ""
+                    ? "border-2 border-red-400 outline-red-400"
+                    : "border-none outline-none"
+                }}`}
                 onChange={handleEmailChange}
                 autoComplete="none"
                 autoFocus={true}
+                onFocus={handleResetError}
               />
               <label
                 className={`absolute left-[160px] transition-all duration-300 ease-in-out pointer-events-none ${
@@ -95,9 +122,14 @@ const Login = () => {
               <input
                 type="password"
                 value={password}
-                className="my-4 py-2 px-2 text-white rounded-md focus:ring-2 focus:ring-accent focus:outline-none border-none w-1/2 bg-secondary"
+                className={`my-4 py-2 px-2 text-white rounded-md focus:ring-2 focus:ring-accent focus:outline-none w-1/2 bg-secondary transition-all duration-150 ease-in-out ${
+                  errorText !== ""
+                    ? "border-2 border-red-400 outline-red-400"
+                    : "border-none outline-none"
+                }}`}
                 onChange={handlePasswordChange}
                 autoComplete="none"
+                onFocus={handleResetError}
               />
               <label
                 className={`absolute left-[160px] transition-all duration-300 ease-in-out pointer-events-none ${
@@ -120,8 +152,17 @@ const Login = () => {
           </div>
         </div>
         <div className="border-t-[.5px] border-white/70 w-2/3 mx-auto my-10"></div>
-        <div id="error" className="text-red">
-          {errorText}
+
+        <div id="error" className="text-red-400 text-center">
+          {errorText !== "" && (
+            <label
+              className={`border-2 border-red-400 p-4 w-full bg-secondary rounded-lg transition-all duration-300 ease-in-out ${
+                errorTransition ? "translate-y-[5px] opacity-0" : "opacity-100"
+              }`}
+            >
+              {`Error: ${errorText}`}
+            </label>
+          )}
         </div>
         <div id="help" className="mx-auto w-full my-4">
           <p className="text-white text-center p-2 tracking-wide">
