@@ -1,6 +1,6 @@
 INSERT INTO students(first_name, last_name, email, phone, results, notes, interview_date, interview_time)
-VALUES('Ronnie', 'Miller', 'Ronnie@gg.com', 1234567890, ARRAY[TRUE], ARRAY['HE''s HUGE'], '2023-07-6', '19:10:25-07'),
-('Fitz', 'Sicat', 'Fitz@email.com', 1334567890, ARRAY[TRUE], ARRAY['He Used ChatGPT'], '2023-07-7', '17:10:25-07');
+VALUES('Ronnie', 'Miller', 'Ronnie@gg.com', '12345678901', ARRAY[TRUE], ARRAY['HE''s HUGE'], '2023-07-6', '19:10:25-07'),
+('Fitz', 'Sicat', 'Fitz@email.com', '12345678909', ARRAY[TRUE], ARRAY['He Used ChatGPT'], '2023-07-7', '17:10:25-07');
 -- ('Mathew', 'Guy', 'Mathew@yes.com', ARRAY[FALSE, FALSE, FALSE, TRUE], ARRAY[1,2,3,4]),
 -- ('La Shonta', 'Gal', 'lshonta@email.com', ARRAY[FALSE, FALSE, FALSE, TRUE], ARRAY[1,2,3,4]),
 -- ('Triston', 'Scallywag', 'Triston@Scallywag.com', ARRAY[FALSE, FALSE, FALSE, TRUE], ARRAY[1,2,3,4]);

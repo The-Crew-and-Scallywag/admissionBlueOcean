@@ -8,7 +8,7 @@ CREATE TABLE students (
   first_name          VARCHAR(25) NOT NULL,
   last_name           VARCHAR(25) NOT NULL,
   email               VARCHAR(75) UNIQUE NOT NULL,
-  phone               INT NOT NULL,
+  phone               VARCHAR(20) NOT NULL,
   results             BOOLEAN[],
   notes               TEXT[],
   interview_date      DATE,

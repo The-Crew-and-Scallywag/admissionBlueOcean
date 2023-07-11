@@ -37,8 +37,8 @@ const StudentInfo = ({ students, currentStudent, setCurrentStudent }) => {
   const formatPhoneNumber = (phoneNumber) => {
     const cleaned = String(phoneNumber).replace(/\D/g, "");
     const formattedPhoneNumber = cleaned.replace(
-      /(\d{1})(\d{3})(\d{4})/,
-      "$1($2)-$3"
+      /(\d{1})(\d{3})(\d{3})(\d{4})/,
+      "$1($2)$3-$4"
     );
     return formattedPhoneNumber;
   };
