@@ -38,7 +38,7 @@ services:
     volumes:
       # This allows live reload inside a docker container by mapping your
       # filesystem to the container's.
-      - ./client/src:/code/src
+      - ./client:/code
       - /client/node_modules
     command: npm run dev
 volumes:

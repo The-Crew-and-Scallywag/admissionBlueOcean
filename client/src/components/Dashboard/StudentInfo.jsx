@@ -1,59 +1,103 @@
 import React, { useEffect, useState } from "react";
 import { MdEditDocument, MdEditOff } from "react-icons/md";
 
-const StudentInfo = ({ students, currentStudent, changeCurrentStudent }) => {
+const StudentInfo = ({ students, currentStudent, setCurrentStudent }) => {
   const [editMode, setEditMode] = useState(false);
   const [updatedStudent, setUpdatedStudent] = useState({});
   const [loading, setLoading] = useState(true);
+  const [transition, setTransition] = useState(false);
 
   const toggleEditMode = () => {
-    setEditMode(!editMode);
+    setTransition(true);
+    setTimeout(() => {
+      setEditMode(!editMode);
+      setTransition(false);
+    }, 500);
   };
+  console.log(students);
 
-  const student = students[currentStudent];
+  let student = students[currentStudent];
 
-  const formatDateTime = (dateTimeString) => {
-    const dateTime = new Date(dateTimeString);
-    return dateTime.toLocaleDateString("en-US", {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
+    });
+  };
+  const formatTime = (timeString) => {
+    const time = new Date(timeString);
+    return time.toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "numeric",
-      hour12: true,
     });
+  };
+
+  const formatPhoneNumber = (phoneNumber) => {
+    const cleaned = String(phoneNumber).replace(/\D/g, "");
+    const formattedPhoneNumber = cleaned.replace(
+      /(\d{1})(\d{3})(\d{3})(\d{4})/,
+      "$1($2)$3-$4"
+    );
+    return formattedPhoneNumber;
+  };
+
+  const handleChange = (index) => {
+    setTransition(true);
+    setTimeout(() => {
+      setCurrentStudent(index);
+      setTransition(false);
+    }, 500);
   };
 
   useEffect(() => {
     setLoading(students.length === 0);
+    setTransition(true);
+    console.log("transitioning");
+    setTimeout(() => {
+      setTransition(false);
+      console.log("done transitioning");
+    }, 500);
   }, [students]);
 
   const renderField = (label, value, inputProps) => {
     const isEditable = editMode && inputProps;
     const fieldValue = isEditable ? updatedStudent[label] || value : value;
-
     return (
       <div
-        className={`text-white text-xl font-bold ${
-          label === "Interview Date" && "col-span-2"
-        }`}
+        className={`text-white text-xl font-bold p-2 mr-12 transition-all duration-300 ease-in-out`}
       >
         {label}:{" "}
         {!isEditable ? (
-          <span className="text-accent font-normal">{fieldValue}</span>
+          <div
+            className={`text-accent font-normal py-[5px] w-full ${
+              transition
+                ? "opacity-0 translate-x-[50px]"
+                : "opacity-100 border-b-[1px]"
+            } transition-all duration-300 ease-in-out`}
+          >
+            {fieldValue}
+          </div>
         ) : (
-          <input
-            type="text"
-            className={`text-white bg-secondary rounded-md p-1 shadow-md shadow-black focus:border-accent text-lg tracking-wider ml-2 font-normal`}
-            placeholder={fieldValue}
-            onChange={(e) =>
-              setUpdatedStudent({
-                ...updatedStudent,
-                [label]: e.target.value,
-              })
-            }
-            {...inputProps}
-          />
+          <div
+            className={` ${
+              transition ? "opacity-0 translate-x-[50px]" : "opacity-100"
+            } transition-all duration-300 ease-in-out`}
+          >
+            <input
+              type="text"
+              className={`text-white bg-secondary p-2 rounded-md shadow-md shadow-black  focus:ring-accent focus:ring-2 focus:outline-none text-lg tracking-wider ml-2 font-normal m-2`}
+              placeholder={fieldValue}
+              onChange={(e) =>
+                setUpdatedStudent({
+                  ...updatedStudent,
+                  [label]: e.target.value,
+                })
+              }
+              {...inputProps}
+            />
+          </div>
         )}
       </div>
     );
@@ -64,14 +108,18 @@ const StudentInfo = ({ students, currentStudent, changeCurrentStudent }) => {
       <div className="text-white text-2xl text-center">
         Student:{" "}
         {!loading && (
-          <select className="text-galv-orange bg-bg rounded-md p-1 shadow-md shadow-black focus:border-accent text-lg tracking-wider ml-2">
-            {students.map((student) => (
+          <select
+            value={currentStudent}
+            onChange={(e) => handleChange(parseInt(e.target.selectedIndex))}
+            className="text-galv-orange bg-bg rounded-md p-1 shadow-md shadow-black focus:ring-1 focus:ring-accent text-lg tracking-wider ml-2 cursor-pointer transition-all duration-300 ease-in-out"
+          >
+            {students.map((student, index) => (
               <option
                 key={student.id}
-                value={student.id}
-                className="bg-bg/80 backdrop-blur-lg text-white hover:bg-bg/60 hover:backdrop-blur-lg transition-all duration-150 ease-in-out"
+                value={index}
+                className="bg-secondary text-accent py-4 focus:text-accent cursor-pointer"
               >
-                {student.first_name} {student.last_name}
+                {`${student.first_name} ${student.last_name}`}
               </option>
             ))}
           </select>
@@ -91,26 +139,50 @@ const StudentInfo = ({ students, currentStudent, changeCurrentStudent }) => {
         )}
         <div className="mt-4 mb-12 p-6">
           {!loading && (
-            <div className="grid grid-cols-2 gap-4 justify-items-start">
+            <div className="grid grid-cols-2 gap-4">
               {renderField("First Name", student.first_name, { type: "text" })}
               {renderField("Last Name", student.last_name, { type: "text" })}
               {renderField("Email", student.email, { type: "email" })}
-              {renderField("Phone", student.phone, { type: "tel" })}
+              {renderField("Phone", formatPhoneNumber(student.phone), {
+                type: "tel",
+              })}
               {student.interview_date &&
                 renderField(
                   "Interview Date",
-                  formatDateTime(student.interview_date),
+                  formatDate(student.interview_date),
                   {
-                    type: "datetime-local",
+                    type: "date",
+                  }
+                )}
+              {student.interview_time &&
+                renderField(
+                  "Interview Time",
+                  formatTime(student.interview_time),
+                  {
+                    type: "time",
                   }
                 )}
             </div>
           )}
         </div>
         <div className="flex flex-col">
-          <button className="mx-auto text-white bg-secondary p-2 rounded-md mt-[-30px] mb-4 hover:bg-galv-orange transition-all duration-150 ease-in-out hover:scale-105">
-            Start an Interview
-          </button>
+          {editMode ? (
+            <button
+              className={`mx-auto text-white bg-secondary p-2 rounded-md mt-[-30px] mb-4 hover:bg-galv-orange transition-all duration-150 ease-in-out hover:scale-105 ${
+                transition ? "opacity-0" : "opacity-100"
+              }}`}
+            >
+              Save Changes
+            </button>
+          ) : (
+            <button
+              className={`mx-auto text-white bg-secondary p-2 rounded-md mt-[-30px] mb-4 hover:bg-galv-orange transition-all duration-150 ease-in-out hover:scale-105 ${
+                transition ? "opacity-0" : "opacity-100"
+              }`}
+            >
+              Start an Interview
+            </button>
+          )}
         </div>
       </div>
     </div>
