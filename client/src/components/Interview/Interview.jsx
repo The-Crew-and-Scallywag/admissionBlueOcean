@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Editor from "./Editor";
+import TestEditor from "./TestEditor";
 import Challenge from "./Challenge";
 
 const Interview = () => {
@@ -12,7 +12,7 @@ const Interview = () => {
   return (
     <div className="flex flex-row">
       <div id="editor-container" className="w-[800px] mx-[80px]">
-        <Editor handleOutput={handleOutput} />
+        <TestEditor handleOutput={handleOutput} />
         <div>{output}</div> {/* Display the output in the specified <div> */}
       </div>
       <div id="challenge-container" className="ml-[80px] text-center">
