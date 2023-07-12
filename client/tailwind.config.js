@@ -15,6 +15,9 @@ export default {
         "text-black": "#000000",
         accent: "#34a1e0",
       },
+      screens: {
+        custom: "2014px",
+      },
     },
   },
   plugins: [],
