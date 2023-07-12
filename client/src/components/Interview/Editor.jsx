@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "codemirror/lib/codemirror.css";
-import * as CodeMirror from "codemirror";
+import CodeMirror from "codemirror";
 import "codemirror/mode/htmlmixed/htmlmixed";
 import "codemirror/mode/css/css";
 import "codemirror/mode/javascript/javascript";
