@@ -23,10 +23,17 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
 
   const handleOpenview = (index) => {
     transition ? setTransition(false) : "";
-    setResults(index);
-    setTimeout(() => {
-      setTransition(true);
-    }, 300);
+    if (results === "") {
+      results === index ? handleCloseView() : setResults(index);
+      setTimeout(() => {
+        setTransition(true);
+      }, 300);
+    } else {
+      setTimeout(() => {
+        setResults(index);
+        setTransition(true);
+      }, 300);
+    }
   };
 
   const handleCloseView = () => {
@@ -34,6 +41,15 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
     setTimeout(() => {
       setResults("");
     }, 300);
+  };
+
+  const formatDate = (date) => {
+    const newDate = new Date(date);
+    return newDate.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   };
 
   return (
@@ -58,6 +74,9 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
                     {student.results ? "Passed" : "Failed"}
                   </div>
                 </div>
+                <div className="text-white/50">
+                  {formatDate(student.interview_date)}
+                </div>
                 <div className="flex flex-row">
                   <button
                     className="bg-accent text-white rounded-md p-2 shadow-md shadow-black text-lg tracking-wider hover:scale-105 ml-2 cursor-pointer transition-all duration-300 ease-in-out"
@@ -65,6 +84,9 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
                   >
                     View
                   </button>
+                  {results !== "" && (
+                    <BsChevronBarRight className="relative text-white text-2xl ml-2 top-2" />
+                  )}
                 </div>
               </li>
             );
@@ -74,18 +96,18 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
       <div className="w-full h-full overflow-auto flex flex-col my-8">
         {studentInfo[results] ? (
           <div
-            className={`flex flex-col justify-center items-center w-full p-2 relative transition-all duration-300 ease-in-out ${
+            className={`flex flex-col justify-between items-end w-full relative transition-all duration-300 ease-in-out ${
               transition ? "" : "-translate-x-[500px] -z-10"
             }`}
           >
-            <div className="flex flex-row justify-between items-center bg-bg p-4 pl-14 rounded-lg shadow-lg shadow-black my-4">
+            <div className="flex flex-row justify-start items-center bg-bg p-4 pl-14 rounded-lg shadow-lg shadow-black my-4 w-[90%]">
               <div
                 onClick={handleCloseView}
                 className=" relative text-2xl animate-pulse mr-2 ml-[-20px] cursor-pointer"
               >
                 <BsChevronBarLeft />
               </div>
-              <div className="text-left p-6">
+              <div className="text-left p-6 border-l-[1px] border-galv-orange">
                 <h2 className="text-2xl font-bold tracking-wide pb-3">
                   Results:
                 </h2>

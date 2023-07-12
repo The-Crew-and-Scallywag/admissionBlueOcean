@@ -23,15 +23,15 @@ const Dashboard = () => {
 
   return (
     <div className="h-full w-full">
-      <div className="flex flex-col 2xl:flex-row w-full mx-auto">
-        <div className="mx-auto w-full 2xl:ml-[200px]">
+      <div className="flex flex-col-reverse custom:flex-row w-full mx-auto">
+        <div className="mx-auto w-full custom:ml-[200px]">
           <Welcome
             students={students}
             currentStudent={currentStudent}
             setCurrentStudent={setCurrentStudent}
           />
         </div>
-        <div className="mx-auto 2xl:mr-[400px]">
+        <div className="mx-auto custom:mr-[400px] flex">
           <StudentInfo
             students={students}
             currentStudent={currentStudent}
