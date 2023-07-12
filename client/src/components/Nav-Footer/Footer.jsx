@@ -2,8 +2,8 @@ import React from "react";
 import { FOOTER_LINKS_1, FOOTER_LINKS_2 } from "./utils";
 // ***Footer 'fixed' bug on interviewer view page***
 const Footer = () => {
-  return ( 
-    <div className="relative bottom-0 right-0 left-0 w-full h-auto bg-bg">
+  return (
+    <footer className=" bottom-0 right-0 left-0 w-full h-auto bg-bg mt-12">
       <div className="px-32 py-8">
         <div className=" border-b-[1px] border-accent">
           <div className="flex-row text-left my-4">
@@ -39,7 +39,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 

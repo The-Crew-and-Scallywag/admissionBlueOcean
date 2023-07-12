@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS interviews;
 DROP TABLE IF EXISTS interviewers;
 DROP TABLE IF EXISTS students;
 DROP TABLE IF EXISTS questions;
@@ -8,11 +9,7 @@ CREATE TABLE students (
   first_name          VARCHAR(25) NOT NULL,
   last_name           VARCHAR(25) NOT NULL,
   email               VARCHAR(75) UNIQUE NOT NULL,
-  phone               INT NOT NULL,
-  results             BOOLEAN[],
-  notes               TEXT[],
-  interview_date      DATE,
-  interview_time      TIMETZ
+  phone               VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE interviewers (
@@ -22,6 +19,15 @@ CREATE TABLE interviewers (
   last_name           VARCHAR(25) NOT NULL,
   email               VARCHAR(75) UNIQUE NOT NULL,
   password            VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE interviews (
+  id                  SERIAL PRIMARY KEY,
+  students_id         INT REFERENCES students(id) ON DELETE CASCADE,
+  interviewers_id     INT REFERENCES interviewers(id) ON DELETE CASCADE,
+  interview_date      DATE,
+  notes               TEXT,
+  results             BOOLEAN
 );
 
 CREATE TABLE questions  (

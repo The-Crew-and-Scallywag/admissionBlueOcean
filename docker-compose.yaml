@@ -16,6 +16,7 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database/${POSTGRES_DB}
       NODE_ENV: development
       PORT: 80
+      INTERVIEWER_TOKEN: special-awesome-stinky-smelly-super-secret-unique-access-token
     depends_on:
       - database
     ports:
@@ -38,8 +39,8 @@ services:
     volumes:
       # This allows live reload inside a docker container by mapping your
       # filesystem to the container's.
-      - ./client/src:/code/src
+      - ./client:/code
       - /client/node_modules
-    command: npm run dev
+    command: sh -c "npm rebuild esbuild && npm run dev"
 volumes:
   pg-data:

@@ -1,5 +1,5 @@
 import { db } from "../Database/database.js";
-import { allStudents, postResult, student } from "./queries.js";
+import { allStudents, interiewersById, student } from "./queries.js";
 
 // fetches all students
 export const getAllStudents = async (req, res) => {
@@ -27,41 +27,14 @@ export const getStudentByID = async (req, res) => {
   }
 };
 
-// post interview results to db
-export const postStudentResults = async (req, res) => {
+// fetches interviewers by id
+export const getInterviewerById = async (req, res) => {
   try {
-    let { result, notes } = req.body;
-    const id = Number(req.params.id); // will get from token later
-    if (result.toLowerCase() == "true") {
-      result = true;
-    } else if (result.toLowerCase() == "false") {
-      result = false;
-    } else {
-      return res
-        .status(400)
-        .json({ message: "Result should be a boolean value" });
-    }
-
-    const results = await db.query(postResult, [notes, result, id]);
-
-    res.status(200).json(results.rows);
+    const id = Number(req.params.id);
+    const results = await db.query(interiewersById, [id]);
+    res.status(200).json(results.rows[0]);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "ERROR Posting Result" });
-  }
-};
-
-// get interviewers notes from a specific interview
-export const addResults = async (req, res) => {
-  try {
-    const { notes, result } = req.body;
-    const id = Number(req.params.id); // will get from token later
-
-    const results = await db.query(postResult, [notes, result, id]);
-
-    res.status(200).json(results.rows);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "ERROR Sending Results" });
+    res.status(500).json({ message: "Error Fetching Interviewer" });
   }
 };
