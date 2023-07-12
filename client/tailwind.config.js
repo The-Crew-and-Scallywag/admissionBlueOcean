@@ -13,7 +13,10 @@ export default {
         "text-light-gray": "#999999",
         "text-white": "#ffffff",
         "text-black": "#000000",
-        accent: "#3a6371",
+        accent: "#34a1e0",
+      },
+      screens: {
+        custom: "2014px",
       },
     },
   },
