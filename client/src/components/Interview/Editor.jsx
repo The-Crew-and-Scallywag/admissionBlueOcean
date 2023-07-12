@@ -1,51 +1,45 @@
 import React, { useEffect, useRef, useState } from "react";
 import "codemirror/lib/codemirror.css";
-import "codemirror/addon/edit/closebrackets";
-import "codemirror/addon/edit/matchbrackets";
+import * as CodeMirror from "codemirror";
 import "codemirror/mode/htmlmixed/htmlmixed";
 import "codemirror/mode/css/css";
 import "codemirror/mode/javascript/javascript";
-import CodeMirror from "codemirror";
 
-const Editor = () => {
+const Editor = ({ handleOutput }) => {
   const editorRef = useRef(null);
   const [output, setOutput] = useState("");
+  const [editor, setEditor] = useState(null);
 
   useEffect(() => {
-    const editor = CodeMirror.fromTextArea(editorRef.current, {
+    const newEditor = CodeMirror.fromTextArea(editorRef.current, {
       lineNumbers: true,
       mode: "htmlmixed",
-      autoCloseBrackets: true,
-      matchBrackets: true,
     });
+    setEditor(newEditor);
 
-    editor.on("change", (instance) => {
-      console.log(instance.getValue());
-    });
-
-    // TAILWIND ISN'T WORKING AH
-    editor.getWrapperElement().classList.add("bg-gray-900", "text-white");
+    newEditor.on("change", (instance) => {});
 
     return () => {
-      editor.toTextArea();
+      newEditor.toTextArea();
     };
   }, []);
 
   const runCode = () => {
-    const code = editorRef.current.value;
+    const code = editor.getValue();
     setOutput("");
 
     try {
-      const result = eval(code);
-      setOutput(String(result));
+      const result = Function(code)();
+      setOutput(result);
+      handleOutput(result); // DISPLAY
     } catch (error) {
-      setOutput(`Error: ${error.message}`);
+      setOutput(`Error: ${error.message}`); // DISPLAY ERROR
     }
   };
 
   return (
     <>
-      <div className="w-full mx-auto overflow-auto pt-7">
+      <div className="w-1/2 mx-auto overflow-auto">
         <textarea ref={editorRef} />
         <button onClick={runCode}>Run</button>
       </div>
