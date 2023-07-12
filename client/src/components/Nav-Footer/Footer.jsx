@@ -3,7 +3,7 @@ import { FOOTER_LINKS_1, FOOTER_LINKS_2 } from "./utils";
 // ***Footer 'fixed' bug on interviewer view page***
 const Footer = () => {
   return ( 
-    <div className="fixed bottom-0 right-0 left-0 w-full h-auto bg-bg">
+    <div className="relative bottom-0 right-0 left-0 w-full h-auto bg-bg">
       <div className="px-32 py-8">
         <div className=" border-b-[1px] border-accent">
           <div className="flex-row text-left my-4">
