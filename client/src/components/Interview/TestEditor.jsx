@@ -4,6 +4,7 @@ import * as Y from "yjs";
 import { WebrtcProvider } from "y-webrtc";
 import { MonacoBinding } from "y-monaco";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const TestEditor = () => {
   const editorRef = useRef(null);
@@ -11,6 +12,8 @@ const TestEditor = () => {
   const [editorValue, setEditorValue] = useState("// Write your code here...");
   const [students, setStudents] = useState([]);
   const [student, setStudent] = useState(null);
+
+  const { id } = useParams();
 
   useEffect(() => {
     const getStudents = async () => {
@@ -20,7 +23,10 @@ const TestEditor = () => {
       setStudents(students);
     };
     getStudents();
-  }, []);
+    if (id) {
+      setStudent(students.find((student) => student.id === Number(id)));
+    }
+  }, [students.length, id]);
 
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
