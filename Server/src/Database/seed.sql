@@ -21,26 +21,18 @@ VALUES(3,1, '2023-07-07T05:00:00.000Z', 'Very Stupid and Smell Very funny', FALS
 (4,1, '2023-07-06T11:00:00.000Z', 'He''s Actually huge', TRUE);
 
 INSERT INTO questions(questions)
-VALUES("Paste in their solution to one of the codeing chalenges and have them explain it.")
-
-INSERT INTO questions(questions)
-VALUES("How would you be able to access and use the methods in the swissArmyKnife object below? 
+VALUES('Paste in their solution to one of the codeing chalenges and have them explain it.'),
+('How would you be able to access and use the methods in the swissArmyKnife object below? 
 var swissArmyKnife = {
     miniScissors: function(item) {
-        return 'cutting ' + item;
+        return ''cutting '' + item;
     },
     toothpick : function() {
-        return 'clink clink';
+        return ''clink clink'';
     },
     twezzers: function() {
-        return 'pluck pluck'
+        return ''pluck pluck''
     }
-}
-    
-    //CODE HERE")
-
-INSERT INTO questions(questions)
-VALUES("Create a new variable called radio and set it equal to a empty object. Now add a method that a radio might have (e.g. play).")
-
-INSERT INTO questions(questions)
-VALUES("How would we call this method?")
+}'),
+('Create a new variable called radio and set it equal to a empty object. Now add a method that a radio might have (e.g. play).'),
+('How would we call this method?');
