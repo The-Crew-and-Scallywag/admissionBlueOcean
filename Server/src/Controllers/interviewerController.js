@@ -5,7 +5,6 @@ import { allStudents, interiewersById, student } from "./queries.js";
 export const getAllStudents = async (req, res) => {
   try {
     const results = await db.query(allStudents);
-    console.log(results.rows[0].prev_attempt);
     res.status(200).json(results.rows);
   } catch (error) {
     console.error(error);
