@@ -4,8 +4,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 dotenv.config();
-const PORT = 3000;
-
+// DO NOT TOUCH THIS WHY ARE YOU TOUCHING THIS
+const PORT = process.env.PORT;
+// STOP TOUCHING NO TOUCHY
 const app = express();
 app.use(express.json());
 app.use(cors());

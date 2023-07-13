@@ -62,7 +62,7 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
   return (
     <div className="flex md:flex-row flex-col">
       <div
-        className={`my-8 h-full overflow-auto overflow-x-hidden flex flex-col transition-all duration-300 ease-in-out ${
+        className={`my-8 h-full overflow-auto overflow-x-hidden flex flex-col transition-all duration-300 ease ${
           !listTransition ? "w-full" : "md:w-[1000%]"
         }`}
       >
@@ -107,7 +107,7 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
       >
         {!listTransition ? (
           <div
-            className={`flex flex-col justify-between items-end w-full relative transition-all duration-300 ease-in-out ${
+            className={`flex flex-col justify-between items-end w-full relative transition-all duration-300 ease ${
               transition ? "" : "-translate-x-[500px] -z-10"
             }`}
           >

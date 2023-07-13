@@ -1,17 +1,29 @@
 import React, { useState, useRef } from "react";
 import Editor from "@monaco-editor/react";
+import * as Y from "yjs";
+import { WebrtcProvider } from "y-webrtc";
+import { MonacoBinding } from "y-monaco";
 
 const TestEditor = () => {
   const editorRef = useRef(null);
   const [output, setOutput] = useState("");
+  const [editorValue, setEditorValue] = useState("// Write your code here...");
 
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
     // initialize YJS
-  };
+    const doc = new Y.Doc();
+    console.log(doc);
+    // connect to peers
+    const provider = new WebrtcProvider("interview", doc);
+    const type = doc.getText("monaco");
+    const binding = new MonacoBinding(
+      type,
+      editorRef.current.getModel(),
+      new Set([editorRef.current], provider.awareness)
+    );
 
-  const handleEditorChange = (value, event) => {
-    console.log(value);
+    // Bind YJS to Monaco
   };
 
   const handleOutput = () => {
@@ -26,16 +38,15 @@ const TestEditor = () => {
       </h1>
       <div
         id="editor"
-        className="h-[700px] w-full rounded-lg shadow-xl shadow-black bg-bg/20 border-2 border-secondary"
+        className={`h-[700px] w-full rounded-lg shadow-xl shadow-black bg-bg/20 border-2 border-secondary/50 `}
       >
         <Editor
           height="100%"
           width="100%"
           theme="vs-dark"
           defaultLanguage="javascript"
-          defaultValue="// your code here..."
+          defaultValue={editorValue}
           onMount={handleEditorDidMount}
-          onChange={handleEditorChange}
           options={{
             fontSize: 18,
             cursorStyle: "line-thin",
@@ -45,13 +56,12 @@ const TestEditor = () => {
             wordWrap: "on",
             minimap: { enabled: false },
             padding: { top: 20, bottom: 20 },
-            zIndex: 0,
           }}
         />
       </div>
       <button
         onClick={() => handleOutput()}
-        className="bg-secondary p-2 w-40 rounded-lg text-white/50 my-12  hover:scale-105 hover:bg-bg/20 hover:border-[1px] hover:border-accent transition-transform duration-300 ease-in-out"
+        className="bg-bg p-2 w-40 rounded-lg text-white/50 my-12  hover:scale-105 hover:bg-bg/70 hover:border-[1px] hover:border-accent transition-transform duration-300 ease-in-out shadow-lg shadow-black"
       >
         Run
       </button>

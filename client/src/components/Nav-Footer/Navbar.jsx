@@ -81,7 +81,7 @@ const Navbar = () => {
           )}
         </div>
         <div
-          className={`top-[-10px] absolute transition duration-300 ${
+          className={`top-[-10px] absolute transition duration-[400ms] z-20 ${
             showMenu ? "translate-x-0 " : "-translate-x-[2000px]"
           }`}
         >

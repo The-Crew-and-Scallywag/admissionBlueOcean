@@ -43,7 +43,7 @@ const Navmenu = ({ showMenu, setShowMenu }) => {
 
   return (
     <div
-      className="bg-bg h-screen w-screen md:w-[400px] absolute top-0 left-0 border-r-[1px] border-accent my-2 shadow-2xl shadow-black z-20"
+      className="bg-bg h-screen w-screen md:w-[400px] absolute top-0 left-0 border-r-[1px] border-accent my-2 shadow-2xl shadow-black"
       ref={menuRef}
     >
       <div className="flex flex-col justify-center align-middle">
@@ -66,6 +66,7 @@ const Navmenu = ({ showMenu, setShowMenu }) => {
             key={link.name}
             to={link.path}
             className="p-3 cursor-default flex align-bottom flex-row"
+            onClick={toggleMenu}
           >
             {logos[link.id - 1]} &nbsp;
             <span className="text-[18px] text-white/50 hover:text-white hover:transition-transform transition-all duration-300 ease-in-out cursor-pointer">
