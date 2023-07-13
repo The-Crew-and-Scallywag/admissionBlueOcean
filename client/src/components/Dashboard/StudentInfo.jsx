@@ -66,7 +66,7 @@ const StudentInfo = ({ students, currentStudent, setCurrentStudent }) => {
     const fieldValue = isEditable ? updatedStudent[label] || value : value;
     return (
       <div
-        className={`text-white text-xl font-bold p-2 mr-12 transition-all duration-300 ease-in-out `}
+        className={`text-white text-xl font-bold p-2 mr-12 transition-all duration-300 ease-in-out`}
       >
         {label}:{" "}
         {!isEditable ? (

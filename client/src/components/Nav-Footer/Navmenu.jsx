@@ -43,7 +43,7 @@ const Navmenu = ({ showMenu, setShowMenu }) => {
 
   return (
     <div
-      className="bg-bg h-screen w-screen md:w-[400px] absolute top-0 left-0 border-r-[1px] border-accent my-2 shadow-2xl shadow-black"
+      className="bg-bg h-screen w-screen md:w-[400px] absolute top-0 left-0 border-r-[1px] border-accent my-2 shadow-2xl shadow-black z-20"
       ref={menuRef}
     >
       <div className="flex flex-col justify-center align-middle">
