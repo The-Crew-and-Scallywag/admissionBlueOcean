@@ -10,6 +10,7 @@ import {
   getInterview,
   updateInterviewData,
 } from "../Controllers/interviewController.js";
+import { getAllQuestions } from "../Controllers/questionController.js";
 
 export const router = Router();
 
@@ -18,6 +19,8 @@ router.get("/students", getAllStudents); // list of all students
 router.get("/student/:id", getStudentByID); // fetch single student
 
 router.get("/interview/:id", getInterview); // list of interviews by student id
+
+router.get("/questions", getAllQuestions); // list of questions from the db
 
 router.post("/interview", addInterview); // adds interview
 
