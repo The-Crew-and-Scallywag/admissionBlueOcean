@@ -7,47 +7,48 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const TestEditor = () => {
-  const editorRef = useRef(null);
-  const [output, setOutput] = useState("");
-  const [editorValue, setEditorValue] = useState("// Write your code here...");
-  const [students, setStudents] = useState([]);
-  const [student, setStudent] = useState(null);
+  const editorRef = useRef(null); // Reference to the Monaco editor instance
+  const [output, setOutput] = useState(""); // State variable for the output of the code
+  const [editorValue, setEditorValue] = useState("// Write your code here..."); // State variable for the initial value of the editor
+  const [students, setStudents] = useState([]); // State variable for storing the list of students
+  const [student, setStudent] = useState(null); // State variable for the selected student
 
-  const { id } = useParams();
+  const { id } = useParams(); // Extract the "id" parameter from the URL
 
   useEffect(() => {
     const getStudents = async () => {
-      const res = await axios.get("/api/students");
+      const res = await axios.get("/api/students"); // Fetch the list of students from the API
       const students = res.data;
       console.log(students);
-      setStudents(students);
+      setStudents(students); // Store the fetched students in the state
     };
     getStudents();
+
     if (id) {
-      setStudent(students.find((student) => student.id === Number(id)));
+      setStudent(students.find((student) => student.id === Number(id))); // Find the student with the matching "id" parameter and set it as the selected student
     }
-  }, [students.length, id]);
+  }, [students.length, id]); // Fetch students and update selected student whenever the "students" or "id" variables change
 
   const handleEditorDidMount = (editor, monaco) => {
-    editorRef.current = editor;
-    // initialize YJS
-    const doc = new Y.Doc();
+    editorRef.current = editor; // Store the Monaco editor instance reference in the ref
+
+    const doc = new Y.Doc(); // Create a new Y.Doc instance for collaborative editing
     console.log(doc);
-    // connect to peers
-    const provider = new WebrtcProvider("interview", doc);
-    const type = doc.getText("monaco");
+
+    const provider = new WebrtcProvider("interview", doc); // Create a WebRTC provider for peer-to-peer communication
+    const type = doc.getText("monaco"); // Get a Y.Text type for Monaco editor
     const binding = new MonacoBinding(
       type,
       editorRef.current.getModel(),
       new Set([editorRef.current], provider.awareness)
-    );
+    ); // Create a binding between YJS and Monaco editor to synchronize the document
 
-    // Bind YJS to Monaco
+    // Bind YJS to Monaco editor
   };
 
   const handleOutput = () => {
-    const code = editorRef.current.getValue();
-    setOutput(code);
+    const code = editorRef.current.getValue(); // Get the current value of the editor (code)
+    setOutput(code); // Set the code as the output state
   };
 
   return (
