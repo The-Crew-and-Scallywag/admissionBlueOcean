@@ -1,26 +1,18 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import { BsChevronBarLeft, BsChevronBarRight } from "react-icons/bs";
+import StudentListDropDown from "./StudentListDropDown";
 
-const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
-  const [studentInfo, setStudentInfo] = useState([]);
+const StudentList = ({
+  students,
+  currentStudent,
+  setCurrentStudent,
+  studentInfo,
+}) => {
   const [results, setResults] = useState("");
   const [transition, setTransition] = useState(false);
   const [listTransition, setListTransition] = useState(true);
-
-  useEffect(() => {
-    const getInterviews = async () => {
-      try {
-        const res = await axios.get(`/api/interviews/`);
-        const data = res.data;
-        setStudentInfo(data);
-        console.log(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getInterviews();
-  }, [students]);
+  const [dropDownTransition, setDropDownTransition] = useState(true);
+  const [dropDown, setDropDown] = useState(false);
 
   const handleOpenview = (index) => {
     transition ? setTransition(false) : "";
@@ -47,6 +39,14 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
         setResults("");
         setTransition(true);
       }, 300);
+    }, 300);
+  };
+
+  const handleDropDown = () => {
+    setDropDownTransition(false);
+    setTimeout(() => {
+      setDropDown(!dropDown);
+      setDropDownTransition(true);
     }, 300);
   };
 
@@ -77,7 +77,11 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
                   <div className="text-lg font-bold">
                     {student.s_first_name} {student.s_last_name}
                   </div>
-                  <div className="text-accent italic">
+                  <div
+                    className={`italic ${
+                      student.results ? "text-accent" : "text-red-400"
+                    }`}
+                  >
                     {student.results ? "Passed" : "Failed"}
                   </div>
                 </div>
@@ -124,7 +128,13 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
                 <h2 className="text-2xl font-bold tracking-wide pb-3">
                   Results:
                 </h2>
-                <div className="text-accent italic pb-4">
+                <div
+                  className={`italic pb-4 ${
+                    studentInfo[results].results
+                      ? "text-accent"
+                      : "text-red-400"
+                  }`}
+                >
                   <span className="text-white not-italic">
                     Overall Decision:
                   </span>{" "}
@@ -135,7 +145,19 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
                     Notes:
                   </h2>
                   <p>{studentInfo[results].notes}</p>
+                  <button onClick={handleDropDown}>See All Notes</button>
                 </div>
+              </div>
+            </div>
+            <div className="p-2 pl-14">
+              <div
+                className={`flex flex-col justify-end items-end w-full relative transition-all duration-300 ease bg-bg rounded-lg shadow-md shadow-black ${
+                  dropDown
+                    ? "opacity-100 z-0"
+                    : "opacity-0 -translate-y-[100px] -z-10"
+                }`}
+              >
+                <StudentListDropDown />
               </div>
             </div>
           </div>

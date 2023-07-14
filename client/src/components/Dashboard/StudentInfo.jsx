@@ -1,14 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { MdEditDocument, MdEditOff } from "react-icons/md";
-import { useNavigate, useParams } from "react-router-dom";
+import { MdEditDocument, MdEditOff, MdAddCircle } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import BarChart from "./BarChart";
 
-const StudentInfo = ({ students, currentStudent, setCurrentStudent }) => {
+const StudentInfo = ({
+  students,
+  currentStudent,
+  setCurrentStudent,
+  studentInfo,
+}) => {
   const [editMode, setEditMode] = useState(false);
   const [updatedStudent, setUpdatedStudent] = useState({});
   const [loading, setLoading] = useState(true);
   const [transition, setTransition] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const navigate = useNavigate();
+
+  const handleMouseEnterIcon = (e) => {
+    setShowTooltip(true);
+  };
+
+  const handleMouseLeaveIcon = (e) => {
+    setShowTooltip(false);
+  };
 
   const toggleEditMode = () => {
     setTransition(true);
@@ -107,89 +122,123 @@ const StudentInfo = ({ students, currentStudent, setCurrentStudent }) => {
   };
 
   return (
-    <div className="flex flex-col w-[290px] sm:w-[420px] lg:w-[800px] mx-auto my-20">
-      <div className="text-white text-2xl text-center">
-        Student:{" "}
-        {!loading && (
-          <select
-            value={currentStudent}
-            onChange={(e) => handleChange(parseInt(e.target.selectedIndex))}
-            className="text-galv-orange bg-bg rounded-md p-1 shadow-md shadow-black focus:ring-1 focus:ring-accent text-lg tracking-wider ml-2 cursor-pointer transition-all duration-300 ease-in-out"
-          >
-            {students.map((student, index) => (
-              <option
-                key={student.id}
-                value={index}
-                className="bg-secondary text-accent py-4 focus:text-accent cursor-pointer"
-              >
-                {`${student.first_name} ${student.last_name}`}
-              </option>
-            ))}
-          </select>
-        )}
-      </div>
-      <div className="bg-bg rounded-lg m-2 p-2 shadow-lg shadow-black">
-        {editMode ? (
-          <MdEditOff
-            className="relative text-white float-right cursor-pointer text-xl"
-            onClick={toggleEditMode}
-          />
-        ) : (
-          <MdEditDocument
-            className="relative text-white float-right cursor-pointer text-xl"
-            onClick={toggleEditMode}
-          />
-        )}
-        <div className="mt-4 mb-12 p-6">
+    <div className="flex flex-col justify-between w-[290px] sm:w-[420px] lg:w-[800px] mx-auto my-20">
+      <div className="my-10">
+        <div className="text-white text-2xl text-center">
+          Student:{" "}
           {!loading && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {renderField("First Name", student.first_name, { type: "text" })}
-              {renderField("Last Name", student.last_name, { type: "text" })}
-              {renderField("Email", student.email, { type: "email" })}
-              {renderField("Phone", formatPhoneNumber(student.phone), {
-                type: "tel",
-              })}
-              {student.interview_date &&
-                renderField(
-                  "Interview Date",
-                  formatDate(student.interview_date),
-                  {
-                    type: "date",
-                  }
-                )}
-              {student.interview_time &&
-                renderField(
-                  "Interview Time",
-                  formatTime(student.interview_time),
-                  {
-                    type: "time",
-                  }
-                )}
+            <select
+              value={currentStudent}
+              onChange={(e) => handleChange(parseInt(e.target.selectedIndex))}
+              className="text-galv-orange bg-bg rounded-md p-1 shadow-md shadow-black focus:ring-1 focus:ring-accent text-lg tracking-wider ml-2 cursor-pointer transition-all duration-300 ease-in-out"
+            >
+              {students.map((student, index) => (
+                <option
+                  key={student.id}
+                  value={index}
+                  className="bg-secondary text-accent py-4 focus:text-accent cursor-pointer"
+                >
+                  {`${student.first_name} ${student.last_name}`}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+        <div className="bg-bg rounded-lg m-2 p-2 shadow-lg shadow-black">
+          {editMode ? (
+            <div className="flex-row flex justify-end">
+              <MdEditOff
+                className="relative text-white float-right cursor-pointer text-xl m-2"
+                onClick={toggleEditMode}
+                onMouseEnter={handleMouseEnterIcon}
+                onMouseLeave={handleMouseLeaveIcon}
+              />
+            </div>
+          ) : (
+            <div className="flex-row flex justify-end">
+              <MdEditDocument
+                className="relative text-white float-right cursor-pointer text-xl m-2"
+                onClick={toggleEditMode}
+                onMouseEnter={handleMouseEnterIcon}
+                onMouseLeave={handleMouseLeaveIcon}
+              />
+              <MdAddCircle
+                className="relative text-white float-right cursor-pointer text-xl m-2"
+                onClick={toggleEditMode}
+                onMouseEnter={handleMouseEnterIcon}
+                onMouseLeave={handleMouseLeaveIcon}
+              />
             </div>
           )}
-        </div>
-        <div className="flex flex-col">
-          {editMode ? (
-            <button
-              className={`mx-auto text-white bg-secondary p-2 rounded-md mt-[-30px] mb-4 hover:bg-galv-orange transition-all duration-150 ease-in-out hover:scale-105 ${
-                transition ? "opacity-0" : "opacity-100"
-              }}`}
-            >
-              Save Changes
-            </button>
-          ) : (
-            <button
-              className={`mx-auto text-white bg-secondary p-2 rounded-md mt-[-30px] mb-4 hover:bg-galv-orange transition-all duration-150 ease-in-out hover:scale-105 ${
-                transition ? "opacity-0" : "opacity-100"
-              }`}
-              onClick={() => {
-                navigate(`/interview/${student.id}`);
+
+          {showTooltip && (
+            <div
+              style={{
+                right: "25%",
+                transform: "translateX(-50%)",
               }}
+              className="absolute bg-white p-2 rounded-lg shadow-lg shadow-black"
             >
-              Start an Interview
-            </button>
+              This is a ToolTip
+            </div>
           )}
+
+          <div className="mt-4 mb-12 p-6">
+            {!loading && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {renderField("First Name", student.first_name, {
+                  type: "text",
+                })}
+                {renderField("Last Name", student.last_name, { type: "text" })}
+                {renderField("Email", student.email, { type: "email" })}
+                {renderField("Phone", formatPhoneNumber(student.phone), {
+                  type: "tel",
+                })}
+                {student.interview_date &&
+                  renderField(
+                    "Interview Date",
+                    formatDate(student.interview_date),
+                    {
+                      type: "date",
+                    }
+                  )}
+                {student.interview_time &&
+                  renderField(
+                    "Interview Time",
+                    formatTime(student.interview_time),
+                    {
+                      type: "time",
+                    }
+                  )}
+              </div>
+            )}
+          </div>
+          <div className="flex flex-col">
+            {editMode ? (
+              <button
+                className={`mx-auto text-white bg-secondary p-2 rounded-md mt-[-30px] mb-4 hover:bg-galv-orange transition-all duration-150 ease-in-out hover:scale-105 ${
+                  transition ? "opacity-0" : "opacity-100"
+                }}`}
+              >
+                Save Changes
+              </button>
+            ) : (
+              <button
+                className={`mx-auto text-white bg-secondary p-2 rounded-md mt-[-30px] mb-4 hover:bg-galv-orange transition-all duration-150 ease-in-out hover:scale-105 ${
+                  transition ? "opacity-0" : "opacity-100"
+                }`}
+                onClick={() => {
+                  navigate(`/interview/${student.id}`);
+                }}
+              >
+                Start an Interview
+              </button>
+            )}
+          </div>
         </div>
+      </div>
+      <div className="p-2">
+        <BarChart students={students} studentInfo={studentInfo} />
       </div>
     </div>
   );

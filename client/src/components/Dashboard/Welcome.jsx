@@ -1,7 +1,12 @@
 import React from "react";
 import Upcoming from "./Upcoming";
 
-const Welcome = ({ students, currentStudent, setCurrentStudent }) => {
+const Welcome = ({
+  students,
+  currentStudent,
+  setCurrentStudent,
+  studentInfo,
+}) => {
   const name = JSON.parse(localStorage.getItem("name"));
 
   return (
@@ -15,6 +20,7 @@ const Welcome = ({ students, currentStudent, setCurrentStudent }) => {
           students={students}
           currentStudent={currentStudent}
           setCurrentStudent={setCurrentStudent}
+          studentInfo={studentInfo}
         />
       </div>
     </div>
