@@ -7,6 +7,10 @@ const StudentList = ({
   currentStudent,
   setCurrentStudent,
   studentInfo,
+  filteredStudents,
+  selected,
+  page,
+  chunkedStudents,
 }) => {
   const [results, setResults] = useState("");
   const [transition, setTransition] = useState(false);
@@ -60,14 +64,14 @@ const StudentList = ({
   };
 
   return (
-    <div className="flex md:flex-row flex-col min-w-[600px]">
+    <div className="flex md:flex-row flex-col min-w-[600px] max-h-screen overflow-auto">
       <div
         className={`my-8 h-full overflow-auto overflow-x-hidden flex flex-col transition-all duration-300 ease ${
           !listTransition ? "w-full" : "md:w-[1000%]"
         }`}
       >
         <ul>
-          {studentInfo.map((student, index) => {
+          {chunkedStudents[page].map((student, index) => {
             return (
               <li
                 key={index}

@@ -32,7 +32,6 @@ const StudentInfo = ({
       setTransition(false);
     }, 500);
   };
-  console.log(students);
 
   let student = students[currentStudent];
 

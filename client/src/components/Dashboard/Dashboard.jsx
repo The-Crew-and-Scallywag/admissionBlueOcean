@@ -6,22 +6,24 @@ import axios from "axios";
 const Dashboard = () => {
   const [students, setStudents] = useState([]);
   const [studentInfo, setStudentInfo] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
   const [currentStudent, setCurrentStudent] = useState(0);
   const [loading, setLoading] = useState(true);
   const [transition, setTransition] = useState(true);
 
+  const name = JSON.parse(localStorage.getItem("name"));
+
   useEffect(() => {
-    const hello = async () => {
+    const getStudents = async () => {
       try {
         const res = await axios.get("/api/students");
-
         const data = res.data;
         setStudents(data);
       } catch (err) {
         console.log(err);
       }
     };
-    hello();
+    getStudents();
   }, []);
 
   useEffect(() => {
@@ -29,8 +31,11 @@ const Dashboard = () => {
       try {
         const res = await axios.get(`/api/interviews/`);
         const data = res.data;
+        const filteredData = data.filter((student) => {
+          return student.i_first_name === name.firstName;
+        });
+        setFilteredStudents(filteredData);
         setStudentInfo(data);
-        console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -65,6 +70,8 @@ const Dashboard = () => {
               currentStudent={currentStudent}
               setCurrentStudent={setCurrentStudent}
               studentInfo={studentInfo}
+              filteredStudents={filteredStudents}
+              setFilteredStudents={setFilteredStudents}
             />
           )}
         </div>

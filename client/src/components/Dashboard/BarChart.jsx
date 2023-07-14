@@ -5,8 +5,6 @@ import { Pie } from "react-chartjs-2";
 const BarChart = ({ students, studentInfo }) => {
   ChartJS.register(ArcElement, Tooltip, Legend);
 
-  console.log(studentInfo);
-
   const passed = studentInfo.filter((student) => student.results).length;
   const failed = studentInfo.length - passed;
 
@@ -39,6 +37,7 @@ const BarChart = ({ students, studentInfo }) => {
           <Pie data={data} />
         </div>
       </div>
+      <div className="m-2 bg-bg rounded-md shadow-black shadow-lg"></div>
     </div>
   );
 };
