@@ -42,7 +42,7 @@ export default function Challenge() {
         <div className="flex justify-center	items-center text-white text-lg pt-3">
           {currentQuestion.questions}
         </div>
-        <button className="w-[150px] text-white text-lg py-2 hover:border-[#E9704B] hover:border-[1px]"
+        <button className="w-[150px] text-white text-lg py-2 hover:border-[#E9704B] hover:border-[1px] hover:bg-"
          onClick={handleNextQuestion}>Next Question
 
          </button>
