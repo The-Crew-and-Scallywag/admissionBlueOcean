@@ -31,9 +31,8 @@ export default function Challenge() {
 
   const Question = () => {
     if (questions.length === 0) {
-      return <div>Loading questions...</div>;
+      return <div className="w-1/2 text-white text-xl pt-3">Loading questions...</div>;
     }
-
     const currentQuestion = questions[questionIndex];
     console.log(currentQuestion)
 
@@ -47,15 +46,26 @@ export default function Challenge() {
     );
   };
 
+  const Notes = () => {
+    return (
+      <textarea
+      value={notes}
+      onChange={handleNotesChange}
+      className="w-full h-20 p-4 border border-gray-300 rounded"
+      placeholder="Notes..."
+    ></textarea>
+    )
+  }
+
+  const Answer = () => {
+    return <div className="text-white text-lg pt-3">Answer: Impossible</div>;
+  }
+
   return (
     <div className="flex flex-col justify-center pt-2 w-[700px] border-b-2 border-gray-500">
       <Question />
-      <textarea
-        value={notes}
-        onChange={handleNotesChange}
-        className="w-full h-20 p-4 border border-gray-300 rounded"
-        placeholder="Notes..."
-      ></textarea>
+      <Answer />
+      <Notes />
       <div id="border-spacing" className="w-full h-3">
         .
       </div>
