@@ -122,8 +122,8 @@ const StudentInfo = ({
   };
 
   return (
-    <div className="flex flex-col justify-between w-[290px] sm:w-[420px] lg:w-[800px] mx-auto my-20">
-      <div className="my-10">
+    <div className="flex flex-col justify-between sm:w-[400px] custom:w-[600px] mx-auto my-20 ml-4">
+      <div className="my-10 flex flex-col">
         <div className="text-white text-2xl text-center">
           Student:{" "}
           {!loading && (
@@ -185,7 +185,7 @@ const StudentInfo = ({
 
           <div className="mt-4 mb-12 p-6">
             {!loading && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 custom:grid-cols-2 gap-4">
                 {renderField("First Name", student.first_name, {
                   type: "text",
                 })}

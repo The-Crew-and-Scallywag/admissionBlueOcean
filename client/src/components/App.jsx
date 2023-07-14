@@ -5,17 +5,16 @@ import Footer from "./Nav-Footer/Footer.jsx";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Login from "./Login/Login.jsx";
 import Interview from "./Interview/Interview.jsx";
-import AuthContext from "./Context/AuthProvider.jsx";
 
 const App = () => {
-  const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (!auth.token) {
+    if (!token) {
       navigate("/login");
     }
-  }, [auth.token, navigate]);
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen min-w-screen relative">

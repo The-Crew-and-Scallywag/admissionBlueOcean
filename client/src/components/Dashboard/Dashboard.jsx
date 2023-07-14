@@ -52,10 +52,10 @@ const Dashboard = () => {
   const transitionClass = "transition-all duration-500 ease-in-out transform";
 
   return (
-    <div className="h-full w-full">
-      <div className="flex flex-col custom:flex-row w-full mx-auto ">
+    <div className="h-full w-full flex">
+      <div className="flex flex-col sm:flex-row justify-between align-center w-full mx-auto p-12">
         <div
-          className={`mx-auto w-full custom:ml-[200px] ${
+          className={`mx-auto w-full max-w-[1000px] ${
             transition ? "opacity-0 -translate-x-[200px]" : transitionClass
           }`}
         >
@@ -69,7 +69,7 @@ const Dashboard = () => {
           )}
         </div>
         <div
-          className={`mx-auto custom:mr-[400px] flex ${
+          className={`mx-auto ${
             transition ? "opacity-0 translate-x-[200px]" : transitionClass
           }`}
         >
