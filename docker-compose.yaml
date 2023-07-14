@@ -10,6 +10,14 @@ services:
       - pg-data:/var/lib/postgresql/data
       - ./Server/src/Database/migration.sql:/docker-entrypoint-initdb.d/migration.sql
       - ./Server/src/Database/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+      - ./Server/src/scripts/student.csv:/docker-entrypoint-initdb.d/student.csv
+      - ./Server/src/scripts/interview.csv:/docker-entrypoint-initdb.d/interview.csv
+    command: >
+      bash -c "
+        docker-entrypoint.sh postgres && sleep 5 &&
+        echo '\\COPY students FROM \'/docker-entrypoint-initdb.d/student.csv\' WITH (FORMAT csv, DELIMITER ',');' >> /docker-entrypoint-initdb.d/seed.sql &&
+        echo '\\COPY interviewers FROM \'/docker-entrypoint-initdb.d/interview.csv\' WITH (FORMAT csv, DELIMITER ',');' >> /docker-entrypoint-initdb.d/seed.sql &&
+        docker-entrypoint.sh postgres"
   server:
     build: ./Server
     environment:
@@ -22,8 +30,6 @@ services:
     ports:
       - ${API_PORT}:80
     volumes:
-      # This allows live reload inside a docker container by mapping your
-      # filesystem to the container's.
       - ./Server/src:/code/src
       - /Server/node_modules
     command: npm run dev
@@ -37,8 +43,6 @@ services:
     ports:
       - ${CLIENT_PORT}:${CLIENT_PORT}
     volumes:
-      # This allows live reload inside a docker container by mapping your
-      # filesystem to the container's.
       - ./client:/code
       - /client/node_modules
     command: sh -c "npm rebuild esbuild && npm run dev"
