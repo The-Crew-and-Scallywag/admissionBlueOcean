@@ -39,39 +39,41 @@ export default function Challenge() {
 
     return (
       <div >
-        <div className="w-1/2 text-white text-lg pt-3">
+        <div className="flex justify-center	items-center text-white text-lg pt-3">
           {currentQuestion.questions}
         </div>
-        <button className="w-1/2 text-white text-lg pt-3"
-         onClick={handleNextQuestion}>Next Question</button>
+        <button className="w-[150px] text-white text-lg py-2 hover:border-[#E9704B] hover:border-[1px]"
+         onClick={handleNextQuestion}>Next Question
+
+         </button>
       </div>
     );
   };
 
   const Notes = () => {
     return (
-      <textarea
-      value={notes}
-      onChange={handleNotesChange}
-      className="w-full h-20 p-4 border border-gray-300 rounded"
-      placeholder="Notes..."
-    ></textarea>
+      <div className="w-full flex">
+        <textarea
+        value={notes}
+        onChange={handleNotesChange}
+        className="w-full h-20 p-4 border border-gray-300 rounded mx-2 mb-2"
+        placeholder="Notes..."
+        ></textarea>
+      </div>
     )
   }
 
-  const Answer = () => {
-    return <div className="text-white text-lg pt-3"></div>;
-  }
+  // const Answer = () => {
+  //   return <div className="text-white text-lg pt-3"></div>;
+  // }
 
   return (
-    <div className="flex flex-col justify-center pt-2 w-[700px] border-b-2 border-gray-500">
+    <div className="flex flex-col justify-center items-center 
+    pt-2 w-[700px] bg-[#0A0B0B] rounded-lg shadow-lg shadow-black">
       <Question />
-      <Answer />
+      {/* <Answer /> */}
       <StarRating />
       <Notes />
-      <div id="border-spacing" className="w-full h-3">
-        .
-      </div>
     </div>
   );
 }

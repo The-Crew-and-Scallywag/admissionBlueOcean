@@ -16,7 +16,7 @@ const Interview = () => {
         <div>{output}</div> {/* Display the output in the specified <div> */}
       </div>
       <div id="challenge-container" className="mx-auto text-center">
-        <div className="text-white text-3xl pt-4">Challenges</div>
+        <div className="text-white text-3xl py-4">Challenges</div>
         <Challenge />
       </div>
     </div>
