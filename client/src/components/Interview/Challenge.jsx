@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import StarRating from "./StarRating";
 
 export default function Challenge() {
   const [notes, setNotes] = useState("");
@@ -37,11 +38,12 @@ export default function Challenge() {
     console.log(currentQuestion)
 
     return (
-      <div className="w-1/2 text-white text-lg pt-3">
+      <div >
         <div className="w-1/2 text-white text-lg pt-3">
           {currentQuestion.questions}
         </div>
-        <button onClick={handleNextQuestion}>Next Question</button>
+        <button className="w-1/2 text-white text-lg pt-3"
+         onClick={handleNextQuestion}>Next Question</button>
       </div>
     );
   };
@@ -58,13 +60,14 @@ export default function Challenge() {
   }
 
   const Answer = () => {
-    return <div className="text-white text-lg pt-3">Answer: Impossible</div>;
+    return <div className="text-white text-lg pt-3"></div>;
   }
 
   return (
     <div className="flex flex-col justify-center pt-2 w-[700px] border-b-2 border-gray-500">
       <Question />
       <Answer />
+      <StarRating />
       <Notes />
       <div id="border-spacing" className="w-full h-3">
         .
