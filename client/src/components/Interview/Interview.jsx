@@ -18,8 +18,6 @@ const Interview = () => {
       <div id="challenge-container" className="mx-auto text-center">
         <div className="text-white text-3xl pt-4">Challenges</div>
         <Challenge />
-        <Challenge />
-        <Challenge />
       </div>
     </div>
   );

@@ -19,7 +19,6 @@ const TestEditor = () => {
     const getStudents = async () => {
       const res = await axios.get("/api/students");
       const students = res.data;
-      console.log(students);
       setStudents(students);
     };
     getStudents();
