@@ -19,8 +19,8 @@ export const interiewersById = `SELECT first_name, last_name, email FROM intervi
 // GETs all Interviews
 export const allInterviews = `
 SELECT interviewers.first_name AS i_first_name, interviewers.last_name AS i_last_name, interviewers.email AS i_email,
-students.first_name AS s_first_name, students.last_name AS s_last_name,
-interviews.notes AS notes, interviews.results AS results, interviews.interview_date
+students.first_name AS s_first_name, students.last_name AS s_last_name, students.phone AS s_phone, students.email AS s_email,
+interviews.question_notes AS q_notes, interviews.notes AS notes, interviews.results AS results, interviews.interview_date
 FROM interviews 
 JOIN interviewers ON interviewers.id = interviews.interviewers_id 
 JOIN students ON students.id = interviews.students_id
@@ -32,8 +32,8 @@ export const patchInterviewData = `UPDATE interviews SET notes = COALESCE ($1, n
 // GETs all interviews for a specific student
 export const interviewsByStudents = `
 SELECT interviewers.first_name AS i_first_name, interviewers.last_name AS i_last_name, interviewers.email AS i_email,
-students.first_name AS s_first_name, students.last_name AS s_last_name,
-interviews.notes AS notes, interviews.results AS results, interviews.interview_date, interviews.id AS interview_id
+students.first_name AS s_first_name, students.last_name AS s_last_name, students.phone AS s_phone, students.email AS s_email,
+interviews.question_notes AS q_notes, interviews.notes AS notes, interviews.results AS results, interviews.interview_date, interviews.id AS interview_id
 FROM interviews 
 JOIN interviewers ON interviewers.id = interviews.interviewers_id 
 JOIN students ON students.id = interviews.students_id
