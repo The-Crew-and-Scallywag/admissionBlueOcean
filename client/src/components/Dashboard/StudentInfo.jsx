@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { MdEditDocument, MdEditOff } from "react-icons/md";
+import { useNavigate, useParams } from "react-router-dom";
 
 const StudentInfo = ({ students, currentStudent, setCurrentStudent }) => {
   const [editMode, setEditMode] = useState(false);
   const [updatedStudent, setUpdatedStudent] = useState({});
   const [loading, setLoading] = useState(true);
   const [transition, setTransition] = useState(false);
+
+  const navigate = useNavigate();
 
   const toggleEditMode = () => {
     setTransition(true);
@@ -66,7 +69,7 @@ const StudentInfo = ({ students, currentStudent, setCurrentStudent }) => {
     const fieldValue = isEditable ? updatedStudent[label] || value : value;
     return (
       <div
-        className={`text-white text-xl font-bold p-2 mr-12 transition-all duration-300 ease-in-out `}
+        className={`text-white text-xl font-bold p-2 mr-12 transition-all duration-300 ease-in-out`}
       >
         {label}:{" "}
         {!isEditable ? (
@@ -179,6 +182,9 @@ const StudentInfo = ({ students, currentStudent, setCurrentStudent }) => {
               className={`mx-auto text-white bg-secondary p-2 rounded-md mt-[-30px] mb-4 hover:bg-galv-orange transition-all duration-150 ease-in-out hover:scale-105 ${
                 transition ? "opacity-0" : "opacity-100"
               }`}
+              onClick={() => {
+                navigate(`/interview/${student.id}`);
+              }}
             >
               Start an Interview
             </button>

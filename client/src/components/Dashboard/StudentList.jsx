@@ -6,6 +6,7 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
   const [studentInfo, setStudentInfo] = useState([]);
   const [results, setResults] = useState("");
   const [transition, setTransition] = useState(false);
+  const [listTransition, setListTransition] = useState(true);
 
   useEffect(() => {
     const getInterviews = async () => {
@@ -25,10 +26,12 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
     transition ? setTransition(false) : "";
     if (results === "") {
       results === index ? handleCloseView() : setResults(index);
+      setListTransition(false);
       setTimeout(() => {
         setTransition(true);
       }, 300);
     } else {
+      setListTransition(false);
       setTimeout(() => {
         setResults(index);
         setTransition(true);
@@ -39,7 +42,11 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
   const handleCloseView = () => {
     setTransition(false);
     setTimeout(() => {
-      setResults("");
+      setListTransition(true);
+      setTimeout(() => {
+        setResults("");
+        setTransition(true);
+      }, 300);
     }, 300);
   };
 
@@ -55,8 +62,8 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
   return (
     <div className="flex md:flex-row flex-col">
       <div
-        className={`my-8 h-full overflow-auto overflow-x-hidden flex flex-col transition-all duration-300 ease-in-out ${
-          results !== "" ? "w-full" : "md:w-[1000%]"
+        className={`my-8 h-full overflow-auto overflow-x-hidden flex flex-col transition-all duration-300 ease ${
+          !listTransition ? "w-full" : "md:w-[1000%]"
         }`}
       >
         <ul>
@@ -64,7 +71,7 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
             return (
               <li
                 key={index}
-                className="flex flex-row justify-between items-center bg-bg p-4 rounded-lg shadow-lg shadow-black my-4"
+                className="grid grid-cols-3 grid-flow-row  bg-bg p-4 rounded-lg shadow-lg shadow-black my-4"
               >
                 <div className="text-left">
                   <div className="text-lg font-bold">
@@ -74,17 +81,19 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
                     {student.results ? "Passed" : "Failed"}
                   </div>
                 </div>
-                <div className="text-white/50">
+
+                <div className="text-white/50 flex justify-center">
                   {formatDate(student.interview_date)}
                 </div>
-                <div className="flex flex-row">
+
+                <div className="flex flex-row justify-end">
                   <button
                     className="bg-accent text-white rounded-md p-2 shadow-md shadow-black text-lg tracking-wider hover:scale-105 ml-2 cursor-pointer transition-all duration-300 ease-in-out"
                     onClick={() => handleOpenview(index)}
                   >
                     View
                   </button>
-                  {results !== "" && (
+                  {!listTransition && (
                     <BsChevronBarRight className="relative text-white text-2xl ml-2 top-2" />
                   )}
                 </div>
@@ -93,10 +102,14 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
           })}
         </ul>
       </div>
-      <div className="w-full h-full overflow-auto flex flex-col my-8">
-        {studentInfo[results] ? (
+      <div
+        className={`w-full h-full overflow-auto flex flex-col my-8 ${
+          studentInfo[results] ? "" : "hidden"
+        }`}
+      >
+        {!listTransition ? (
           <div
-            className={`flex flex-col justify-between items-end w-full relative transition-all duration-300 ease-in-out ${
+            className={`flex flex-col justify-between items-end w-full relative transition-all duration-300 ease ${
               transition ? "" : "-translate-x-[500px] -z-10"
             }`}
           >
@@ -126,9 +139,7 @@ const StudentList = ({ students, currentStudent, setCurrentStudent }) => {
               </div>
             </div>
           </div>
-        ) : (
-          ""
-        )}
+        ) : null}
       </div>
     </div>
   );

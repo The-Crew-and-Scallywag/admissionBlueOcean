@@ -66,6 +66,7 @@ const Navmenu = ({ showMenu, setShowMenu }) => {
             key={link.name}
             to={link.path}
             className="p-3 cursor-default flex align-bottom flex-row"
+            onClick={toggleMenu}
           >
             {logos[link.id - 1]} &nbsp;
             <span className="text-[18px] text-white/50 hover:text-white hover:transition-transform transition-all duration-300 ease-in-out cursor-pointer">

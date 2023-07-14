@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Question1, Question2, Question3 } from "./Question";
+// import { Question1, Question2, Question3 } from "./Question";
 import Answer from "./Answer";
 
 export default function Challenge() {
@@ -11,7 +11,7 @@ export default function Challenge() {
 
   return (
     <div className="flex flex-col justify-center pt-2 w-[700px] border-b-2 border-gray-500">
-      <Question1 />
+      {/* <Question1 /> */}
       <Answer />
       <textarea
         value={notes}

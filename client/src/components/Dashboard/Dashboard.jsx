@@ -23,7 +23,7 @@ const Dashboard = () => {
 
   return (
     <div className="h-full w-full">
-      <div className="flex flex-col-reverse custom:flex-row w-full mx-auto">
+      <div className="flex flex-col custom:flex-row w-full mx-auto">
         <div className="mx-auto w-full custom:ml-[200px]">
           <Welcome
             students={students}
