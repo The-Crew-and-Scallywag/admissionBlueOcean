@@ -13,31 +13,42 @@ const Upcoming = ({
   const [page, setPage] = useState(0);
 
   const currentDate = new Date();
-  let closestDate = currentDate;
+
+  let closestDate = Infinity;
   let closestStudent = null;
 
-  studentInfo.forEach((student) => {
+  filteredStudents.forEach((student) => {
     const interviewDate = new Date(student.interview_date);
-    const timeDiff = Math.abs(interviewDate - currentDate);
-    const closestDiff = Math.abs(closestDate - currentDate);
+    const timeDiff = interviewDate - currentDate;
 
-    if (timeDiff < closestDiff) {
-      closestDate = interviewDate;
+    if (timeDiff > 0 && timeDiff < closestDate) {
+      closestDate = timeDiff;
       closestStudent = student;
     }
   });
 
   let upcomingInterview = null;
   if (closestStudent !== null) {
-    const { s_first_name, s_last_name } = closestStudent;
+    console.log(closestStudent);
+    const { s_first_name, s_last_name, interview_date } = closestStudent;
+    const formattedDate = new Date(interview_date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
     upcomingInterview = (
       <>
-        <div>
-          Upcoming Interview{" "}
-          <span className="text-accent"> date and time </span>
+        <div className="text-2xl font-bold tracking-wide my-4 text-left">
+          Name:{" "}
+          <span className="text-italic font-normal text-accent">
+            {s_first_name} {s_last_name}
+          </span>
         </div>
-        <div>
-          Interviewee Name: {s_first_name} {s_last_name}
+        <div className="text-lg font-bold tracking-wide my-4 text-left text-white/70">
+          Interview Date:{" "}
+          <span className="text-italic font-normal text-accent">
+            {formattedDate}
+          </span>
         </div>
       </>
     );
@@ -46,9 +57,14 @@ const Upcoming = ({
   }
 
   const selectedStudents = selected === "All" ? studentInfo : filteredStudents;
+  const filteredSelectedStudents = selectedStudents.filter((student) => {
+    const interviewDate = new Date(student.interview_date);
+    return interviewDate <= currentDate;
+  });
+
   const chunkSize = 8;
 
-  const chunkedStudents = selectedStudents.reduce(
+  const chunkedStudents = filteredSelectedStudents.reduce(
     (resultArray, item, index) => {
       const chunkIndex = Math.floor(index / chunkSize);
 
@@ -73,8 +89,8 @@ const Upcoming = ({
       <h1 className="text-2xl font-bold tracking-wide my-4 text-left">
         Upcoming:
       </h1>
-      <div className="flex flex-row justify-center bg-bg p-4 rounded-lg shadow-lg shadow-black w-full">
-        <div className="text-center">{upcomingInterview}</div>
+      <div className="flex flex-row justify-start bg-bg p-4 rounded-lg shadow-lg shadow-black w-full">
+        <div>{upcomingInterview}</div>
       </div>
       <div className="w-full">
         <div className="p-4 bg-bg/70 rounded-lg my-4 py-0 shadow-lg shadow-black">

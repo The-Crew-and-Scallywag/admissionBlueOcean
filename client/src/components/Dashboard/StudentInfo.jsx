@@ -83,12 +83,12 @@ const StudentInfo = ({
     const fieldValue = isEditable ? updatedStudent[label] || value : value;
     return (
       <div
-        className={`text-white text-xl font-bold p-2 mr-12 transition-all duration-300 ease-in-out`}
+        className={`text-white text-xl font-bold p-2 mr-12 w-full transition-all duration-300 ease-in-out`}
       >
         {label}:{" "}
         {!isEditable ? (
           <div
-            className={`text-accent font-normal py-[5px] w-full ${
+            className={`text-accent font-normal py-[5px] ${
               transition
                 ? "opacity-0 translate-x-[50px]"
                 : "opacity-100 border-b-[1px]"
@@ -121,7 +121,7 @@ const StudentInfo = ({
   };
 
   return (
-    <div className="flex flex-col justify-between sm:w-[400px] custom:w-[600px] mx-auto my-20 ml-4">
+    <div className="flex flex-col justify-between sm:w-[400px] custom:w-[800px] mx-auto my-20 ml-4">
       <div className="my-10 flex flex-col">
         <div className="text-white text-2xl text-center">
           Student:{" "}

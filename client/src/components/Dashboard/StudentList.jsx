@@ -64,7 +64,7 @@ const StudentList = ({
   };
 
   return (
-    <div className="flex md:flex-row flex-col min-w-[600px] max-h-screen overflow-auto">
+    <div className="flex md:flex-row flex-col sm:min-w-[520px] max-h-screen overflow-auto">
       <div
         className={`my-8 h-full overflow-auto overflow-x-hidden flex flex-col transition-all duration-300 ease ${
           !listTransition ? "w-full" : "md:w-[1000%]"

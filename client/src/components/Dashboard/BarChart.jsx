@@ -21,10 +21,10 @@ const BarChart = ({ students, studentInfo }) => {
     ],
   };
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-col custom:flex-row w-full">
       <div className="flex flex-col justify-center items-center my-2 p-2 bg-bg rounded-lg shadow-black shadow-lg">
         <h2 className="text-white/70 text-xl font-bold text-center tracking-wide my-2">
-          Student Results{" "}
+          Student Results:{" "}
           <select
             placeholder="Select Students"
             className="text-md m-2 rounded-md bg-bg/70 text-white/50 p-1 shadow-md shadow-black focus:ring-1 focus:ring-accent text-lg tracking-wider ml-2 cursor-pointer transition-all duration-300 ease-in-out"
@@ -37,7 +37,18 @@ const BarChart = ({ students, studentInfo }) => {
           <Pie data={data} />
         </div>
       </div>
-      <div className="m-2 bg-bg rounded-md shadow-black shadow-lg"></div>
+      <div className=" custom:ml-2 my-2 bg-bg rounded-md shadow-black shadow-lg w-full">
+        <h2 className="text-white/70 text-xl font-bold text-center tracking-wide my-2">
+          Breakdown:
+          <select
+            placeholder="Select Students"
+            className="text-md m-2 rounded-md bg-bg/70 text-white/50 p-1 shadow-md shadow-black focus:ring-1 focus:ring-accent text-lg tracking-wider ml-2 cursor-pointer transition-all duration-300 ease-in-out"
+          >
+            <option value="All">All</option>
+            <option value="Assigned">Assigned</option>
+          </select>
+        </h2>
+      </div>
     </div>
   );
 };
