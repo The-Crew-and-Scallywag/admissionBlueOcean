@@ -60,7 +60,7 @@ const Dashboard = () => {
     <div className="h-full w-full flex">
       <div className="flex flex-col sm:flex-row justify-between align-center w-full mx-auto p-12">
         <div
-          className={`mx-auto w-full max-w-[1000px] ${
+          className={`mx-auto w-full max-w-[1200px] ${
             transition ? "opacity-0 -translate-x-[200px]" : transitionClass
           }`}
         >

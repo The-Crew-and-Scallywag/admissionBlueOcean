@@ -1,54 +1,100 @@
 import React from "react";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Pie } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const BarChart = ({ students, studentInfo }) => {
-  ChartJS.register(ArcElement, Tooltip, Legend);
-
-  const passed = studentInfo.filter((student) => student.results).length;
-  const failed = studentInfo.length - passed;
+  // Calculate pass and fail rates for each month of the year
+  const passRates = [];
+  const failRates = [];
+  for (let month = 0; month < 12; month++) {
+    const studentsInMonth = studentInfo.filter((student) => {
+      const studentMonth = new Date(student.interview_date).getMonth();
+      return studentMonth === month;
+    });
+    const passedInMonth = studentsInMonth.filter(
+      (student) => student.results
+    ).length;
+    const failedInMonth = studentsInMonth.length - passedInMonth;
+    const passRate =
+      studentsInMonth.length > 0
+        ? (passedInMonth / studentsInMonth.length) * 100
+        : 0;
+    const failRate =
+      studentsInMonth.length > 0
+        ? (failedInMonth / studentsInMonth.length) * 100
+        : 0;
+    passRates.push(passRate.toFixed(2));
+    failRates.push(failRate.toFixed(2));
+  }
 
   const data = {
-    labels: ["Passed", "Failed"],
+    labels: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ],
     datasets: [
       {
-        data: [passed, failed],
-        backgroundColor: ["#36A2EB", "#FF6384"],
-        hoverBackgroundColor: ["#36A2EB", "#FF6384"],
-        borderColor: ["#0A0B0B", "#0A0B0B"],
-        color: "#666",
+        label: "Pass Rate",
+        data: passRates,
+        backgroundColor: "#36A2EB",
+        hoverBackgroundColor: "#36A2EB",
+      },
+      {
+        label: "Fail Rate",
+        data: failRates,
+        backgroundColor: "#FF6384",
+        hoverBackgroundColor: "#FF6384",
       },
     ],
   };
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 100,
+        title: {
+          display: true,
+          text: "Rate (%)",
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: "Month",
+        },
+      },
+    },
+  };
+
   return (
-    <div className="flex flex-col custom:flex-row w-full">
-      <div className="flex flex-col justify-center items-center my-2 p-2 bg-bg rounded-lg shadow-black shadow-lg">
-        <h2 className="text-white/70 text-xl font-bold text-center tracking-wide my-2">
-          Student Results:{" "}
-          <select
-            placeholder="Select Students"
-            className="text-md m-2 rounded-md bg-bg/70 text-white/50 p-1 shadow-md shadow-black focus:ring-1 focus:ring-accent text-lg tracking-wider ml-2 cursor-pointer transition-all duration-300 ease-in-out"
-          >
-            <option value="All">All</option>
-            <option value="Assigned">Assigned</option>
-          </select>
-        </h2>
-        <div className="h-full">
-          <Pie data={data} />
-        </div>
-      </div>
-      <div className=" custom:ml-2 my-2 bg-bg rounded-md shadow-black shadow-lg w-full">
-        <h2 className="text-white/70 text-xl font-bold text-center tracking-wide my-2">
-          Breakdown:
-          <select
-            placeholder="Select Students"
-            className="text-md m-2 rounded-md bg-bg/70 text-white/50 p-1 shadow-md shadow-black focus:ring-1 focus:ring-accent text-lg tracking-wider ml-2 cursor-pointer transition-all duration-300 ease-in-out"
-          >
-            <option value="All">All</option>
-            <option value="Assigned">Assigned</option>
-          </select>
-        </h2>
-      </div>
+    <div className="custom:h-[400px] bg-bg rounded-lg shadow-lg shadow-black">
+      <Bar data={data} options={options} />
     </div>
   );
 };

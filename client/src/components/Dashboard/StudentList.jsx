@@ -25,6 +25,9 @@ const StudentList = ({
       setListTransition(false);
       setTimeout(() => {
         setTransition(true);
+        setTimeout(() => {
+          handleDropDown();
+        }, 300);
       }, 300);
     } else {
       setListTransition(false);
@@ -37,6 +40,7 @@ const StudentList = ({
 
   const handleCloseView = () => {
     setTransition(false);
+    handleDropDown();
     setTimeout(() => {
       setListTransition(true);
       setTimeout(() => {
@@ -146,22 +150,24 @@ const StudentList = ({
                 </div>
                 <div className="text-white/70 tracking-wide text-lg flex flex-col">
                   <h2 className="text-xl text-accent tracking-wide text-left py-2">
-                    Notes:
+                    Summary:
                   </h2>
                   <p>{studentInfo[results].notes}</p>
-                  <button onClick={handleDropDown}>See All Notes</button>
                 </div>
               </div>
             </div>
             <div className="p-2 pl-14">
               <div
-                className={`flex flex-col justify-end items-end w-full relative transition-all duration-300 ease bg-bg rounded-lg shadow-md shadow-black ${
+                className={`flex flex-col justify-end items-end w-full relative transition-all duration-300 ease bg-bg rounded-lg shadow-lg shadow-black p-2 ${
                   dropDown
                     ? "opacity-100 z-0"
                     : "opacity-0 -translate-y-[100px] -z-10"
                 }`}
               >
-                <StudentListDropDown />
+                <StudentListDropDown
+                  studentInfo={studentInfo}
+                  results={results}
+                />
               </div>
             </div>
           </div>

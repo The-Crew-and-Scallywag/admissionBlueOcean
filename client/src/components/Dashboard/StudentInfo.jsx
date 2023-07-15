@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { MdEditDocument, MdEditOff, MdAddCircle } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import BarChart from "./BarChart";
+import PieChart from "./PieChart.jsx";
+import BarChart from "./BarChart.jsx";
 
 const StudentInfo = ({
   students,
@@ -121,8 +122,8 @@ const StudentInfo = ({
   };
 
   return (
-    <div className="flex flex-col justify-between sm:w-[400px] custom:w-[800px] mx-auto my-20 ml-4">
-      <div className="my-10 flex flex-col">
+    <div className="flex flex-col justify-between sm:w-[400px] custom:w-[900px] mx-auto my-20 ml-4">
+      <div className="mt-10 mb-2 flex flex-col">
         <div className="text-white text-2xl text-center">
           Student:{" "}
           {!loading && (
@@ -235,6 +236,9 @@ const StudentInfo = ({
             )}
           </div>
         </div>
+      </div>
+      <div className="p-2">
+        <PieChart students={students} studentInfo={studentInfo} />
       </div>
       <div className="p-2">
         <BarChart students={students} studentInfo={studentInfo} />
