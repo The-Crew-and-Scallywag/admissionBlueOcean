@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Editor from "./TestEditor";
 import Challenge from "./Challenge";
+import Tabs from "./Tabs"
 
 const Interview = () => {
   const [output, setOutput] = useState(""); // State to store the output
@@ -17,6 +18,7 @@ const Interview = () => {
       </div>
       <div id="challenge-container" className="mx-auto text-center">
         <div className="text-white text-3xl py-4">Challenges</div>
+        <Tabs />
         <Challenge />
       </div>
     </div>

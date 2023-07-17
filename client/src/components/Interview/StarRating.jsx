@@ -18,7 +18,7 @@ export default function StarRating() {
                 onClick={() => setRating(ratingValue)}
                 />
                 <AiFillFire 
-                className=""
+                className="cursor-pointer"
                 color={ratingValue <= (hover || rating) ? "#bf1111" : "#e4e5e9"}
                 onMouseEnter={() => setHover(ratingValue)}
                 onMouseLeave={() => setHover(null)}
