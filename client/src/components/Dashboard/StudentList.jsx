@@ -3,12 +3,8 @@ import { BsChevronBarLeft, BsChevronBarRight } from "react-icons/bs";
 import StudentListDropDown from "./StudentListDropDown";
 
 const StudentList = ({
-  students,
-  currentStudent,
-  setCurrentStudent,
   studentInfo,
-  filteredStudents,
-  selected,
+
   page,
   chunkedStudents,
 }) => {
@@ -66,6 +62,8 @@ const StudentList = ({
       day: "numeric",
     });
   };
+
+  const student = chunkedStudents[page][results];
 
   return (
     <div className="flex md:flex-row flex-col sm:min-w-[520px] max-h-screen overflow-auto">
@@ -138,21 +136,19 @@ const StudentList = ({
                 </h2>
                 <div
                   className={`italic pb-4 ${
-                    studentInfo[results].results
-                      ? "text-accent"
-                      : "text-red-400"
+                    student.results ? "text-accent" : "text-red-400"
                   }`}
                 >
                   <span className="text-white not-italic">
                     Overall Decision:
                   </span>{" "}
-                  {studentInfo[results].results ? "Passed" : "Failed"}
+                  {student.results ? "Passed" : "Failed"}
                 </div>
                 <div className="text-white/70 tracking-wide text-lg flex flex-col">
                   <h2 className="text-xl text-accent tracking-wide text-left py-2">
                     Summary:
                   </h2>
-                  <p>{studentInfo[results].notes}</p>
+                  <p>{student.notes}</p>
                 </div>
               </div>
             </div>
@@ -167,6 +163,9 @@ const StudentList = ({
                 <StudentListDropDown
                   studentInfo={studentInfo}
                   results={results}
+                  page={page}
+                  results={results}
+                  chunkedStudents={chunkedStudents}
                 />
               </div>
             </div>
