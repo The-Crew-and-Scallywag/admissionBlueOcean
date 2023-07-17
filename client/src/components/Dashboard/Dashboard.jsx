@@ -86,6 +86,7 @@ const Dashboard = () => {
               currentStudent={currentStudent}
               setCurrentStudent={setCurrentStudent}
               studentInfo={studentInfo}
+              filteredStudents={filteredStudents}
             />
           )}
         </div>
