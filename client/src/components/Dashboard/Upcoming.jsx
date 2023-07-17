@@ -86,18 +86,24 @@ const Upcoming = ({
   );
 
   const handleDropDownOpen = () => {
+    if (lock) return;
+    setLock(true);
     setDropDownTransition(false);
     setTimeout(() => {
       setDropDown(true);
       setDropDownTransition(true);
+      setLock(false);
     }, 300);
   };
 
   const handleDropDownClose = () => {
+    if (lock) return;
+    setLock(true);
     setDropDownTransition(false);
     setTimeout(() => {
       setDropDown(false);
       setDropDownTransition(true);
+      setLock(false);
     }, 300);
   };
 
@@ -135,8 +141,8 @@ const Upcoming = ({
       setTimeout(() => {
         setResults("");
         setTransition(true);
+        setLock(false);
       }, 300);
-      setLock(false);
     }, 300);
   };
 
@@ -228,6 +234,7 @@ const Upcoming = ({
             dropDown={dropDown}
             setDropDown={setDropDown}
             handleOpenview={handleOpenview}
+            lock={lock}
           />
         </div>
       </div>

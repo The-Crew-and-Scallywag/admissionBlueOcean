@@ -15,6 +15,7 @@ const StudentList = ({
   setDropDown,
   listTransition,
   handleOpenview,
+  lock,
 }) => {
   const formatDate = (date) => {
     const newDate = new Date(date);
@@ -63,7 +64,7 @@ const StudentList = ({
                 <div className="flex flex-row justify-end">
                   <button
                     className="bg-accent text-white rounded-md p-2 shadow-md shadow-black text-lg tracking-wider hover:scale-105 ml-2 cursor-pointer transition-all duration-300 ease-in-out"
-                    onClick={() => handleOpenview(index)}
+                    onClick={() => !lock && handleOpenview(index)}
                   >
                     View
                   </button>
