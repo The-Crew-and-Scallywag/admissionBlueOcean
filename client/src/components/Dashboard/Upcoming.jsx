@@ -15,6 +15,7 @@ const Upcoming = ({
   const [transition, setTransition] = useState(false);
   const [dropDownTransition, setDropDownTransition] = useState(true);
   const [listTransition, setListTransition] = useState(true);
+  const [lock, setLock] = useState(false);
 
   const [dropDown, setDropDown] = useState(false);
 
@@ -84,49 +85,64 @@ const Upcoming = ({
     []
   );
 
-  const handleDropDown = () => {
+  const handleDropDownOpen = () => {
     setDropDownTransition(false);
     setTimeout(() => {
-      setDropDown(!dropDown);
+      setDropDown(true);
+      setDropDownTransition(true);
+    }, 300);
+  };
+
+  const handleDropDownClose = () => {
+    setDropDownTransition(false);
+    setTimeout(() => {
+      setDropDown(false);
       setDropDownTransition(true);
     }, 300);
   };
 
   const handleOpenview = (index) => {
+    if (lock) return;
     transition ? setTransition(false) : "";
+    setLock(true);
     if (!results) {
       results === index ? handleCloseView() : setResults(index);
       setListTransition(false);
       setTimeout(() => {
         setTransition(true);
         setTimeout(() => {
-          handleDropDown();
+          handleDropDownOpen();
         }, 300);
+        setLock(false);
       }, 300);
     } else {
       setListTransition(false);
       setTimeout(() => {
         setResults(index);
         setTransition(true);
+        setLock(false);
       }, 300);
     }
   };
 
   const handleCloseView = () => {
+    if (lock) return;
+    setLock(true);
     setTransition(false);
-    handleDropDown();
+    handleDropDownClose();
     setTimeout(() => {
       setListTransition(true);
       setTimeout(() => {
         setResults("");
         setTransition(true);
       }, 300);
+      setLock(false);
     }, 300);
   };
 
   const handleSelect = (e) => {
     let selected = e.target.value;
-    if (results) {
+    if (results !== "") {
       handleCloseView();
       setTimeout(() => {
         setPage(0);
@@ -135,6 +151,17 @@ const Upcoming = ({
     } else {
       setPage(0);
       setSelected(selected);
+    }
+  };
+
+  const handlePageChange = (index) => {
+    if (results !== "") {
+      handleCloseView();
+      setTimeout(() => {
+        setPage(index);
+      }, 900);
+    } else {
+      setPage(index);
     }
   };
 
@@ -170,7 +197,9 @@ const Upcoming = ({
                         ? "bg-accent text-white"
                         : "bg-bg/70 text-white/50"
                     } rounded-md p-2 shadow-md shadow-black text-lg tracking-wider hover:scale-105 ml-2 cursor-pointer transition-all duration-300 ease-in-out`}
-                    onClick={() => setPage(index)}
+                    onClick={() => {
+                      lock ? "" : handlePageChange(index);
+                    }}
                   >
                     {index + 1}
                   </button>
@@ -190,7 +219,8 @@ const Upcoming = ({
             handleCloseView={handleCloseView}
             transition={transition}
             setTransition={setTransition}
-            handleDropDown={handleDropDown}
+            handleDropDownOpen={handleDropDownOpen}
+            handleDropDownClose={handleDropDownClose}
             dropDownTransition={dropDownTransition}
             setDropDownTransition={setDropDownTransition}
             listTransition={listTransition}
