@@ -72,7 +72,7 @@ const PieChart = ({ studentInfo, filteredStudents }) => {
             <option value="Assigned">Assigned</option>
           </select>
         </h2>
-        <ul className="flex flex-col p-2 items-center">
+        <ul className="grid grid-cols-2 p-2 items-center">
           <li className="text-white/70 text-2xl font-bold p-2">
             Total Students:{" "}
             <label className="text-accent text-md">
