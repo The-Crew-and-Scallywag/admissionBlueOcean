@@ -1,59 +1,26 @@
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { BsChevronBarLeft, BsChevronBarRight } from "react-icons/bs";
 import StudentListDropDown from "./StudentListDropDown";
 
 const StudentList = ({
   studentInfo,
-
+  selected,
   page,
   chunkedStudents,
+  results,
+  setResults,
+  handleCloseView,
+  transition,
+  setTransition,
+  handleDropDown,
+  dropDownTransition,
+  setDropDownTransition,
+  dropDown,
+  setDropDown,
+  listTransition,
+  setListTransition,
+  handleOpenview,
 }) => {
-  const [results, setResults] = useState("");
-  const [transition, setTransition] = useState(false);
-  const [listTransition, setListTransition] = useState(true);
-  const [dropDownTransition, setDropDownTransition] = useState(true);
-  const [dropDown, setDropDown] = useState(false);
-
-  const handleOpenview = (index) => {
-    transition ? setTransition(false) : "";
-    if (results === "") {
-      results === index ? handleCloseView() : setResults(index);
-      setListTransition(false);
-      setTimeout(() => {
-        setTransition(true);
-        setTimeout(() => {
-          handleDropDown();
-        }, 300);
-      }, 300);
-    } else {
-      setListTransition(false);
-      setTimeout(() => {
-        setResults(index);
-        setTransition(true);
-      }, 300);
-    }
-  };
-
-  const handleCloseView = () => {
-    setTransition(false);
-    handleDropDown();
-    setTimeout(() => {
-      setListTransition(true);
-      setTimeout(() => {
-        setResults("");
-        setTransition(true);
-      }, 300);
-    }, 300);
-  };
-
-  const handleDropDown = () => {
-    setDropDownTransition(false);
-    setTimeout(() => {
-      setDropDown(!dropDown);
-      setDropDownTransition(true);
-    }, 300);
-  };
-
   const formatDate = (date) => {
     const newDate = new Date(date);
     return newDate.toLocaleDateString("en-US", {
@@ -114,7 +81,7 @@ const StudentList = ({
       </div>
       <div
         className={`w-full h-full overflow-auto flex flex-col my-8 ${
-          studentInfo[results] ? "" : "hidden"
+          student ? "" : "hidden"
         }`}
       >
         {!listTransition ? (
@@ -164,7 +131,6 @@ const StudentList = ({
                   studentInfo={studentInfo}
                   results={results}
                   page={page}
-                  results={results}
                   chunkedStudents={chunkedStudents}
                 />
               </div>

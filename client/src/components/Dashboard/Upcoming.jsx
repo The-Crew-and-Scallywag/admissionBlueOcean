@@ -11,6 +11,12 @@ const Upcoming = ({
 }) => {
   const [selected, setSelected] = useState("All");
   const [page, setPage] = useState(0);
+  const [results, setResults] = useState(null);
+  const [transition, setTransition] = useState(false);
+  const [dropDownTransition, setDropDownTransition] = useState(true);
+  const [listTransition, setListTransition] = useState(true);
+
+  const [dropDown, setDropDown] = useState(false);
 
   const currentDate = new Date();
 
@@ -29,7 +35,6 @@ const Upcoming = ({
 
   let upcomingInterview = null;
   if (closestStudent !== null) {
-    console.log(closestStudent);
     const { s_first_name, s_last_name, interview_date } = closestStudent;
     const formattedDate = new Date(interview_date).toLocaleDateString("en-US", {
       year: "numeric",
@@ -79,9 +84,56 @@ const Upcoming = ({
     []
   );
 
+  const handleDropDown = () => {
+    setDropDownTransition(false);
+    setTimeout(() => {
+      setDropDown(!dropDown);
+      setDropDownTransition(true);
+    }, 300);
+  };
+
+  const handleOpenview = (index) => {
+    transition ? setTransition(false) : "";
+    if (!results) {
+      results === index ? handleCloseView() : setResults(index);
+      setListTransition(false);
+      setTimeout(() => {
+        setTransition(true);
+        setTimeout(() => {
+          handleDropDown();
+        }, 300);
+      }, 300);
+    } else {
+      setListTransition(false);
+      setTimeout(() => {
+        setResults(index);
+        setTransition(true);
+      }, 300);
+    }
+  };
+
+  const handleCloseView = () => {
+    setTransition(false);
+    handleDropDown();
+    setTimeout(() => {
+      setListTransition(true);
+      setTimeout(() => {
+        setResults("");
+        setTransition(true);
+      }, 300);
+    }, 300);
+  };
+
   const handleSelect = (e) => {
-    setPage(0);
-    setSelected(e.target.value);
+    let selected = e.target.value;
+    if (results) {
+      handleCloseView();
+      setTimeout(() => {
+        setSelected(selected);
+      }, 900);
+    } else {
+      setSelected(selected);
+    }
   };
 
   return (
@@ -125,15 +177,25 @@ const Upcoming = ({
             </div>
           </div>
           <StudentList
-            students={students}
-            currentStudent={currentStudent}
-            setCurrentStudent={setCurrentStudent}
             studentInfo={studentInfo}
             filteredStudents={filteredStudents}
             setFilteredStudents={setFilteredStudents}
             selected={selected}
             page={page}
             chunkedStudents={chunkedStudents}
+            results={results}
+            setResults={setResults}
+            handleCloseView={handleCloseView}
+            transition={transition}
+            setTransition={setTransition}
+            handleDropDown={handleDropDown}
+            dropDownTransition={dropDownTransition}
+            setDropDownTransition={setDropDownTransition}
+            listTransition={listTransition}
+            setListTransition={setListTransition}
+            dropDown={dropDown}
+            setDropDown={setDropDown}
+            handleOpenview={handleOpenview}
           />
         </div>
       </div>
