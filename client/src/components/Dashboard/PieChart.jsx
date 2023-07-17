@@ -7,6 +7,8 @@ const PieChart = ({ studentInfo, filteredStudents }) => {
 
   const [selected, setSelected] = useState("All");
   const [breakdown, setBreakdown] = useState("All");
+  const selectedPie = selected === "All" ? studentInfo : filteredStudents;
+  const studentBreakdown = breakdown === "All" ? studentInfo : filteredStudents;
 
   const handleSelect = (e) => {
     setSelected(e.target.value);
@@ -16,14 +18,13 @@ const PieChart = ({ studentInfo, filteredStudents }) => {
     setBreakdown(e.target.value);
   };
 
-  const passed =
-    selected === "All"
-      ? studentInfo.filter((student) => student.results).length
-      : filteredStudents.filter((student) => student.results).length;
+  const passed = selectedPie.filter(
+    (student) => student.results === "true"
+  ).length;
 
-  const total =
-    selected === "All" ? studentInfo.length : filteredStudents.length;
-  const failed = total - passed;
+  const failed = selectedPie.filter(
+    (student) => student.results === "false"
+  ).length;
 
   const data = {
     labels: ["Passed", "Failed"],
@@ -37,8 +38,6 @@ const PieChart = ({ studentInfo, filteredStudents }) => {
       },
     ],
   };
-
-  const studentBreakdown = breakdown === "All" ? studentInfo : filteredStudents;
 
   return (
     <div className="flex flex-col custom:flex-row w-full">
@@ -89,27 +88,43 @@ const PieChart = ({ studentInfo, filteredStudents }) => {
           <li className="text-white/70 text-2xl font-bold p-2">
             Total Interviews:{" "}
             <label className="text-accent text-md">
-              {studentBreakdown.length}
+              {studentBreakdown.filter((student) => student.results === "true")
+                .length +
+                studentBreakdown.filter(
+                  (student) => student.results === "false"
+                ).length}
             </label>
           </li>
           <li className="text-white/70 text-2xl font-bold p-2">
             Passed:{" "}
             <label className="text-accent text-md">
-              {studentBreakdown.filter((student) => student.results).length}
+              {
+                studentBreakdown.filter((student) => student.results === "true")
+                  .length
+              }
             </label>
           </li>
           <li className="text-white/70 text-2xl font-bold p-2">
             Failed:{" "}
             <label className="text-red-400 text-md">
-              {studentBreakdown.filter((student) => !student.results).length}
+              {
+                studentBreakdown.filter(
+                  (student) => student.results === "false"
+                ).length
+              }
             </label>
           </li>
           <li className="text-white/70 text-2xl font-bold p-2">
             Pass Rate:{" "}
             <label className="text-accent text-md">
               {Math.round(
-                (studentBreakdown.filter((student) => student.results).length /
-                  studentBreakdown.length) *
+                (studentBreakdown.filter(
+                  (student) => student.results === "true"
+                ).length /
+                  studentBreakdown.filter(
+                    (student) =>
+                      student.results === "false" || student.results === "true"
+                  ).length) *
                   100
               )}
               %

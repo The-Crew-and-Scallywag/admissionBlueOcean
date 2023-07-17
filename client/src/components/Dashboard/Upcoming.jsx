@@ -129,9 +129,11 @@ const Upcoming = ({
     if (results) {
       handleCloseView();
       setTimeout(() => {
+        setPage(0);
         setSelected(selected);
       }, 900);
     } else {
+      setPage(0);
       setSelected(selected);
     }
   };

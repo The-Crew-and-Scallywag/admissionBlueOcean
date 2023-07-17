@@ -30,9 +30,11 @@ const LineGraph = ({ students, studentInfo, filteredStudents }) => {
     });
 
     const passedInMonth = studentsInMonth.filter(
-      (student) => student.results
+      (student) => student.results === "true"
     ).length;
-    const failedInMonth = studentsInMonth.length - passedInMonth;
+    const failedInMonth = studentsInMonth.filter(
+      (student) => student.results === "false"
+    ).length;
 
     monthlyData.push(studentsInMonth.length);
 

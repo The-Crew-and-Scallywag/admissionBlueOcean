@@ -47,10 +47,12 @@ const StudentList = ({
                   </div>
                   <div
                     className={`italic ${
-                      student.results ? "text-accent" : "text-red-400"
+                      student.results === "true"
+                        ? "text-accent"
+                        : "text-red-400"
                     }`}
                   >
-                    {student.results ? "Passed" : "Failed"}
+                    {student.results === "true" ? "Passed" : "Failed"}
                   </div>
                 </div>
 
@@ -98,13 +100,13 @@ const StudentList = ({
                 </h2>
                 <div
                   className={`italic pb-4 ${
-                    student.results ? "text-accent" : "text-red-400"
+                    student.results === "true" ? "text-accent" : "text-red-400"
                   }`}
                 >
                   <span className="text-white not-italic">
                     Overall Decision:
                   </span>{" "}
-                  {student.results ? "Passed" : "Failed"}
+                  {student.results === "true" ? "Passed" : "Failed"}
                 </div>
                 <div className="text-white/70 tracking-wide text-lg flex flex-col">
                   <h2 className="text-xl text-accent tracking-wide text-left py-2">
