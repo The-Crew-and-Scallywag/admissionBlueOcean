@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MdEditDocument, MdEditOff, MdAddCircle } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import PieChart from "./PieChart.jsx";
-import BarChart from "./BarChart.jsx";
+import LineGraph from "./LineGraph.jsx";
 
 const StudentInfo = ({
   students,
@@ -132,7 +132,7 @@ const StudentInfo = ({
         />
       </div>
       <div className="p-2">
-        <BarChart
+        <LineGraph
           students={students}
           studentInfo={studentInfo}
           filteredStudents={filteredStudents}
