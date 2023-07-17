@@ -7,7 +7,9 @@ export const runCode = async (req, res) => {
     const sandbox = { console };
 
     const context = createContext(sandbox);
+
     const script = new Script(code);
+
     res.status(200).json({ result: script.runInContext(context) });
   } catch (error) {
     console.error(error);
