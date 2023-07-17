@@ -28,7 +28,7 @@ CREATE TABLE interviews (
   interview_date      DATE,
   question_notes      TEXT[],
   notes               TEXT,
-  results             BOOLEAN
+  results             TEXT
 );
 
 CREATE TABLE questions  (

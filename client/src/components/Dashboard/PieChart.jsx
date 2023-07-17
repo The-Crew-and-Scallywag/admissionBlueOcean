@@ -5,9 +5,12 @@ import { Pie } from "react-chartjs-2";
 const PieChart = ({ students, studentInfo }) => {
   ChartJS.register(ArcElement, Tooltip, Legend);
 
-  const passed = studentInfo.filter((student) => student.results).length;
-  const failed = studentInfo.length - passed;
-
+  const passed = studentInfo.filter(
+    (student) => student.results === "true"
+  ).length;
+  const failed = studentInfo.filter(
+    (student) => student.results === "false"
+  ).length;
   const data = {
     labels: ["Passed", "Failed"],
     datasets: [

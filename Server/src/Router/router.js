@@ -1,8 +1,4 @@
 import { Router } from "express";
-import {
-  getAllStudents,
-  getStudentByID,
-} from "../Controllers/interviewerController.js";
 import { logUserIn } from "../Controllers/logController.js";
 import {
   addInterview,
@@ -11,12 +7,25 @@ import {
   updateInterviewData,
 } from "../Controllers/interviewController.js";
 import { getAllQuestions } from "../Controllers/questionController.js";
+import {
+  getAllStudents,
+  getStudentByID,
+  addStudent,
+  removeStudent,
+  updateStudent,
+} from "../Controllers/studentController.js";
 
 export const router = Router();
 
 router.get("/students", getAllStudents); // list of all students
 
 router.get("/student/:id", getStudentByID); // fetch single student
+
+router.post("/student", addStudent); // post a new student to db
+
+router.patch("/student/:id", updateStudent); // patch student data
+
+router.delete("/student/:id", removeStudent);
 
 router.get("/interview/:id", getInterview); // list of interviews by student id
 

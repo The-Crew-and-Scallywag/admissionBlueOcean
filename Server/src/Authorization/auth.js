@@ -13,3 +13,26 @@ export const generateToken = (data) => {
   );
   return token;
 };
+
+// unsures user provided valid email structure
+export function validateEmail(email) {
+  // Check if the email contains a "."
+  if (!email.includes(".")) {
+    return false;
+  }
+
+  // Check if email constains the @ symbol
+  if (!email.includes("@")) return false;
+
+  // Split the email into two parts at the @ symbol
+  var parts = email.split("@");
+  var localPart = parts[0];
+  var domainPart = parts[1];
+
+  // Check if the local part and domain part are not empty
+  if (localPart.length === 0 || domainPart.length === 0) {
+    return false;
+  }
+
+  return true;
+}

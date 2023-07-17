@@ -7,6 +7,16 @@ export const allStudents = `SELECT * FROM students`;
 // get student by id
 export const student = `SELECT * FROM students WHERE id = $1`;
 
+// post a new student
+export const postStudent = `INSERT INTO students(first_name, last_name, email, phone)
+VALUES($1, $2, $3, $4) RETURNING *`;
+
+// patch student data
+export const patchStudent = `UPDATE students SET first_name = COALESCE($1, first_name), last_name = COALESCE($2, last_name), email = COALESCE($3, email), phone = COALESCE($4, phone)
+WHERE id = $5 RETURNING *`;
+
+// deletes students from db
+export const deleteStudent = `DELETE FROM students WHERE id = $1`;
 /**
  * Queries For The interviewers
  */
@@ -38,6 +48,8 @@ FROM interviews
 JOIN interviewers ON interviewers.id = interviews.interviewers_id 
 JOIN students ON students.id = interviews.students_id
 WHERE students.id = $1`;
+
+// checks to see if answer is correct
 
 // post an interview
 export const postInterview = `INSERT INTO interviews(students_id, interviewers_id, interview_date)

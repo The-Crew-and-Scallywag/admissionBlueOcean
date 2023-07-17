@@ -3,6 +3,8 @@ import fs from "fs";
 import pkg from "pg";
 const { Pool } = pkg;
 
+const todaysDate = new Date();
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
@@ -12,22 +14,26 @@ const writableStream = fs.createWriteStream("interview.csv");
 for (let i = 0; i < 75; i++) {
   const studentId = faker.number.int({ min: 1, max: 50 });
   const interviewerId = faker.number.int({ min: 1, max: 5 });
-  const date = faker.date
-    .between({
-      from: "2023-05-01T00:00:00.000Z",
-      to: "2023-12-30T00:00:00.000Z",
-    })
-    .toISOString();
-  const questionNotes = [];
-  for (let i = 0; i < 4; i++) {
-    const note = faker.lorem.sentence(); // Generate a random question note
-    questionNotes.push(note);
+  const date = faker.date.between({
+    from: "2023-05-01T00:00:00.000Z",
+    to: "2023-07-25T00:00:00.000Z",
+  });
+
+  let notes = null;
+  let results = null;
+  let questionNotes = null;
+  if (date < todaysDate) {
+    questionNotes = [];
+    for (let i = 0; i < 4; i++) {
+      const note = faker.lorem.sentence(); // Generate a random question note
+      questionNotes.push(note);
+    }
+    notes = faker.lorem.lines(1);
+    results = faker.datatype.boolean();
   }
-  const notes = faker.lorem.lines(1);
-  const results = faker.datatype.boolean();
 
   writableStream.write(
-    `${studentId},${interviewerId},${date},"{${questionNotes}}",${notes},${results}\n`
+    `${studentId},${interviewerId},${date.toISOString()},"{${questionNotes}}",${notes},${results}\n`
   );
 }
 
