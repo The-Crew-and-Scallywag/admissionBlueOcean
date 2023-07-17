@@ -123,6 +123,12 @@ const StudentInfo = ({
 
   return (
     <div className="flex flex-col justify-between sm:w-[400px] custom:w-[900px] mx-auto my-20 ml-4">
+      <div className="p-2">
+        <PieChart students={students} studentInfo={studentInfo} />
+      </div>
+      <div className="p-2">
+        <BarChart students={students} studentInfo={studentInfo} />
+      </div>
       <div className="mt-10 mb-2 flex flex-col">
         <div className="text-white text-2xl text-center">
           Student:{" "}
@@ -236,12 +242,6 @@ const StudentInfo = ({
             )}
           </div>
         </div>
-      </div>
-      <div className="p-2">
-        <PieChart students={students} studentInfo={studentInfo} />
-      </div>
-      <div className="p-2">
-        <BarChart students={students} studentInfo={studentInfo} />
       </div>
     </div>
   );
