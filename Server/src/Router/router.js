@@ -14,6 +14,7 @@ import {
   removeStudent,
   updateStudent,
 } from "../Controllers/studentController.js";
+import { runCode } from "../Controllers/codeController.js";
 
 export const router = Router();
 
@@ -36,6 +37,8 @@ router.post("/interview", addInterview); // adds interview
 router.get("/interviews", getAllInterviews); // list of all interviews
 
 router.patch("/interview/:id", updateInterviewData); // update interview notes and result
+
+router.post("/run", runCode);
 /**
  * LOGIN ROUTE
  */
