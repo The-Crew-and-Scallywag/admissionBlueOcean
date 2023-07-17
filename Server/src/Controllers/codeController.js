@@ -1,16 +1,26 @@
-import { Script, createContext } from "vm";
+import { createContext, runInContext } from "vm";
 
-export const runCode = async (req, res) => {
+export const runCode = (req, res) => {
   try {
-    const { code } = req.body;
+    const { code } = req.body; // code from front end
 
-    const sandbox = { console };
+    const sandbox = {
+      console: {
+        // access to console.log
+        log: (...args) => {
+          //
+          sandbox.result = args; // Capture the result using sandbox.result
+        },
+      },
+    };
 
     const context = createContext(sandbox);
-    const script = new Script(code);
-    res.status(200).json({ result: script.runInContext(context) });
+    runInContext(code, context);
+
+    const result = sandbox.result; // Retrieve the result from sandbox.result
+    return res.status(200).json({ result });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error Running Code Snippet" });
+    return res.status(500).json({ message: "Error Running Code Snippet" });
   }
 };
