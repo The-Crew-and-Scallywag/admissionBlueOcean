@@ -11,14 +11,9 @@ const StudentList = ({
   setResults,
   handleCloseView,
   transition,
-  setTransition,
-  handleDropDown,
-  dropDownTransition,
-  setDropDownTransition,
   dropDown,
   setDropDown,
   listTransition,
-  setListTransition,
   handleOpenview,
 }) => {
   const formatDate = (date) => {
