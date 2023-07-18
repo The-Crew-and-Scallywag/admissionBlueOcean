@@ -3,7 +3,7 @@ services:
 
     name: admission-blue-client
     repo: https://github.com/The-Crew-and-Scallywag/admissionBlueOcean.git
-    staticPublishPath: ./dist
+    staticPublishPath: ./src/dist
     buildCommand: npm run build
     env: static
     branch: main
