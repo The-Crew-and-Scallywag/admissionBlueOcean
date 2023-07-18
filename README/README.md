@@ -50,3 +50,5 @@ This project is licensed under the MIT License.
 - `dev` - Runs the server in watch mode (executed by docker-compose).
 - `start` - Starts the production server.
 - `test` - Runs tests.
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)

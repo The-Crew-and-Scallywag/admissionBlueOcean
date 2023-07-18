@@ -38,9 +38,9 @@ export const updateInterviewData = async (req, res) => {
     }
 
     if (result.toLowerCase() === "pass") {
-      result = true;
+      result = "true";
     } else if (result.toLowerCase() === "fail") {
-      result = false;
+      result = "false";
     } else {
       return res
         .status(400)

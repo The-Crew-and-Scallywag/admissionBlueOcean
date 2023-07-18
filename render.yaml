@@ -1,41 +1,42 @@
-version: "3.8"
+databases:
+  - name: blueocean # Render PG14
+    plan: free
+    databaseName: blueocean
+    user: postgres_blueocean
+    postgresMajorVersion: 15
+
 services:
-  database:
-    image: postgres:15-alpine
-    env_file: .env
-    ports:
-      - 5432:5432
-    volumes:
-      - pg-data:/var/lib/postgresql/data
-      - ./Server/src/Database/migration.sql:/docker-entrypoint-initdb.d/migration.sql
-      - ./Server/src/Database/seed.sql:/docker-entrypoint-initdb.d/seed.sql
-  server:
-    build: ./Server
-    environment:
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database/${POSTGRES_DB}
-      NODE_ENV: development
-      PORT: 80
-      INTERVIEWER_TOKEN: special-awesome-stinky-smelly-super-secret-unique-access-token
-    depends_on:
-      - database
-    ports:
-      - ${API_PORT}:80
-    volumes:
-      - ./Server/src:/code/src
-      - /Server/node_modules
-    command: npm run dev
-  app:
-    build: ./client
-    environment:
-      API_URL: http://server
-      PORT: ${CLIENT_PORT}
-    depends_on:
-      - server
-    ports:
-      - ${CLIENT_PORT}:${CLIENT_PORT}
-    volumes:
-      - ./client:/code
-      - /client/node_modules
-    command: sh -c "npm rebuild esbuild && npm run dev"
-volumes:
-  pg-data:
+  - type: web
+    plan: standard
+    name: admission-blue-client
+    runtime: docker
+    branch: main
+    rootDir: client
+    envVars:
+      - key: PORT
+        fromService:
+          type: web
+          name: admission-blue-server
+          property: port
+      - key: API_URL
+        fromService:
+          type: web
+          name: admission-blue-server
+          property: host
+
+  - type: web
+    plan: free
+    name: admission-blue-server
+    runtime: docker
+    branch: main
+    rootDir: Server
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          type: database
+          name: blueocean
+          property: connectionString
+      - key: PORT
+        value: "80"
+      - key: INTERVIEWER_TOKEN
+        value: "special-awesome-stinky-smelly-super-secret-unique-access-token"
