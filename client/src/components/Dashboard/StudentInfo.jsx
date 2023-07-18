@@ -4,20 +4,17 @@ import { useNavigate } from "react-router-dom";
 import PieChart from "./PieChart.jsx";
 import LineGraph from "./LineGraph.jsx";
 
-const StudentInfo = ({
-  students,
-  currentStudent,
-  setCurrentStudent,
-  studentInfo,
-  filteredStudents,
-}) => {
+const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
   const [editMode, setEditMode] = useState(false);
   const [updatedStudent, setUpdatedStudent] = useState({});
   const [loading, setLoading] = useState(true);
   const [transition, setTransition] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [currentStudent, setCurrentStudent] = useState(0);
 
   const navigate = useNavigate();
+
+  const name = JSON.parse(localStorage.getItem("name"));
 
   const handleMouseEnterIcon = (e) => {
     setShowTooltip(true);
@@ -34,8 +31,6 @@ const StudentInfo = ({
       setTransition(false);
     }, 500);
   };
-
-  let student = students[currentStudent];
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -65,7 +60,8 @@ const StudentInfo = ({
   const handleChange = (index) => {
     setTransition(true);
     setTimeout(() => {
-      setCurrentStudent(index);
+      const currentIndex = index;
+      setCurrentStudent(currentIndex);
       setTransition(false);
     }, 500);
   };
@@ -79,7 +75,13 @@ const StudentInfo = ({
     }, 500);
   }, [students.length]);
 
-  console.log(student);
+  const filteredListStudents = students.filter(
+    (student) => student.i_first_name === name.firstName
+  );
+
+  let student = filteredListStudents[currentStudent];
+
+  console.log(filteredListStudents);
 
   const renderField = (label, value, inputProps) => {
     const isEditable = editMode && inputProps;
@@ -145,16 +147,16 @@ const StudentInfo = ({
           {!loading && (
             <select
               value={currentStudent}
-              onChange={(e) => handleChange(parseInt(e.target.selectedIndex))}
-              className="text-galv-orange bg-bg rounded-md p-1 shadow-md shadow-black focus:ring-1 focus:ring-accent text-lg tracking-wider ml-2 cursor-pointer transition-all duration-300 ease-in-out"
+              onChange={(e) => handleChange(parseInt(e.target.value))}
+              className="text-white/70 bg-bg rounded-md p-1 shadow-md shadow-black focus:ring-1 focus:ring-accent text-lg tracking-wider ml-2 cursor-pointer transition-all duration-300 ease-in-out"
             >
-              {students.map((student, index) => (
+              {filteredListStudents.map((student, index) => (
                 <option
-                  key={student.id}
+                  key={index}
                   value={index}
                   className="bg-secondary text-accent py-4 focus:text-accent cursor-pointer"
                 >
-                  {`${student.first_name} ${student.last_name}`}
+                  {`${student.s_first_name} ${student.s_last_name}`}
                 </option>
               ))}
             </select>
@@ -202,30 +204,18 @@ const StudentInfo = ({
           <div className="mt-4 mb-12 p-6">
             {!loading && (
               <div className="grid grid-cols-1 custom:grid-cols-2 gap-4">
-                {renderField("First Name", student.first_name, {
+                {renderField("First Name", student.s_first_name, {
                   type: "text",
                 })}
-                {renderField("Last Name", student.last_name, { type: "text" })}
-                {renderField("Email", student.email, { type: "email" })}
-                {renderField("Phone", formatPhoneNumber(student.phone), {
+                {renderField("Last Name", student.s_last_name, {
+                  type: "text",
+                })}
+                {renderField("Email", student.s_email, {
+                  type: "email",
+                })}
+                {renderField("Phone", formatPhoneNumber(student.s_phone), {
                   type: "tel",
                 })}
-                {student.interview_date &&
-                  renderField(
-                    "Interview Date",
-                    formatDate(student.interview_date),
-                    {
-                      type: "date",
-                    }
-                  )}
-                {student.interview_time &&
-                  renderField(
-                    "Interview Time",
-                    formatTime(student.interview_time),
-                    {
-                      type: "time",
-                    }
-                  )}
               </div>
             )}
           </div>
@@ -244,7 +234,7 @@ const StudentInfo = ({
                   transition ? "opacity-0" : "opacity-100"
                 }`}
                 onClick={() => {
-                  navigate(`/interview/${student.id}`);
+                  navigate(`/interview/${student.s_id}`);
                 }}
               >
                 Start an Interview

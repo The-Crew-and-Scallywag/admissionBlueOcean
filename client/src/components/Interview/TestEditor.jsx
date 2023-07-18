@@ -55,7 +55,7 @@ const TestEditor = ({ student, students, setStudent }) => {
     // Bind YJS to Monaco editor
   };
 
-  console.log(students);
+  console.log(student);
 
   return (
     <div>
