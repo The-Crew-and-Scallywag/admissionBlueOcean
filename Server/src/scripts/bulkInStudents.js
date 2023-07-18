@@ -10,15 +10,18 @@ const pool = new Pool({
 const writableStream = fs.createWriteStream("student.csv");
 
 for (let i = 0; i < 50; i++) {
+  const interiewersId = faker.number.int({ min: 1, max: 6 });
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
   const email = faker.internet.email({
     firstName: firstName,
     lastName: lastName,
   });
-  const phone = faker.phone.number("###########");
+  const phone = faker.phone.number("1##########");
 
-  writableStream.write(`${firstName},${lastName},${email},${phone}\n`);
+  writableStream.write(
+    `${interiewersId},${firstName},${lastName},${email},${phone}\n`
+  );
 }
 
 writableStream.close();

@@ -6,6 +6,7 @@ import {
   patchStudent,
   postStudent,
   student,
+  studentJoinedInterviewer,
 } from "./queries.js";
 
 // fetches all students
@@ -37,6 +38,18 @@ export const getStudentByID = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error Fetching Student" });
+  }
+};
+
+export const studentsAndInterviewers = async (req, res) => {
+  try {
+    const results = await db.query(studentJoinedInterviewer);
+    res.status(200).json(results.rows);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Error Fetching Student and Interviewer Data" });
   }
 };
 
