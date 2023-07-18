@@ -6,6 +6,7 @@ services:
     staticPublishPath: ./dist
     buildCommand: npm run build
     env: static
+    runtime: docker
     branch: main
     rootDir: client
     envVars:
