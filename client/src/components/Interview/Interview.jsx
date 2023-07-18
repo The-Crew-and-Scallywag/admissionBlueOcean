@@ -10,7 +10,6 @@ const Interview = () => {
   const [student, setStudent] = useState(null); // State variable for the selected student
 
   const name = JSON.parse(localStorage.getItem("name"));
-  console.log(name);
 
   useEffect(() => {
     const getStudents = async () => {

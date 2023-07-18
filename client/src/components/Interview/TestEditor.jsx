@@ -7,7 +7,7 @@ import axios from "axios";
 
 const TestEditor = ({ student, students, setStudent }) => {
   const editorRef = useRef(null); // Reference to the Monaco editor instance
-  const [output, setOutput] = useState(""); // State variable for the output of the code
+  const [results, setResults] = useState([]); // State variable for the output of the code
   const [editorValue, setEditorValue] = useState("// Write your code here..."); // State variable for the initial value of the editor
   const [outputValues, setOutputValues] = useState([]); // State variable for storing the output values
 
@@ -17,8 +17,10 @@ const TestEditor = ({ student, students, setStudent }) => {
     });
     let returnValue = res.data.result[0];
     console.log(returnValue);
-    setOutput(returnValue); // Update the output state variable
+    setResults([...results, returnValue]); // Update the output state variable
   };
+
+  console.log(results);
 
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor; // Store the Monaco editor instance reference in the ref
@@ -53,7 +55,7 @@ const TestEditor = ({ student, students, setStudent }) => {
             <div
               id="editor"
               className={`h-[700px] rounded-lg shadow-xl shadow-black bg-bg/20 border-2 border-secondary/50 transform transition-all duration-150 ease ${
-                output ? "w-[700px]" : "w-[900px]"
+                results.length ? "w-[700px]" : "w-[900px]"
               }`}
             >
               <Editor
@@ -84,11 +86,17 @@ const TestEditor = ({ student, students, setStudent }) => {
               </button>
             </div>
           </div>
-          {output && (
-            <div className="w-full mx-4 p-4 ">
-              <pre className="bg-secondary text-lg text-white font-bold p-4 w-full mx-auto text-center rounded-lg shadow-black shadow-lg">
-                {JSON.stringify(output, null)}
-              </pre>
+          {results.length > 0 && (
+            <div className="bg-bg text-lg text-white font-bold m-4  min-w-[400px] max-h-[700px] text-center rounded-lg shadow-black shadow-xl h-full overflow-y-auto no-scrollbar relative top-[-50px]">
+              {results.length > 0 &&
+                results.map((item, index) => (
+                  <pre key={index} className="py-2 m-2 over">
+                    <span className="italic text-accent">
+                      Output {index + 1}:{" "}
+                    </span>
+                    {item}
+                  </pre>
+                ))}
             </div>
           )}
         </div>
