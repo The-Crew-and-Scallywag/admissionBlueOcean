@@ -3,6 +3,8 @@ import Editor from "@monaco-editor/react";
 import * as Y from "yjs";
 import { WebrtcProvider } from "y-webrtc";
 import { MonacoBinding } from "y-monaco";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { materialDark as dark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import axios from "axios";
 
 const TestEditor = ({ student, students, setStudent }) => {
@@ -35,8 +37,6 @@ const TestEditor = ({ student, students, setStudent }) => {
       });
     }
   }, [results.length]);
-
-  console.log(results);
 
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor; // Store the Monaco editor instance reference in the ref
@@ -103,7 +103,7 @@ const TestEditor = ({ student, students, setStudent }) => {
               {results.length > 0 && (
                 <button
                   onClick={() => setResults([])}
-                  className="bg-bg p-2 w-40 rounded-lg text-white/50 my-12  hover:scale-105 hover:bg-bg/70 hover:border-[1px] hover:border-accent transition-transform duration-300 ease-in-out shadow-lg shadow-black"
+                  className="bg-bg p-2 w-40 rounded-lg text-white/50 my-12  hover:scale-105 hover:bg-bg/70 hover:border-[1px] hover:border-red-400 transition-transform duration-300 ease-in-out shadow-lg shadow-black"
                 >
                   Clear
                 </button>
@@ -131,9 +131,14 @@ const TestEditor = ({ student, students, setStudent }) => {
                           Output {index + 1}:{" "}
                         </span>
                         {item.map((code, index) => (
-                          <pre key={index} className="py-2 m-2 ">
+                          <SyntaxHighlighter
+                            language="javascript"
+                            style={dark}
+                            key={index}
+                            className="py-2 m-2 "
+                          >
                             {JSON.stringify(code[0], null)}
-                          </pre>
+                          </SyntaxHighlighter>
                         ))}
                       </div>
                     ))}

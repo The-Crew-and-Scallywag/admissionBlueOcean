@@ -73,12 +73,13 @@ const StudentInfo = ({
   useEffect(() => {
     setLoading(students.length === 0);
     setTransition(true);
-    console.log("transitioning");
+
     setTimeout(() => {
       setTransition(false);
-      console.log("done transitioning");
     }, 500);
-  }, [students]);
+  }, [students.length]);
+
+  console.log(student);
 
   const renderField = (label, value, inputProps) => {
     const isEditable = editMode && inputProps;
