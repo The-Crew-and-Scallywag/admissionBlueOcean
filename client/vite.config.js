@@ -12,7 +12,7 @@ export default {
   },
   build: {
     rollupOptions: {
-      external: ["monaco-editor/react"],
+      external: ["./node_modules/y-monaco"],
     },
   },
 };
