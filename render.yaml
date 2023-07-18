@@ -5,7 +5,7 @@ services:
     repo: https://github.com/The-Crew-and-Scallywag/admissionBlueOcean.git
     staticPublishPath: ./dist
     buildCommand: npm run build
-    env: static
+    env: web
     runtime: docker
     branch: main
     rootDir: client
