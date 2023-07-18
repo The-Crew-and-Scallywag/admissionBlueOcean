@@ -4,6 +4,11 @@
 // get all student
 export const allStudents = `SELECT * FROM students`;
 
+// get all student information and interviewer information
+export const studentJoinedInterviewer = `SELECT students.id AS s_id, students.first_name AS s_first_name, students.last_name AS s_last_name, students.phone AS s_phone, students.email AS s_email,
+interviewers.id AS i_id, interviewers.first_name AS i_first_name, interviewers.last_name AS i_last_name, interviewers.email AS i_email
+FROM students JOIN interviewers ON students.interviewers_id = interviewers.id`;
+
 // get student by id
 export const student = `SELECT * FROM students WHERE id = $1`;
 
@@ -29,8 +34,8 @@ export const interiewersById = `SELECT first_name, last_name, email FROM intervi
 // GETs all Interviews
 export const allInterviews = `
 SELECT interviewers.first_name AS i_first_name, interviewers.last_name AS i_last_name, interviewers.email AS i_email,
-students.first_name AS s_first_name, students.last_name AS s_last_name, students.phone AS s_phone, students.email AS s_email, students.id AS s_id,
-interviews.question_notes AS q_notes, interviews.notes AS notes, interviews.results AS results, interviews.interview_date
+students.id AS s_id, students.first_name AS s_first_name, students.last_name AS s_last_name, students.phone AS s_phone, students.email AS s_email, 
+interviewers.id AS i_id, interviews.question_notes AS q_notes, interviews.notes AS notes, interviews.results AS results, interviews.interview_date
 FROM interviews 
 JOIN interviewers ON interviewers.id = interviews.interviewers_id 
 JOIN students ON students.id = interviews.students_id
@@ -42,8 +47,8 @@ export const patchInterviewData = `UPDATE interviews SET notes = COALESCE ($1, n
 // GETs all interviews for a specific student
 export const interviewsByStudents = `
 SELECT interviewers.first_name AS i_first_name, interviewers.last_name AS i_last_name, interviewers.email AS i_email,
-students.first_name AS s_first_name, students.last_name AS s_last_name, students.phone AS s_phone, students.email AS s_email, students.id AS s_id,
-interviews.question_notes AS q_notes, interviews.notes AS notes, interviews.results AS results, interviews.interview_date, interviews.id AS interview_id
+students.id AS s_id, students.first_name AS s_first_name, students.last_name AS s_last_name, students.phone AS s_phone, students.email AS s_email, 
+interviews.id AS interview_id, interviews.question_notes AS q_notes, interviews.notes AS notes, interviews.results AS results, interviews.interview_date
 FROM interviews 
 JOIN interviewers ON interviewers.id = interviews.interviewers_id 
 JOIN students ON students.id = interviews.students_id

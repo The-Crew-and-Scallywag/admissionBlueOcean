@@ -1,13 +1,13 @@
-\COPY students (first_name, last_name, email, phone) FROM /docker-entrypoint-initdb.d/student.csv WITH (FORMAT csv, DELIMITER ',');
-INSERT INTO interviewers (students_id, first_name, last_name, email, password)
+INSERT INTO interviewers (first_name, last_name, email, password)
 VALUES
-    (23, 'Samson', 'Brown', 'samson@rr.com', 'password'),
-    (19, 'Ronnie', 'Miller', 'ronnie@gg.com', 'password'),
-    (1, 'William', 'Swinson', 'will@ar15.com', 'password'),
-    (2, 'Joseph', 'Carmeli', 'joseph@papi.com', 'password'),
-    (3, 'Fitzgerald', 'Sicat', 'fitz@gpt.com', 'password'),
-    (5, 'Danny', 'Andrews', 'danny@email.com', 'password');
+    ('Samson', 'Brown', 'samson@rr.com', 'password'),
+    ('Ronnie', 'Miller', 'ronnie@gg.com', 'password'),
+    ('William', 'Swinson', 'will@ar15.com', 'password'),
+    ('Joseph', 'Carmeli', 'joseph@papi.com', 'password'),
+    ('Fitzgerald', 'Sicat', 'fitz@gpt.com', 'password'),
+    ('Danny', 'Andrews', 'danny@email.com', 'password');
 
+\COPY students (interviewers_id, first_name, last_name, email, phone) FROM /docker-entrypoint-initdb.d/student.csv WITH (FORMAT csv, DELIMITER ',');
 
 \COPY interviews (students_id, interviewers_id, interview_date, question_notes, notes, results) FROM /docker-entrypoint-initdb.d/interview.csv WITH (FORMAT csv, DELIMITER ',');
 
