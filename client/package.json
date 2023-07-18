@@ -20,14 +20,6 @@
     "vitest": "^0.28.5"
   },
   "dependencies": {
-    "@codemirror/autocomplete": "^6.8.1",
-    "@codemirror/basic-setup": "^0.20.0",
-    "@codemirror/closebrackets": "^0.19.2",
-    "@codemirror/lang-javascript": "^6.1.9",
-    "@codemirror/matchbrackets": "^0.19.4",
-    "@codemirror/state": "^6.2.1",
-    "@codemirror/theme-one-dark": "^6.1.2",
-    "@codemirror/view": "^6.14.1",
     "@monaco-editor/react": "^4.5.1",
     "axios": "^0.27.2",
     "chart.js": "^4.3.0",
