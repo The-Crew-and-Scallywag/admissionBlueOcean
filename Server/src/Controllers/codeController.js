@@ -8,8 +8,10 @@ export const runCode = (req, res) => {
       console: {
         // access to console.log
         log: (...args) => {
-          //
-          sandbox.result = args; // Capture the result using sandbox.result
+          if (!sandbox.result) {
+            sandbox.result = [];
+          }
+          sandbox.result.push(args); // Capture the result using sandbox.result
         },
       },
     };
@@ -17,7 +19,7 @@ export const runCode = (req, res) => {
     const context = createContext(sandbox);
     runInContext(code, context);
 
-    const result = sandbox.result; // Retrieve the result from sandbox.result
+    const result = sandbox.result || []; // Retrieve the result from sandbox.result or an empty array if it doesn't exist
     return res.status(200).json({ result });
   } catch (error) {
     console.error(error);
