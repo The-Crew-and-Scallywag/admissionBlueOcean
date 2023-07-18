@@ -1,6 +1,6 @@
 services:
   - type: web
-    plan: standard
+
     name: admission-blue-client
     repo: https://github.com/The-Crew-and-Scallywag/admissionBlueOcean.git
     staticPublishPath: ./dist
@@ -21,7 +21,7 @@ services:
           property: host
 
   - type: web
-    plan: standard
+
     name: admission-blue-server
     repo: https://github.com/The-Crew-and-Scallywag/admissionBlueOcean.git
     runtime: docker
@@ -40,7 +40,7 @@ services:
 
 databases:
   - name: blueocean # Render PG14
-    plan: standard
+
     databaseName: blueocean
     user: postgres_blueocean
     postgresMajorVersion: 15
