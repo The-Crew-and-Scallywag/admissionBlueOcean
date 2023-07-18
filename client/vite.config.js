@@ -10,9 +10,4 @@ export default {
     environment: "jsdom",
     watch: false,
   },
-  build: {
-    rollupOptions: {
-      external: ["monaco-editor"],
-    },
-  },
 };
