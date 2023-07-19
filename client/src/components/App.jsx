@@ -5,6 +5,7 @@ import Footer from "./Nav-Footer/Footer.jsx";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Login from "./Login/Login.jsx";
 import Interview from "./Interview/Interview.jsx";
+import InterviewSelector from "./Interview/InterviewSelector.jsx";
 
 const App = () => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const App = () => {
         <Routes>
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/" element={<Dashboard />} />
-          <Route exact path="/interview" element={<Interview />} />
+          <Route exact path="/interview" element={<InterviewSelector />} />
           <Route exact path="/interview/:id" element={<Interview />} />
         </Routes>
       </div>

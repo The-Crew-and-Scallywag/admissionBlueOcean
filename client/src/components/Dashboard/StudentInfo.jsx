@@ -110,14 +110,14 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
   );
 
   // Function to create buttons with appropriate labels and click actions
-  const button = (label) => {
+  const button = (label, inputProps) => {
     return (
       <button
         className={`mx-auto text-white bg-secondary p-2 rounded-md mt-[-30px] mb-4 hover:bg-galv-orange transition-all duration-150 ease-in-out hover:scale-105 ${
           transition ? "opacity-0" : "opacity-100"
         }`}
         onClick={() => {
-          handleButtonClick();
+          handleButtonClick(inputProps);
         }}
       >
         {label}
@@ -127,11 +127,10 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
   const patchStudent = async () => {
     try {
       const response = await axios.patch(
-        `/api/student/${student.s_id}`,
+        `/api/student/${student.id}`,
         updatedStudent
       );
       console.log(response);
-      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -141,7 +140,6 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
     try {
       const response = await axios.post("/api/student", newStudent);
       console.log(response);
-      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -156,9 +154,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
     editMode ? patchStudent() : addStudent ? addNewStudent() : startInterview();
   };
 
-  let student = filteredListStudents[currentStudent];
-
-  console.log(updatedStudent);
+  let student = students[currentStudent];
 
   // Render each field (e.g., First Name, Last Name, Email, Phone) with its label and value
   const renderField = (label, value, inputProps) => {
@@ -258,13 +254,13 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
                 onChange={(e) => handleChange(parseInt(e.target.value))}
                 className="text-white/70 bg-bg rounded-md p-2 shadow-md shadow-black focus:ring-1 focus:ring-accent text-lg tracking-wider ml-2 mt-2 cursor-pointer transition-all duration-300 ease-in-out"
               >
-                {filteredListStudents.map((student, index) => (
+                {students.map((student, index) => (
                   <option
                     key={index}
                     value={index}
                     className="bg-secondary text-accent py-4 focus:text-accent cursor-pointer"
                   >
-                    {`${student.s_first_name} ${student.s_last_name}`}
+                    {`${student.first_name} ${student.last_name}`}
                   </option>
                 ))}
               </select>
@@ -302,13 +298,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
           )}
 
           {showTooltip && (
-            <div
-              style={{
-                right: "0%",
-                transform: "translateX(-50%)",
-              }}
-              className="absolute bg-white p-2 rounded-lg shadow-lg shadow-black"
-            >
+            <div className="absolute bg-white p-2 rounded-lg shadow-lg shadow-black right-0">
               {hoveredIcon === "edit" ? (
                 <div className="text-black text-center">
                   {editMode ? "Exit Edit Mode" : "Edit Student"}
@@ -325,16 +315,16 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
           <div className="mt-4 mb-12 p-6">
             {!loading && (
               <div className="grid grid-cols-1 custom:grid-cols-2 gap-4">
-                {renderField("First Name", student.s_first_name, {
+                {renderField("First Name", student.first_name, {
                   type: "text",
                 })}
-                {renderField("Last Name", student.s_last_name, {
+                {renderField("Last Name", student.last_name, {
                   type: "text",
                 })}
-                {renderField("Email", student.s_email, {
+                {renderField("Email", student.email, {
                   type: "email",
                 })}
-                {renderField("Phone", formatPhoneNumber(student.s_phone), {
+                {renderField("Phone", formatPhoneNumber(student.phone), {
                   type: "tel",
                 })}
               </div>
@@ -346,7 +336,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
               ? button("Save")
               : addStudent
               ? button("Add Student")
-              : button("Start Interview")}
+              : button("Start Interview", student.id)}
           </div>
         </div>
       </div>
