@@ -15,6 +15,7 @@ const TestEditor = ({ student, students, setStudent }) => {
   const [editorValue, setEditorValue] = useState("// Write your code here..."); // State variable for the initial value of the editor
   const [outputValues, setOutputValues] = useState([]); // State variable for storing the output values
   const [loading, setLoading] = useState(true);
+
   const handleOutput = async (output) => {
     const res = await axios.post("/api/run", {
       code: output,
@@ -104,7 +105,6 @@ const TestEditor = ({ student, students, setStudent }) => {
               theme="vs-dark"
               defaultLanguage="javascript"
               defaultValue={editorValue}
-              ref={editorRef}
               onMount={handleEditorDidMount}
               options={{
                 fontSize: 18,
