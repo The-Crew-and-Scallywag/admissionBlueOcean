@@ -5,7 +5,12 @@ import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 const LineGraph = ({ students, studentInfo, filteredStudents }) => {
+  // Arrays to store data for the line chart
   const monthlyData = [];
+  const passRates = [];
+  const failRates = [];
+
+  // Array of month labels
   const monthLabels = [
     "Jan",
     "Feb",
@@ -20,9 +25,8 @@ const LineGraph = ({ students, studentInfo, filteredStudents }) => {
     "Nov",
     "Dec",
   ];
-  const passRates = [];
-  const failRates = [];
 
+  // Calculate the number of interviews, pass rates, and fail rates for each month
   for (let month = 0; month < 12; month++) {
     const studentsInMonth = studentInfo.filter((student) => {
       const studentMonth = new Date(student.interview_date).getMonth();
@@ -36,8 +40,10 @@ const LineGraph = ({ students, studentInfo, filteredStudents }) => {
       (student) => student.results === "false"
     ).length;
 
+    // Push the number of interviews for the month to the 'monthlyData' array
     monthlyData.push(studentsInMonth.length);
 
+    // Calculate pass and fail rates and push them to 'passRates' and 'failRates' arrays
     const passRate =
       studentsInMonth.length > 0
         ? (passedInMonth / studentsInMonth.length) * 100
@@ -51,6 +57,7 @@ const LineGraph = ({ students, studentInfo, filteredStudents }) => {
     failRates.push(failRate.toFixed(2));
   }
 
+  // Data object for the line chart
   const data = {
     labels: monthLabels,
     datasets: [
@@ -87,6 +94,7 @@ const LineGraph = ({ students, studentInfo, filteredStudents }) => {
     ],
   };
 
+  // Options for the line chart
   const options = {
     responsive: true,
     plugins: {
@@ -136,6 +144,7 @@ const LineGraph = ({ students, studentInfo, filteredStudents }) => {
     },
   };
 
+  // Render the line chart with the provided data and options
   return (
     <div className="hidden custom:flex custom:h-[400px] bg-bg rounded-lg shadow-lg shadow-black justify-center">
       <Line data={data} options={options} />
