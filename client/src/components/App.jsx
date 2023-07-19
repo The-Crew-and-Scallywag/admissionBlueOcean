@@ -2,17 +2,18 @@ import React, { useContext, useEffect } from "react";
 import Navbar from "./Nav-Footer/Navbar.jsx";
 import Dashboard from "./Dashboard/Dashboard.jsx";
 import Footer from "./Nav-Footer/Footer.jsx";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Login from "./Login/Login.jsx";
 import Interview from "./Interview/Interview.jsx";
 import InterviewSelector from "./Interview/InterviewSelector.jsx";
 
 const App = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (!token) {
+    if (!token && location.pathname !== "/interview/:id") {
       navigate("/login");
     }
   }, []);
