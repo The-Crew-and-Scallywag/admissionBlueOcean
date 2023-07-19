@@ -6,6 +6,7 @@ import LineGraph from "./LineGraph.jsx";
 import axios from "axios";
 
 const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
+  // State variables to manage edit mode, updated student data, loading state, and transitions
   const [editMode, setEditMode] = useState(false);
   const [updatedStudent, setUpdatedStudent] = useState({});
   const [loading, setLoading] = useState(true);
@@ -14,10 +15,13 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
   const [currentStudent, setCurrentStudent] = useState(0);
   const [addStudent, setAddStudent] = useState(false);
 
+  // React Router's navigate function for page navigation
   const navigate = useNavigate();
 
+  // Parse the name from localStorage to get the user's first name
   const name = JSON.parse(localStorage.getItem("name"));
 
+  // Event handlers for icon mouse enter and leave events
   const handleMouseEnterIcon = (e) => {
     setShowTooltip(true);
   };
@@ -26,6 +30,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
     setShowTooltip(false);
   };
 
+  // Function to toggle edit mode with transition effect
   const toggleEditMode = () => {
     setTransition(true);
     setTimeout(() => {
@@ -34,6 +39,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
     }, 500);
   };
 
+  // Utility functions to format date, time, and phone number
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -59,6 +65,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
     return formattedPhoneNumber;
   };
 
+  // Handle changes to the current student index
   const handleChange = (index) => {
     setTransition(true);
     setTimeout(() => {
@@ -68,6 +75,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
     }, 500);
   };
 
+  // Effect to handle loading state and transitions when students array changes
   useEffect(() => {
     setLoading(students.length === 0);
     setTransition(true);
@@ -77,16 +85,18 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
     }, 500);
   }, [students.length]);
 
+  // Filter the students based on the user's first name
   const filteredListStudents = students.filter(
     (student) => student.i_first_name === name.firstName
   );
 
+  // Function to create buttons with appropriate labels and click actions
   const button = (label) => {
     return (
       <button
         className={`mx-auto text-white bg-secondary p-2 rounded-md mt-[-30px] mb-4 hover:bg-galv-orange transition-all duration-150 ease-in-out hover:scale-105 ${
           transition ? "opacity-0" : "opacity-100"
-        }}`}
+        }`}
         onClick={() => {
           handleButtonClick();
         }}
@@ -96,6 +106,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
     );
   };
 
+  // Handle button click based on edit mode and current action (add student or start interview)
   const handleButtonClick = () => {
     editMode ? toggleEditMode() : addStudent ? addStudent() : startInterview();
 
@@ -121,6 +132,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
 
   console.log(filteredListStudents);
 
+  // Render each field (e.g., First Name, Last Name, Email, Phone) with its label and value
   const renderField = (label, value, inputProps) => {
     const isEditable = editMode && inputProps;
     const fieldValue = isEditable ? updatedStudent[label] || value : value;
@@ -165,6 +177,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
 
   return (
     <div className="flex flex-col justify-between sm:w-[400px] custom:w-[900px] mx-auto my-20 ml-4">
+      {/* Pie chart section */}
       <div className="p-2">
         <PieChart
           students={students}
@@ -172,6 +185,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
           filteredStudents={filteredStudents}
         />
       </div>
+      {/* Line graph section */}
       <div className="p-2">
         <LineGraph
           students={students}
@@ -179,6 +193,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
           filteredStudents={filteredStudents}
         />
       </div>
+      {/* Student information section */}
       <div className="mt-10 mb-2 flex flex-col">
         <div className="bg-bg rounded-lg m-2 p-2 shadow-lg shadow-black">
           <div className="text-white text-2xl text-center">
@@ -201,6 +216,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
               </select>
             )}
           </div>
+          {/* Toggle edit mode and add student/edit student buttons */}
           {editMode ? (
             <div className="flex-row flex justify-end">
               <MdEditOff
@@ -239,6 +255,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
             </div>
           )}
 
+          {/* Render student information fields */}
           <div className="mt-4 mb-12 p-6">
             {!loading && (
               <div className="grid grid-cols-1 custom:grid-cols-2 gap-4">
@@ -257,6 +274,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
               </div>
             )}
           </div>
+          {/* Render appropriate button based on edit mode and current action */}
           <div className="flex flex-col">
             {editMode
               ? button("Save")

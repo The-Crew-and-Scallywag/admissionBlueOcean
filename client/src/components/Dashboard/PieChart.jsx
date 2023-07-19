@@ -3,13 +3,18 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 
 const PieChart = ({ studentInfo, filteredStudents }) => {
+  // Register ArcElement, Tooltip, and Legend with ChartJS
   ChartJS.register(ArcElement, Tooltip, Legend);
 
+  // State variables to control selection and breakdown
   const [selected, setSelected] = useState("All");
   const [breakdown, setBreakdown] = useState("All");
+
+  // Depending on the selected value, use either all studentInfo or filteredStudents
   const selectedPie = selected === "All" ? studentInfo : filteredStudents;
   const studentBreakdown = breakdown === "All" ? studentInfo : filteredStudents;
 
+  // Event handlers for selecting and changing breakdown
   const handleSelect = (e) => {
     setSelected(e.target.value);
   };
@@ -18,14 +23,15 @@ const PieChart = ({ studentInfo, filteredStudents }) => {
     setBreakdown(e.target.value);
   };
 
+  // Count the number of passed and failed interviews
   const passed = selectedPie.filter(
     (student) => student.results === "true"
   ).length;
-
   const failed = selectedPie.filter(
     (student) => student.results === "false"
   ).length;
 
+  // Data object for the Pie chart
   const data = {
     labels: ["Passed", "Failed"],
     datasets: [
@@ -41,6 +47,7 @@ const PieChart = ({ studentInfo, filteredStudents }) => {
 
   return (
     <div className="flex flex-col custom:flex-row w-full">
+      {/* Pie chart section */}
       <div className="flex flex-col justify-center items-center my-2 p-2 bg-bg rounded-lg shadow-black shadow-lg">
         <h2 className="text-white/70 text-xl font-bold text-center tracking-wide my-2">
           Student Results:{" "}
@@ -58,6 +65,7 @@ const PieChart = ({ studentInfo, filteredStudents }) => {
           <Pie data={data} />
         </div>
       </div>
+      {/* Breakdown section */}
       <div className="custom:ml-2 my-2 bg-bg rounded-md shadow-black shadow-lg w-full">
         <h2 className="text-white/70 text-xl font-bold text-center tracking-wide my-2">
           Breakdown:
@@ -72,6 +80,7 @@ const PieChart = ({ studentInfo, filteredStudents }) => {
           </select>
         </h2>
         <ul className="grid grid-cols-2 p-2 items-center">
+          {/* Display total number of students */}
           <li className="text-white/70 text-2xl font-bold p-2">
             Total Students:{" "}
             <label className="text-accent text-md">
@@ -85,6 +94,7 @@ const PieChart = ({ studentInfo, filteredStudents }) => {
               }
             </label>
           </li>
+          {/* Display total number of interviews */}
           <li className="text-white/70 text-2xl font-bold p-2">
             Total Interviews:{" "}
             <label className="text-accent text-md">
@@ -95,6 +105,7 @@ const PieChart = ({ studentInfo, filteredStudents }) => {
                 ).length}
             </label>
           </li>
+          {/* Display number of passed interviews */}
           <li className="text-white/70 text-2xl font-bold p-2">
             Passed:{" "}
             <label className="text-accent text-md">
@@ -104,6 +115,7 @@ const PieChart = ({ studentInfo, filteredStudents }) => {
               }
             </label>
           </li>
+          {/* Display number of failed interviews */}
           <li className="text-white/70 text-2xl font-bold p-2">
             Failed:{" "}
             <label className="text-red-400 text-md">
@@ -114,6 +126,7 @@ const PieChart = ({ studentInfo, filteredStudents }) => {
               }
             </label>
           </li>
+          {/* Display pass rate percentage */}
           <li className="text-white/70 text-2xl font-bold p-2">
             Pass Rate:{" "}
             <label className="text-accent text-md">
