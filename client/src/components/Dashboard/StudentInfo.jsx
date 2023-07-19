@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { MdEditDocument, MdEditOff, MdAddCircle } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import PieChart from "./PieChart.jsx";
@@ -13,23 +13,43 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [currentStudent, setCurrentStudent] = useState(0);
   const [addStudent, setAddStudent] = useState(false);
+  const [newStudent, setNewStudent] = useState({});
+  const [hoveredIcon, setHoveredIcon] = useState("");
+
+  const editRef = useRef(null);
+  const addRef = useRef(null);
 
   const navigate = useNavigate();
 
   const name = JSON.parse(localStorage.getItem("name"));
 
-  const handleMouseEnterIcon = (e) => {
+  const handleMouseEnterIcon = (ref) => {
     setShowTooltip(true);
+    if (ref === editRef.current) {
+      setHoveredIcon("edit");
+    }
+    if (ref === addRef) {
+      setHoveredIcon("add");
+    }
   };
 
   const handleMouseLeaveIcon = (e) => {
     setShowTooltip(false);
+    setHoveredIcon("");
   };
 
   const toggleEditMode = () => {
     setTransition(true);
     setTimeout(() => {
       setEditMode(!editMode);
+      setTransition(false);
+    }, 500);
+  };
+
+  const toggleAddStudent = () => {
+    setTransition(true);
+    setTimeout(() => {
+      setAddStudent(!addStudent);
       setTransition(false);
     }, 500);
   };
@@ -96,52 +116,52 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
     );
   };
 
+  const patchStudent = () => {
+    axios.patch(`/api/student/${student.s_id}`, updatedStudent).then((res) => {
+      console.log(res);
+    });
+  };
+
+  const startInterview = () => {
+    navigate(`/interview/${student.s_id}`);
+  };
+
+  const addNewStudent = () => {
+    axios.post("/api/student", newStudent).then((res) => {
+      console.log(res);
+    });
+  };
+
   const handleButtonClick = () => {
-    editMode ? toggleEditMode() : addStudent ? addStudent() : startInterview();
-
-    const patchStudent = () => {
-      axios
-        .patch(`/api/students/${student.s_id}`, updatedStudent)
-        .then((res) => {
-          console.log(res);
-        });
-    };
-
-    const startInterview = () => {
-      navigate(`/interview/${student.s_id}`);
-    };
-    const addStudent = () => {
-      axios.post("/api/students", updatedStudent).then((res) => {
-        console.log(res);
-      });
-    };
+    editMode ? patchStudent() : addStudent ? addNewStudent() : startInterview();
   };
 
   let student = filteredListStudents[currentStudent];
 
-  console.log(filteredListStudents);
+  console.log(updatedStudent);
 
   const renderField = (label, value, inputProps) => {
     const isEditable = editMode && inputProps;
     const fieldValue = isEditable ? updatedStudent[label] || value : value;
+    const isAddStudent = addStudent && inputProps;
+
+    const labelReplacements = {
+      "First Name": "firstName",
+      "Last Name": "lastName",
+      Email: "email",
+      Phone: "phone",
+    };
+
+    const modifiedLabel = labelReplacements[label];
+
     return (
       <div
         className={`text-white text-xl font-bold p-2 mr-12 w-full transition-all duration-300 ease-in-out`}
       >
         {label}:{" "}
-        {!isEditable ? (
+        {isEditable ? (
           <div
-            className={`text-accent font-normal py-[5px] ${
-              transition
-                ? "opacity-0 translate-x-[50px]"
-                : "opacity-100 border-b-[1px]"
-            } transition-all duration-300 ease-in-out`}
-          >
-            {fieldValue}
-          </div>
-        ) : (
-          <div
-            className={` ${
+            className={`${
               transition ? "opacity-0 translate-x-[50px]" : "opacity-100"
             } transition-all duration-300 ease-in-out`}
           >
@@ -152,11 +172,36 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
               onChange={(e) =>
                 setUpdatedStudent({
                   ...updatedStudent,
-                  [label]: e.target.value,
+                  [modifiedLabel]: e.target.value,
                 })
               }
               {...inputProps}
             />
+          </div>
+        ) : isAddStudent ? (
+          <div>
+            <input
+              type="text"
+              className={`text-white bg-secondary p-2 rounded-md shadow-md shadow-black  focus:ring-accent focus:ring-2 focus:outline-none text-lg tracking-wider ml-2 font-normal m-2`}
+              placeholder={label}
+              onChange={(e) =>
+                setNewStudent({
+                  ...newStudent,
+                  [modifiedLabel]: e.target.value,
+                })
+              }
+              {...inputProps}
+            />
+          </div>
+        ) : (
+          <div
+            className={`text-accent font-normal py-[5px] ${
+              transition
+                ? "opacity-0 translate-x-[50px]"
+                : "opacity-100 border-b-[1px]"
+            } transition-all duration-300 ease-in-out`}
+          >
+            {fieldValue}
           </div>
         )}
       </div>
@@ -212,30 +257,42 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
             </div>
           ) : (
             <div className="flex-row flex justify-end">
-              <MdEditDocument
-                className="relative text-white float-right cursor-pointer text-xl m-2"
-                onClick={toggleEditMode}
-                onMouseEnter={handleMouseEnterIcon}
-                onMouseLeave={handleMouseLeaveIcon}
-              />
-              <MdAddCircle
-                className="relative text-white float-right cursor-pointer text-xl m-2"
-                onClick={toggleEditMode}
-                onMouseEnter={handleMouseEnterIcon}
-                onMouseLeave={handleMouseLeaveIcon}
-              />
+              <div ref={editRef}>
+                <MdEditDocument
+                  className="relative text-white float-right cursor-pointer text-xl m-2"
+                  onClick={toggleEditMode}
+                  onMouseEnter={() => handleMouseEnterIcon(editRef.current)}
+                  onMouseLeave={handleMouseLeaveIcon}
+                />
+              </div>
+              <div ref={addRef}>
+                <MdAddCircle
+                  className="relative text-white float-right cursor-pointer text-xl m-2"
+                  onClick={toggleAddStudent}
+                  onMouseEnter={() => handleMouseEnterIcon(addRef.current)}
+                  onMouseLeave={handleMouseLeaveIcon}
+                />
+              </div>
             </div>
           )}
 
           {showTooltip && (
             <div
               style={{
-                right: "25%",
+                right: "0%",
                 transform: "translateX(-50%)",
               }}
               className="absolute bg-white p-2 rounded-lg shadow-lg shadow-black"
             >
-              This is a ToolTip
+              {hoveredIcon === "edit" ? (
+                <div className="text-black text-center">
+                  {editMode ? "Exit Edit Mode" : "Edit Student"}
+                </div>
+              ) : (
+                <div className="text-black text-center">
+                  {addStudent ? "Exit Add Student" : "Add Student"}
+                </div>
+              )}
             </div>
           )}
 

@@ -51,6 +51,7 @@ const TestEditor = ({ student, students, setStudent }) => {
       editorRef.current.getModel(),
       new Set([editorRef.current], provider.awareness)
     ); // Create a binding between YJS and Monaco editor to synchronize the document
+    console.log(provider.awareness);
 
     // Bind YJS to Monaco editor
   };
@@ -155,7 +156,7 @@ const TestEditor = ({ student, students, setStudent }) => {
                           language="javascript"
                           style={dark}
                           key={index}
-                          className="py-2 m-2 rounded-lg shadow-lg shadow-black"
+                          className="py-2 m-2 rounded-lg shadow-lg shadow-black  overflow-visible"
                         >
                           {JSON.stringify(code[0], null)}
                         </SyntaxHighlighter>
