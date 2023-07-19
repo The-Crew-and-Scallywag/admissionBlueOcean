@@ -10,4 +10,9 @@ export default {
     environment: "jsdom",
     watch: false,
   },
+  build: {
+    rollupOptions: {
+      external: ["./node_modules/y-monaco/src/y-monaco.js"],
+    },
+  },
 };
