@@ -3,6 +3,7 @@ import { MdEditDocument, MdEditOff, MdAddCircle } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import PieChart from "./PieChart.jsx";
 import LineGraph from "./LineGraph.jsx";
+import axios from "axios";
 
 const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
   const [editMode, setEditMode] = useState(false);
@@ -11,6 +12,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
   const [transition, setTransition] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [currentStudent, setCurrentStudent] = useState(0);
+  const [addStudent, setAddStudent] = useState(false);
 
   const navigate = useNavigate();
 
@@ -79,6 +81,42 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
     (student) => student.i_first_name === name.firstName
   );
 
+  const button = (label) => {
+    return (
+      <button
+        className={`mx-auto text-white bg-secondary p-2 rounded-md mt-[-30px] mb-4 hover:bg-galv-orange transition-all duration-150 ease-in-out hover:scale-105 ${
+          transition ? "opacity-0" : "opacity-100"
+        }}`}
+        onClick={() => {
+          handleButtonClick();
+        }}
+      >
+        {label}
+      </button>
+    );
+  };
+
+  const handleButtonClick = () => {
+    editMode ? toggleEditMode() : addStudent ? addStudent() : startInterview();
+
+    const patchStudent = () => {
+      axios
+        .patch(`/api/students/${student.s_id}`, updatedStudent)
+        .then((res) => {
+          console.log(res);
+        });
+    };
+
+    const startInterview = () => {
+      navigate(`/interview/${student.s_id}`);
+    };
+    const addStudent = () => {
+      axios.post("/api/students", updatedStudent).then((res) => {
+        console.log(res);
+      });
+    };
+  };
+
   let student = filteredListStudents[currentStudent];
 
   console.log(filteredListStudents);
@@ -142,27 +180,27 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
         />
       </div>
       <div className="mt-10 mb-2 flex flex-col">
-        <div className="text-white text-2xl text-center">
-          Student:{" "}
-          {!loading && (
-            <select
-              value={currentStudent}
-              onChange={(e) => handleChange(parseInt(e.target.value))}
-              className="text-white/70 bg-bg rounded-md p-1 shadow-md shadow-black focus:ring-1 focus:ring-accent text-lg tracking-wider ml-2 cursor-pointer transition-all duration-300 ease-in-out"
-            >
-              {filteredListStudents.map((student, index) => (
-                <option
-                  key={index}
-                  value={index}
-                  className="bg-secondary text-accent py-4 focus:text-accent cursor-pointer"
-                >
-                  {`${student.s_first_name} ${student.s_last_name}`}
-                </option>
-              ))}
-            </select>
-          )}
-        </div>
         <div className="bg-bg rounded-lg m-2 p-2 shadow-lg shadow-black">
+          <div className="text-white text-2xl text-center">
+            Student:{" "}
+            {!loading && (
+              <select
+                value={currentStudent}
+                onChange={(e) => handleChange(parseInt(e.target.value))}
+                className="text-white/70 bg-bg rounded-md p-2 shadow-md shadow-black focus:ring-1 focus:ring-accent text-lg tracking-wider ml-2 mt-2 cursor-pointer transition-all duration-300 ease-in-out"
+              >
+                {filteredListStudents.map((student, index) => (
+                  <option
+                    key={index}
+                    value={index}
+                    className="bg-secondary text-accent py-4 focus:text-accent cursor-pointer"
+                  >
+                    {`${student.s_first_name} ${student.s_last_name}`}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
           {editMode ? (
             <div className="flex-row flex justify-end">
               <MdEditOff
@@ -220,26 +258,11 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
             )}
           </div>
           <div className="flex flex-col">
-            {editMode ? (
-              <button
-                className={`mx-auto text-white bg-secondary p-2 rounded-md mt-[-30px] mb-4 hover:bg-galv-orange transition-all duration-150 ease-in-out hover:scale-105 ${
-                  transition ? "opacity-0" : "opacity-100"
-                }}`}
-              >
-                Save Changes
-              </button>
-            ) : (
-              <button
-                className={`mx-auto text-white bg-secondary p-2 rounded-md mt-[-30px] mb-4 hover:bg-galv-orange transition-all duration-150 ease-in-out hover:scale-105 ${
-                  transition ? "opacity-0" : "opacity-100"
-                }`}
-                onClick={() => {
-                  navigate(`/interview/${student.s_id}`);
-                }}
-              >
-                Start an Interview
-              </button>
-            )}
+            {editMode
+              ? button("Save")
+              : addStudent
+              ? button("Add Student")
+              : button("Start Interview")}
           </div>
         </div>
       </div>

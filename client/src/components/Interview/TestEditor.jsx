@@ -55,6 +55,20 @@ const TestEditor = ({ student, students, setStudent }) => {
     // Bind YJS to Monaco editor
   };
 
+  const handleClear = () => {
+    codeRef.current.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    setTimeout(() => {
+      setResults([]);
+    }, 500);
+  };
+
+  const handleReset = () => {
+    setEditorValue("// Write your code here...");
+  };
+
   console.log(student);
 
   return (
@@ -80,6 +94,7 @@ const TestEditor = ({ student, students, setStudent }) => {
                 theme="vs-dark"
                 defaultLanguage="javascript"
                 defaultValue={editorValue}
+                ref={editorRef}
                 onMount={handleEditorDidMount}
                 options={{
                   fontSize: 18,
@@ -100,49 +115,53 @@ const TestEditor = ({ student, students, setStudent }) => {
               >
                 Run
               </button>
+              <button
+                onClick={handleReset}
+                className="bg-bg p-2 w-40 rounded-lg text-white/50 my-12  hover:scale-105 hover:bg-bg/70 hover:border-[1px] hover:border-accent transition-transform duration-300 ease-in-out shadow-lg shadow-black"
+              >
+                Reset Editor
+              </button>
               {results.length > 0 && (
                 <button
-                  onClick={() => setResults([])}
+                  onClick={handleClear}
                   className="bg-bg p-2 w-40 rounded-lg text-white/50 my-12  hover:scale-105 hover:bg-bg/70 hover:border-[1px] hover:border-red-400 transition-transform duration-300 ease-in-out shadow-lg shadow-black"
                 >
-                  Clear
+                  Clear Output
                 </button>
               )}
             </div>
           </div>
           {results.length > 0 && (
-            <div className="text-center">
-              <div className="bg-bg p-4 text-lg text-center text-white font-normal m-4  min-w-[400px] rounded-lg shadow-black shadow-xl h-full ">
-                <h1 className="text-2xl text-white/70 font-bold self-center p-2 mb-2">
-                  Outputs:
-                </h1>
-                <div className="w-full border-b-2 border-accent"></div>
-                <div
-                  ref={codeRef}
-                  className="max-h-[700px] overflow-y-auto no-scrollbar h-full relative"
-                >
-                  {results.length > 0 &&
-                    results.map((item, index) => (
-                      <div
-                        key={index}
-                        className="bg-secondary p-4 my-4 rounded-lg shadow-lg shadow-black text-left"
-                      >
-                        <span className="italic text-accent font-bold">
-                          Output {index + 1}:{" "}
-                        </span>
-                        {item.map((code, index) => (
-                          <SyntaxHighlighter
-                            language="javascript"
-                            style={dark}
-                            key={index}
-                            className="py-2 m-2 "
-                          >
-                            {JSON.stringify(code[0], null)}
-                          </SyntaxHighlighter>
-                        ))}
-                      </div>
-                    ))}
-                </div>
+            <div className="bg-bg p-4 text-lg text-center text-white font-normal m-4 transition-all duration-150 ease min-w-[400px] rounded-lg shadow-black shadow-xl h-full relative top-[-50px]">
+              <h1 className="text-2xl text-white/70 font-bold self-center p-2 mb-2">
+                Outputs:
+              </h1>
+              <div className="w-full border-b-2 border-accent"></div>
+              <div
+                ref={codeRef}
+                className="max-h-[700px] overflow-y-auto no-scrollbar h-full relative"
+              >
+                {results.length > 0 &&
+                  results.map((item, index) => (
+                    <div
+                      key={index}
+                      className="bg-secondary p-4 my-4 rounded-lg shadow-lg shadow-black text-left"
+                    >
+                      <span className="italic text-accent font-bold">
+                        Output {index + 1}:{" "}
+                      </span>
+                      {item.map((code, index) => (
+                        <SyntaxHighlighter
+                          language="javascript"
+                          style={dark}
+                          key={index}
+                          className="py-2 m-2 rounded-lg shadow-lg shadow-black"
+                        >
+                          {JSON.stringify(code[0], null)}
+                        </SyntaxHighlighter>
+                      ))}
+                    </div>
+                  ))}
               </div>
             </div>
           )}

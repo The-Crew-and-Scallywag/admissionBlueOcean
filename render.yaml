@@ -1,11 +1,15 @@
+databases:
+  - name: blueocean # Render PG14
+    plan: free
+    databaseName: blueocean
+    user: postgres_blueocean
+    postgresMajorVersion: 15
+
 services:
   - type: web
-
+    plan: standard
     name: admission-blue-client
-    repo: https://github.com/The-Crew-and-Scallywag/admissionBlueOcean.git
-    staticPublishPath: ./src/dist
-    buildCommand: npm run build
-    env: static
+    runtime: docker
     branch: main
     rootDir: client
     envVars:
@@ -21,9 +25,8 @@ services:
           property: host
 
   - type: web
-
+    plan: free
     name: admission-blue-server
-    repo: https://github.com/The-Crew-and-Scallywag/admissionBlueOcean.git
     runtime: docker
     branch: main
     rootDir: Server
@@ -37,10 +40,3 @@ services:
         value: "80"
       - key: INTERVIEWER_TOKEN
         value: "special-awesome-stinky-smelly-super-secret-unique-access-token"
-
-databases:
-  - name: blueocean # Render PG14
-
-    databaseName: blueocean
-    user: postgres_blueocean
-    postgresMajorVersion: 15
