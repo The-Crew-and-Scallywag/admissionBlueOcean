@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Editor from "@monaco-editor/react";
 import * as Y from "yjs";
 import { WebsocketProvider } from "y-websocket";
@@ -8,42 +8,34 @@ import { materialDark as dark } from "react-syntax-highlighter/dist/esm/styles/p
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-const TestEditor = ({ student, students, setStudent }) => {
-  const editorRef = useRef(null); // Reference to the Monaco editor instance
-  const codeRef = useRef(null); // Reference to the code returned
-  const [results, setResults] = useState([]); // State variable for the output of the code
-  const [editorValue, setEditorValue] = useState("// Write your code here..."); // State variable for the initial value of the editor
-  const [outputValues, setOutputValues] = useState([]); // State variable for storing the output values
+const TestEditor = ({ setStudent }) => {
+  const editorRef = useRef(null);
+  const codeRef = useRef(null);
+  const [results, setResults] = useState([]);
+  const [editorValue, setEditorValue] = useState("// Write your code here...");
   const [loading, setLoading] = useState(true);
-
-  const handleOutput = async (output) => {
-    const res = await axios.post("api/run", {
-      code: output,
-    });
-    let returnValue = res.data.result;
-
-    setResults([...results, returnValue]); // Update the output state variable
-  };
-
   const { id } = useParams();
 
   useEffect(() => {
-    axios.get(`/api/student/${id}`).then((res) => {
-      setStudent(res.data);
-    });
-    setLoading(false);
-  }, []);
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`/api/student/${id}`);
+        setStudent(res.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error while fetching data:", error);
+        setLoading(false);
+      }
+    };
 
-  console.log(student);
+    fetchData();
+  }, [id, setStudent]);
 
   useEffect(() => {
     if (codeRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = codeRef.current;
-
-      // Calculate the target scroll position
+      const { scrollHeight, clientHeight } = codeRef.current;
       const targetScrollTop = scrollHeight - clientHeight;
 
-      // Scroll to the target position with smooth animation
       codeRef.current.scrollTo({
         top: targetScrollTop,
         behavior: "smooth",
@@ -51,27 +43,35 @@ const TestEditor = ({ student, students, setStudent }) => {
     }
   }, [results.length]);
 
-  const handleEditorDidMount = (editor, monaco) => {
-    editorRef.current = editor; // Store the Monaco editor instance reference in the ref
-
-    const doc = new Y.Doc(); // Create a new Y.Doc instance for collaborative editing
-
+  const handleEditorDidMount = useCallback((editor, monaco) => {
+    editorRef.current = editor;
+    const doc = new Y.Doc();
     const provider = new WebsocketProvider(
       import.meta.env.VITE_WS,
       "interview",
       doc
-    ); // Create a WebRTC provider for peer-to-peer communication
-    const type = doc.getText("monaco"); // Get a Y.Text type for Monaco editor
+    );
+    const type = doc.getText("monaco");
     const binding = new MonacoBinding(
       type,
       editorRef.current.getModel(),
       new Set([editorRef.current], provider.awareness)
-    ); // Create a binding between YJS and Monaco editor to synchronize the document
+    );
+  }, []);
 
-    // Bind YJS to Monaco editor
-  };
+  const handleOutput = useCallback(async () => {
+    try {
+      const res = await axios.post("api/run", {
+        code: editorRef.current.getValue(),
+      });
+      const returnValue = res.data.result;
+      setResults((prevResults) => [...prevResults, returnValue]);
+    } catch (error) {
+      console.error("Error while handling output:", error);
+    }
+  }, []);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     codeRef.current.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -79,11 +79,11 @@ const TestEditor = ({ student, students, setStudent }) => {
     setTimeout(() => {
       setResults([]);
     }, 500);
-  };
+  }, []);
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setEditorValue("// Write your code here...");
-  };
+  }, []);
 
   return (
     <div>
@@ -124,7 +124,7 @@ const TestEditor = ({ student, students, setStudent }) => {
           </div>
           <div className="flex flex-row gap-4">
             <button
-              onClick={() => handleOutput(editorRef.current.getValue())}
+              onClick={handleOutput}
               className="bg-bg p-2 w-40 rounded-lg text-white/50 my-12  hover:scale-105 hover:bg-bg/70 hover:border-[1px] hover:border-accent transition-transform duration-300 ease-in-out shadow-lg shadow-black"
             >
               Run
@@ -155,27 +155,26 @@ const TestEditor = ({ student, students, setStudent }) => {
               ref={codeRef}
               className="max-h-[700px] overflow-y-auto no-scrollbar h-full relative"
             >
-              {results.length > 0 &&
-                results.map((item, index) => (
-                  <div
-                    key={index}
-                    className="bg-secondary p-4 my-4 rounded-lg shadow-lg shadow-black text-left"
-                  >
-                    <span className="italic text-accent font-bold">
-                      Output {index + 1}:{" "}
-                    </span>
-                    {item.map((code, index) => (
-                      <SyntaxHighlighter
-                        language="javascript"
-                        style={dark}
-                        key={index}
-                        className="py-2 m-2 rounded-lg shadow-lg shadow-black  overflow-visible"
-                      >
-                        {JSON.stringify(code[0], null)}
-                      </SyntaxHighlighter>
-                    ))}
-                  </div>
-                ))}
+              {results.map((item, index) => (
+                <div
+                  key={index}
+                  className="bg-secondary p-4 my-4 rounded-lg shadow-lg shadow-black text-left"
+                >
+                  <span className="italic text-accent font-bold">
+                    Output {index + 1}:{" "}
+                  </span>
+                  {item.map((code, codeIndex) => (
+                    <SyntaxHighlighter
+                      language="javascript"
+                      style={dark}
+                      key={codeIndex}
+                      className="py-2 m-2 rounded-lg shadow-lg shadow-black  overflow-visible"
+                    >
+                      {JSON.stringify(code[0], null)}
+                    </SyntaxHighlighter>
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
         )}
