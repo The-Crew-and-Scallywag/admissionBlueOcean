@@ -2,7 +2,13 @@ import React, { useContext, useEffect } from "react";
 import Navbar from "./Nav-Footer/Navbar.jsx";
 import Dashboard from "./Dashboard/Dashboard.jsx";
 import Footer from "./Nav-Footer/Footer.jsx";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import Login from "./Login/Login.jsx";
 import Interview from "./Interview/Interview.jsx";
 import InterviewSelector from "./Interview/InterviewSelector.jsx";
@@ -13,10 +19,10 @@ const App = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (!token && location.pathname !== "/interview/:id") {
+    if (!token && !location.pathname.startsWith("/interview")) {
       navigate("/login");
     }
-  }, []);
+  }, [location.pathname]);
 
   return (
     <div className="flex flex-col min-h-screen min-w-screen relative">
