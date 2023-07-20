@@ -34,8 +34,6 @@ const TestEditor = ({ student, students, setStudent }) => {
     setLoading(false);
   }, []);
 
-  console.log(student);
-
   useEffect(() => {
     if (codeRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = codeRef.current;

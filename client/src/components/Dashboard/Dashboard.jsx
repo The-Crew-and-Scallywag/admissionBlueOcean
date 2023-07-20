@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Welcome from "./Welcome";
 import StudentInfo from "./StudentInfo";
+
 import axios from "axios";
 
 const Dashboard = () => {
   // State variables
+
   const [students, setStudents] = useState([]); // Stores the list of students
   const [studentInfo, setStudentInfo] = useState([]); // Stores the list of student information
   const [filteredStudents, setFilteredStudents] = useState([]); // Stores the list of filtered students
@@ -19,11 +21,14 @@ const Dashboard = () => {
   useEffect(() => {
     const getStudents = async () => {
       try {
-        const res = await axios.get("/api/students/");
+        const res = await axios.get(`/api/students/`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
         const data = res.data;
         setStudents(data);
       } catch (err) {
         console.log(err);
+        console.log(err.response.data);
       }
     };
     getStudents();

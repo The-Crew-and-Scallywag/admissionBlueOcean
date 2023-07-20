@@ -1,3 +1,4 @@
+import { tokenDecoder } from "../Authorization/auth.js";
 import { db } from "../Database/database.js";
 import {
   allInterviews,
@@ -57,11 +58,12 @@ export const updateResult = async (req, res) => {
 export const addInterview = async (req, res) => {
   try {
     const { studentId, interviewerId, date } = req.body;
-    console.log(studentId, interviewerId);
+    const token = tokenDecoder(interviewerId);
+    console.log("be", studentId, token.id);
 
     const results = await db.query(postInterview, [
-      parseInt(studentId),
-      parseInt(interviewerId),
+      Number(studentId),
+      Number(token.id),
       date,
     ]);
 

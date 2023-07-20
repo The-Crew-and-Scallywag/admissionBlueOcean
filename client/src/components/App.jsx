@@ -1,7 +1,8 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Navbar from "./Nav-Footer/Navbar.jsx";
 import Dashboard from "./Dashboard/Dashboard.jsx";
 import Footer from "./Nav-Footer/Footer.jsx";
+import axios from "axios";
 import {
   Routes,
   Route,
@@ -17,6 +18,11 @@ const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem("token");
+  const [interviewId, setInterviewId] = useState(null);
+
+  const getInterviewId = (number) => {
+    setInterviewId(number);
+  };
 
   useEffect(() => {
     if (!token && !location.pathname.startsWith("/interview")) {
@@ -31,8 +37,16 @@ const App = () => {
         <Routes>
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/" element={<Dashboard />} />
-          <Route exact path="/interview" element={<InterviewSelector />} />
-          <Route exact path="/interview/:id" element={<Interview />} />
+          <Route
+            exact
+            path="/interview"
+            element={<InterviewSelector getInterviewId={getInterviewId} />}
+          />
+          <Route
+            exact
+            path="/interview/:id"
+            element={<Interview interviewId={interviewId} />}
+          />
         </Routes>
       </div>
       <Footer />

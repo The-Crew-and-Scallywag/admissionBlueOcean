@@ -1,24 +1,38 @@
 import React, { useEffect, useState } from "react";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const InterviewSelector = () => {
+const InterviewSelector = ({ getInterviewId }) => {
   const [students, setStudents] = useState([]);
   const [student, setStudent] = useState({});
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("/api/students").then((res) => {
-      console.log(res.data);
-      setStudents(res.data);
-      setStudent(res.data[0]);
-    });
+    axios
+      .get("/api/students", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then((res) => {
+        setStudents(res.data);
+        setStudent(res.data[0]);
+      });
   }, []);
 
   const handleChange = (e) => {
     const selectedStudentId = parseInt(e.target.value);
     setStudent(students.find((student) => student.id === selectedStudentId));
+  };
+
+  const handleStartInterview = async () => {
+    const date = new Date();
+    const response = await axios.post("/api/interview/", {
+      studentId: JSON.stringify(student.id),
+      interviewerId: localStorage.getItem("token"),
+      date: date.toISOString(),
+    });
+    getInterviewId(response.data.id);
   };
 
   return (
@@ -58,6 +72,7 @@ const InterviewSelector = () => {
           <div>
             <button
               onClick={() => {
+                handleStartInterview();
                 navigate(`/interview/${student.id}`);
               }}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
