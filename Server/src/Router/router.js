@@ -6,7 +6,7 @@ import {
   addSummaryNotes,
   getAllInterviews,
   getInterview,
-  updateInterviewData,
+  updateResult,
 } from "../Controllers/interviewController.js";
 import { getAllQuestions } from "../Controllers/questionController.js";
 import {
@@ -50,11 +50,11 @@ router.get("/interviews", getAllInterviews); // list of all interviews
 
 router.get("/questions", getAllQuestions); // list of questions from the db
 
-router.patch("/interview/result", updateInterviewData); // update interview notes and result
-
 router.patch("/interview/notes", addSummaryNotes); // add final notes to students interview
 
-router.patch("/interview/question/notes", addQuestionNote);
+router.patch("/interview/question/notes", addQuestionNote); // add notes to each question
+
+router.patch("/interview/result", updateResult); // add final result of interview
 
 router.post("/run", runCode); // runs client side code and returns output
 

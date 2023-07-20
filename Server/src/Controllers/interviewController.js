@@ -5,6 +5,7 @@ import {
   patchInterviewData,
   patchNote,
   patchQuestionNote,
+  patchResult,
   postInterview,
 } from "./queries.js";
 
@@ -29,15 +30,10 @@ export const getInterview = async (req, res) => {
   }
 };
 
-export const updateInterviewData = async (req, res) => {
+export const updateResult = async (req, res) => {
   try {
-    const id = Number(req.params.id);
-    let { notes, result } = req.body;
-
-    if (result == undefined) {
-      const results = await db.query(patchInterviewData, [notes, result, id]);
-      return res.status(200).json(results.rows[0]);
-    }
+    let { result, interviewId } = req.body;
+    Number(interviewId);
 
     if (result.toLowerCase() === "pass") {
       result = "true";
@@ -46,10 +42,10 @@ export const updateInterviewData = async (req, res) => {
     } else {
       return res
         .status(400)
-        .json({ message: "Invalid value for students result" });
+        .json({ message: "Result should be 'pass' or 'fail'." });
     }
 
-    const results = await db.query(patchInterviewData, [notes, result, id]);
+    const results = await db.query(patchResult, [result, interviewId]);
 
     res.status(200).json(results.rows[0]);
   } catch (error) {
