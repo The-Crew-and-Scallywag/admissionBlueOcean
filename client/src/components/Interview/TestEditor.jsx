@@ -56,11 +56,9 @@ const TestEditor = ({ student, students, setStudent }) => {
 
     const doc = new Y.Doc(); // Create a new Y.Doc instance for collaborative editing
 
-    const provider = new WebsocketProvider(
-      import.meta.env.VITE_WS,
-      "interview",
-      doc
-    ); // Create a WebRTC provider for peer-to-peer communication
+    const room = `interview-${id}`; // Get the room name from the URL
+
+    const provider = new WebsocketProvider(import.meta.env.VITE_WS, room, doc); // Create a WebRTC provider for peer-to-peer communication
     const type = doc.getText("monaco"); // Get a Y.Text type for Monaco editor
     const binding = new MonacoBinding(
       type,
