@@ -3,6 +3,8 @@ import {
   allInterviews,
   interviewsByStudents,
   patchInterviewData,
+  patchNote,
+  patchQuestionNote,
   postInterview,
 } from "./queries.js";
 
@@ -71,5 +73,34 @@ export const addInterview = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error Adding Interview To Schedule" });
+  }
+};
+
+export const addQuestionNote = async (req, res) => {
+  try {
+    const { note, questionId, interviewId } = req.body;
+    Number(questionId);
+    Number(interviewId);
+    const results = await db.query(patchQuestionNote, [
+      questionId,
+      note,
+      interviewId,
+    ]);
+    res.status(200).json(results.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error Adding Question Notes" });
+  }
+};
+
+export const addSummaryNotes = async (req, res) => {
+  try {
+    const { note, interviewId } = req.body;
+
+    const results = await db.query(patchNote, [note, interviewId]);
+    res.status(200).json(results.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error Adding Summary Notes" });
   }
 };

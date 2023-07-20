@@ -2,6 +2,8 @@ import { Router } from "express";
 import { logUserIn } from "../Controllers/logController.js";
 import {
   addInterview,
+  addQuestionNote,
+  addSummaryNotes,
   getAllInterviews,
   getInterview,
   updateInterviewData,
@@ -16,8 +18,13 @@ import {
   studentsAndInterviewers,
 } from "../Controllers/studentController.js";
 import { runCode } from "../Controllers/codeController.js";
+import { protectRoutes } from "../Authorization/auth.js";
 
 export const router = Router();
+
+/**
+ *          STUDENT ROUTES
+ */
 
 router.get("/students", getAllStudents); // list of all students
 
@@ -31,18 +38,28 @@ router.patch("/student/:id", updateStudent); // patch student data
 
 router.delete("/student/:id", removeStudent); // deletes student
 
-router.get("/interview/:id", getInterview); // list of interviews by student id
+/**
+ *          INTERVIEW ROUTES
+ */
 
-router.get("/questions", getAllQuestions); // list of questions from the db
+router.get("/interview/:id", getInterview); // list of interviews by student id
 
 router.post("/interview", addInterview); // adds interview
 
 router.get("/interviews", getAllInterviews); // list of all interviews
 
-router.patch("/interview/:id", updateInterviewData); // update interview notes and result
+router.get("/questions", getAllQuestions); // list of questions from the db
+
+router.patch("/interview/result", updateInterviewData); // update interview notes and result
+
+router.patch("/interview/notes", addSummaryNotes); // add final notes to students interview
+
+router.patch("/interview/question/notes", addQuestionNote);
 
 router.post("/run", runCode); // runs client side code and returns output
+
 /**
- * LOGIN ROUTE
+ *          LOGIN ROUTE
  */
+
 router.post("/login", logUserIn); // logs interviewers in and returns a token and interviewer data
