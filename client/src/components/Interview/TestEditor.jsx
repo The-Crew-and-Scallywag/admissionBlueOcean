@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 import * as Y from "yjs";
-import { WebrtcProvider } from "y-webrtc";
+import { WebsocketProvider } from "y-websocket";
 import { MonacoBinding } from "y-monaco";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialDark as dark } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -17,7 +17,7 @@ const TestEditor = ({ student, students, setStudent }) => {
   const [loading, setLoading] = useState(true);
 
   const handleOutput = async (output) => {
-    const res = await axios.post("/api/run", {
+    const res = await axios.post("api/run", {
       code: output,
     });
     let returnValue = res.data.result;
@@ -56,7 +56,7 @@ const TestEditor = ({ student, students, setStudent }) => {
 
     const doc = new Y.Doc(); // Create a new Y.Doc instance for collaborative editing
 
-    const provider = new WebrtcProvider("interview", doc); // Create a WebRTC provider for peer-to-peer communication
+    const provider = new WebsocketProvider("ws://api", "interviewroom", doc); // Create a WebRTC provider for peer-to-peer communication
     const type = doc.getText("monaco"); // Get a Y.Text type for Monaco editor
     const binding = new MonacoBinding(
       type,
