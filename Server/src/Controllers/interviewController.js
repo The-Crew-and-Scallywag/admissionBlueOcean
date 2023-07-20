@@ -42,7 +42,7 @@ export const updateResult = async (req, res) => {
     } else {
       return res
         .status(400)
-        .json({ message: "Result should be 'pass' or 'fail'." });
+        .json({ message: "Result should be 'pass' or 'fail'" });
     }
 
     const results = await db.query(patchResult, [result, interviewId]);

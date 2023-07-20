@@ -74,7 +74,9 @@ export const addStudent = async (req, res) => {
     ]);
     res.status(200).json(results.rows[0]);
   } catch (error) {
-    console.error(error.detail);
+    if (error.detail.includes("already exists")) {
+      return res.status(400).json({ message: "Email Already Exists" });
+    }
     res.status(500).json({ message: "Error Adding Student" });
   }
 };
