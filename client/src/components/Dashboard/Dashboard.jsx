@@ -19,7 +19,7 @@ const Dashboard = () => {
   useEffect(() => {
     const getStudents = async () => {
       try {
-        const res = await axios.get("/api/students/interviewers");
+        const res = await axios.get("/api/students/");
         const data = res.data;
         setStudents(data);
       } catch (err) {

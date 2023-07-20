@@ -10,28 +10,6 @@ const Interview = () => {
   const [student, setStudent] = useState(null); // State variable for the selected student
   console.log("id", id);
   const name = JSON.parse(localStorage.getItem("name"));
-  console.log("students", students);
-
-  useEffect(() => {
-    const getStudents = async () => {
-      const res = await axios.get("/api/interviews");
-      const students = res.data;
-      const filteredStudents = students.filter(
-        (student) => student.i_first_name === name.firstName
-      );
-      setStudents(filteredStudents);
-    };
-
-    if (id) {
-      const selectedStudent = students.find(
-        (student) => student.s_id === Number(id)
-      );
-      setStudent(selectedStudent);
-      console.log("selectedStudent", selectedStudent);
-    }
-
-    getStudents();
-  }, [name.firstName, id, students.length]);
 
   return (
     <div className="flex flex-col custom:flex-row custom:items-center">
