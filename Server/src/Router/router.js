@@ -26,7 +26,7 @@ export const router = Router();
  *          STUDENT ROUTES
  */
 
-router.get("/students", getAllStudents); // list of all students
+router.get("/students", protectRoutes, getAllStudents); // list of all students
 
 router.get("/student/:id", getStudentByID); // fetch single student
 

@@ -26,7 +26,7 @@ CREATE TABLE interviews (
   students_id         INT REFERENCES students(id) ON DELETE CASCADE,
   interviewers_id     INT REFERENCES interviewers(id) ON DELETE CASCADE,
   interview_date      DATE,
-  question_notes      TEXT[],
+  question_notes      TEXT[] DEFAULT ARRAY[null,null,null,null],
   notes               TEXT,
   results             TEXT
 );

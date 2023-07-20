@@ -15,6 +15,12 @@ export const generateToken = (data) => {
   return token;
 };
 
+// decodes header token and returns an obj containing the users data
+export const tokenDecoder = (token) => {
+  const decoded = jwt.verify(token, process.env.INTERVIEWER_TOKEN);
+  return decoded;
+};
+
 // unsures user provided valid email structure
 export function validateEmail(email) {
   // Check if the email contains a "."
