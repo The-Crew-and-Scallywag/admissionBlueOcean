@@ -16,7 +16,7 @@ const App = () => {
     if (!token && location.pathname !== "/interview/:id") {
       navigate("/login");
     }
-  }, [token, location.pathname, navigate]);
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen min-w-screen relative">

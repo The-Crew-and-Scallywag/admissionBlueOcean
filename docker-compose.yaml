@@ -35,6 +35,7 @@ services:
     command: npm run dev
   app:
     build: ./client
+    env_file: ./client/.env
     environment:
       API_URL: http://server
       PORT: ${CLIENT_PORT}

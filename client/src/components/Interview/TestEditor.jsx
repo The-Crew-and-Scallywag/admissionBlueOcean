@@ -57,7 +57,7 @@ const TestEditor = ({ student, students, setStudent }) => {
     const doc = new Y.Doc(); // Create a new Y.Doc instance for collaborative editing
 
     const provider = new WebsocketProvider(
-      "wss://admission-blue-server-1m5q.onrender.com/",
+      import.meta.env.VITE_WS,
       "interview",
       doc
     ); // Create a WebRTC provider for peer-to-peer communication
