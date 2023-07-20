@@ -1,7 +1,8 @@
 /**
- * Queries For The Students
+ *                     Queries For The Students
  */
 // get all student
+
 export const allStudents = `SELECT * FROM students`;
 
 // get all student information and interviewer information
@@ -22,9 +23,11 @@ WHERE id = $5 RETURNING *`;
 
 // deletes students from db
 export const deleteStudent = `DELETE FROM students WHERE id = $1`;
+
 /**
- * Queries For The interviewers
+ *                   Queries For The interviewers
  */
+
 // GET all interiewers
 export const allInterviewers = `SELECT first_name, last_name, email FROM interviewers`;
 
@@ -33,7 +36,7 @@ export const interiewersById = `SELECT first_name, last_name, email FROM intervi
 
 // GETs all Interviews
 export const allInterviews = `
-SELECT interviewers.first_name AS i_first_name, interviewers.last_name AS i_last_name, interviewers.email AS i_email,
+SELECT interviews.id AS interview_id, interviewers.first_name AS i_first_name, interviewers.last_name AS i_last_name, interviewers.email AS i_email,
 students.id AS s_id, students.first_name AS s_first_name, students.last_name AS s_last_name, students.phone AS s_phone, students.email AS s_email, 
 interviewers.id AS i_id, interviews.question_notes AS q_notes, interviews.notes AS notes, interviews.results AS results, interviews.interview_date
 FROM interviews 
@@ -54,13 +57,22 @@ JOIN interviewers ON interviewers.id = interviews.interviewers_id
 JOIN students ON students.id = interviews.students_id
 WHERE students.id = $1`;
 
-// checks to see if answer is correct
+// adds note to students interview
+export const patchNote = `UPDATE interviews SET notes = $1 WHERE id = $2 RETURNING *`;
+
+// adds question notes to students interview
+export const patchQuestionNote = `UPDATE interviews SET question_notes [$1] = $2 WHERE id = $3 RETURNING *`;
+
+// adds final result to student interview
+export const patchResult = `UPDATE interviews SET results = $1 WHERE id = $2 RETURNING *`;
 
 // post an interview
 export const postInterview = `INSERT INTO interviews(students_id, interviewers_id, interview_date)
 VALUES($1, $2, $3) RETURNING *`;
+
 /**
- * Queries For Logging In and Out
+ *                  Queries For Logging In and Out
  */
+
 export const emailCheck = `SELECT email FROM interviewers`;
 export const login = `SELECT * FROM interviewers WHERE email = $1`;

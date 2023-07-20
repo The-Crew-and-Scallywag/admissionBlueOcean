@@ -3,6 +3,9 @@ import {
   allInterviews,
   interviewsByStudents,
   patchInterviewData,
+  patchNote,
+  patchQuestionNote,
+  patchResult,
   postInterview,
 } from "./queries.js";
 
@@ -27,15 +30,10 @@ export const getInterview = async (req, res) => {
   }
 };
 
-export const updateInterviewData = async (req, res) => {
+export const updateResult = async (req, res) => {
   try {
-    const id = Number(req.params.id);
-    let { notes, result } = req.body;
-
-    if (result == undefined) {
-      const results = await db.query(patchInterviewData, [notes, result, id]);
-      return res.status(200).json(results.rows[0]);
-    }
+    let { result, interviewId } = req.body;
+    Number(interviewId);
 
     if (result.toLowerCase() === "pass") {
       result = "true";
@@ -44,10 +42,10 @@ export const updateInterviewData = async (req, res) => {
     } else {
       return res
         .status(400)
-        .json({ message: "Invalid value for students result" });
+        .json({ message: "Result should be 'pass' or 'fail'." });
     }
 
-    const results = await db.query(patchInterviewData, [notes, result, id]);
+    const results = await db.query(patchResult, [result, interviewId]);
 
     res.status(200).json(results.rows[0]);
   } catch (error) {
@@ -71,5 +69,34 @@ export const addInterview = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error Adding Interview To Schedule" });
+  }
+};
+
+export const addQuestionNote = async (req, res) => {
+  try {
+    const { note, questionId, interviewId } = req.body;
+    Number(questionId);
+    Number(interviewId);
+    const results = await db.query(patchQuestionNote, [
+      questionId,
+      note,
+      interviewId,
+    ]);
+    res.status(200).json(results.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error Adding Question Notes" });
+  }
+};
+
+export const addSummaryNotes = async (req, res) => {
+  try {
+    const { note, interviewId } = req.body;
+
+    const results = await db.query(patchNote, [note, interviewId]);
+    res.status(200).json(results.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error Adding Summary Notes" });
   }
 };

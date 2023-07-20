@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { promisify } from "util";
 
 dotenv.config();
 
@@ -36,3 +37,35 @@ export function validateEmail(email) {
 
   return true;
 }
+
+// ensures user is signed in with a valid token
+export const protectRoutes = async (req, res, next) => {
+  try {
+    let token;
+    // ensure authorization header is correct
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+      // gets token from header
+      token = req.headers.authorization.split(" ")[1];
+    }
+
+    // if token isn't present send user a message
+    if (!token)
+      return res.status(401).json({ message: "Instructor Only Access" });
+
+    // decode token and get user id from it
+    const decoded = await promisify(jwt.verify)(
+      token,
+      process.env.INTERVIEWER_TOKEN
+    );
+    next();
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Error While Verifying Token",
+      expiredAt: error?.expiredAt,
+    });
+  }
+};
