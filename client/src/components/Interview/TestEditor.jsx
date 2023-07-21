@@ -18,6 +18,7 @@ const TestEditor = ({ student, students, setStudent }) => {
   const [type, setType] = useState(null);
   const [provider, setProvider] = useState(null);
   const [yResults, setYResults] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const { id } = useParams();
 
@@ -44,14 +45,24 @@ const TestEditor = ({ student, students, setStudent }) => {
   }, [results.length]);
 
   const handleOutput = async (output) => {
-    axios.post("/api/run", { code: output }).then((res) => {
-      console.log(res.data);
+    try {
+      const res = await axios.post("/api/run", { code: output });
+      console.log(res);
       const newResult = res.data.result.map((resultItem) => [resultItem]);
       setResults((prevResults) => [...prevResults, newResult]);
       yResults.push([res.data.result]);
-    });
+    } catch (error) {
+      console.log(error);
+      const newErrorArr = [];
+      const newError = error.response.data.message;
+      newErrorArr.push([newError]);
+      setResults((prevResults) => [...prevResults, newErrorArr]);
+      yResults.push([newErrorArr]);
+      setErrorMessage(error.response.data.message);
+    }
   };
 
+  console.log(errorMessage);
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor; // Store the Monaco editor instance reference in the ref
 
@@ -95,10 +106,7 @@ const TestEditor = ({ student, students, setStudent }) => {
     }, 500);
   };
 
-  const handleReset = () => {
-    setEditorValue("// Write your code here...");
-  };
-
+  console.log(results);
   return (
     <div>
       <div className="h-full w-full mx-auto my-20 items-center flex flex-col custom:flex-row">
@@ -143,12 +151,7 @@ const TestEditor = ({ student, students, setStudent }) => {
             >
               Run
             </button>
-            <button
-              onClick={handleReset}
-              className="bg-bg p-2 w-40 rounded-lg text-white/50 my-12  hover:scale-105 hover:bg-bg/70 hover:border-[1px] hover:border-accent transition-transform duration-300 ease-in-out shadow-lg shadow-black"
-            >
-              Reset Editor
-            </button>
+
             {results.length > 0 && (
               <button
                 onClick={handleClear}
@@ -183,7 +186,11 @@ const TestEditor = ({ student, students, setStudent }) => {
                         language="javascript"
                         style={dark}
                         key={index}
-                        className="py-2 m-2 rounded-lg shadow-lg shadow-black  overflow-visible"
+                        wrapLines={true}
+                        className={`py-2 m-2 rounded-lg shadow-lg shadow-black ${
+                          resultItem[0] === "Error Running Code Snippet" &&
+                          "text-red-400"
+                        }`}
                       >
                         {JSON.stringify(resultItem[0], null)}
                       </SyntaxHighlighter>

@@ -25,7 +25,7 @@ export default function Challenge({
   };
 
   return (
-    <div className="flex flex-col justify-center pt-2 w-[700px] border-b-2 border-gray-500 relative ">
+    <div className="flex flex-col justify-center pt-2 w-[800px] border-b-2 border-gray-500 relative ">
       {/* <Question1 /> */}
       <Answer
         question={question}
