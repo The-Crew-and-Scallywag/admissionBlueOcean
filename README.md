@@ -13,8 +13,8 @@ This project was a brief 2-week sprint where our team aimed to complete an inter
 
 - Darrin Mosher
 - La Shonta Levier
-- Mathew Thomas [UI-Owner]
 - Ronnie Miller
+- Mathew Thomas [UI-Owner]
 - Samson Brown [Architecture-Owner]
 - Triston Melton [Product-Manager]
 
