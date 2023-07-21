@@ -26,3 +26,28 @@ export const runCode = (req, res) => {
     return res.status(500).json({ message: "Error Running Code Snippet" });
   }
 };
+
+export const wsRunCode = (code) => {
+  try {
+    const sandbox = {
+      console: {
+        // access to console.log
+        log: (...args) => {
+          if (!sandbox.result) {
+            sandbox.result = [];
+          }
+          sandbox.result.push(args); // Capture the result using sandbox.result
+        },
+      },
+    };
+
+    const context = createContext(sandbox);
+    runInContext(code, context);
+
+    const result = sandbox.result || []; // Retrieve the result from sandbox.result or an empty array if it doesn't exist
+    return result;
+  } catch (error) {
+    console.error(error);
+    return { message: "Error Running Code Snippet" };
+  }
+};

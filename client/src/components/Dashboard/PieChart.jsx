@@ -86,8 +86,8 @@ const PieChart = ({ studentInfo, filteredStudents }) => {
             <label className="text-accent text-md">
               {
                 studentBreakdown.reduce((acc, student) => {
-                  if (!acc.includes(student.s_first_name)) {
-                    acc.push(student.s_first_name);
+                  if (!acc.includes(student.s_email)) {
+                    acc.push(student.s_email);
                   }
                   return acc;
                 }, []).length
@@ -98,11 +98,12 @@ const PieChart = ({ studentInfo, filteredStudents }) => {
           <li className="text-white/70 text-2xl font-bold p-2">
             Total Interviews:{" "}
             <label className="text-accent text-md">
-              {studentBreakdown.filter((student) => student.results === "true")
-                .length +
+              {
                 studentBreakdown.filter(
-                  (student) => student.results === "false"
-                ).length}
+                  (student) =>
+                    student.results === "true" || student.results === "false"
+                ).length
+              }
             </label>
           </li>
           {/* Display number of passed interviews */}

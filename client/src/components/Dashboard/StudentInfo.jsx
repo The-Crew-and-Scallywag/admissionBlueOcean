@@ -1,5 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MdEditDocument, MdEditOff, MdAddCircle } from "react-icons/md";
+import {
+  MdEditDocument,
+  MdEditOff,
+  MdAddCircle,
+  MdRemoveCircle,
+} from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import PieChart from "./PieChart.jsx";
 import LineGraph from "./LineGraph.jsx";
@@ -58,23 +63,6 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
     }, 500);
   };
 
-  // Utility functions to format date, time, and phone number
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-  const formatTime = (timeString) => {
-    const time = new Date(timeString);
-    return time.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-    });
-  };
-
   const formatPhoneNumber = (phoneNumber) => {
     const cleaned = phoneNumber.replace(/\D/g, "");
     const formattedPhoneNumber = cleaned.replace(
@@ -113,7 +101,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
   const button = (label, inputProps) => {
     return (
       <button
-        className={`mx-auto text-white bg-secondary p-2 rounded-md mt-[-30px] mb-4 hover:bg-galv-orange transition-all duration-150 ease-in-out hover:scale-105 ${
+        className={`mx-auto w-40 text-white bg-secondary p-2 rounded-md mt-[-30px] mb-4 hover:bg-galv-orange transition-all duration-150 ease-in-out hover:scale-105 ${
           transition ? "opacity-0" : "opacity-100"
         }`}
         onClick={() => {
@@ -131,6 +119,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
         updatedStudent
       );
       console.log(response);
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -140,6 +129,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
     try {
       const response = await axios.post("/api/student", newStudent);
       console.log(response);
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -184,7 +174,7 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
           >
             <input
               type="text"
-              className={`text-white bg-secondary p-2 rounded-md shadow-md shadow-black  focus:ring-accent focus:ring-2 focus:outline-none text-lg tracking-wider ml-2 font-normal m-2`}
+              className={`text-white w-full bg-secondary p-2 rounded-md shadow-md shadow-black  focus:ring-accent focus:ring-2 focus:outline-none text-lg tracking-wider font-normal my-2`}
               placeholder={fieldValue}
               onChange={(e) =>
                 setUpdatedStudent({
@@ -196,10 +186,14 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
             />
           </div>
         ) : isAddStudent ? (
-          <div>
+          <div
+            className={`${
+              transition ? "opacity-0 translate-x-[50px]" : "opacity-100"
+            } transition-all duration-300 ease-in-out`}
+          >
             <input
               type="text"
-              className={`text-white bg-secondary p-2 rounded-md shadow-md shadow-black  focus:ring-accent focus:ring-2 focus:outline-none text-lg tracking-wider ml-2 font-normal m-2`}
+              className={`text-white w-full bg-secondary p-2 rounded-md shadow-md shadow-black  focus:ring-accent focus:ring-2 focus:outline-none text-lg tracking-wider font-normal my-2`}
               placeholder={label}
               onChange={(e) =>
                 setNewStudent({
@@ -269,12 +263,25 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
           {/* Toggle edit mode and add student/edit student buttons */}
           {editMode ? (
             <div className="flex-row flex justify-end">
-              <MdEditOff
-                className="relative text-white float-right cursor-pointer text-xl m-2"
-                onClick={toggleEditMode}
-                onMouseEnter={handleMouseEnterIcon}
-                onMouseLeave={handleMouseLeaveIcon}
-              />
+              <div ref={editRef}>
+                <MdEditOff
+                  className="relative text-white float-right cursor-pointer text-xl m-2"
+                  onClick={toggleEditMode}
+                  onMouseLeave={handleMouseLeaveIcon}
+                  onMouseEnter={() => handleMouseEnterIcon(editRef.current)}
+                />
+              </div>
+            </div>
+          ) : addStudent ? (
+            <div className="flex-row flex justify-end">
+              <div ref={addRef}>
+                <MdRemoveCircle
+                  className="relative text-white float-right cursor-pointer text-xl m-2"
+                  onClick={toggleAddStudent}
+                  onMouseEnter={() => handleMouseEnterIcon(addRef.current)}
+                  onMouseLeave={handleMouseLeaveIcon}
+                />
+              </div>
             </div>
           ) : (
             <div className="flex-row flex justify-end">
@@ -298,13 +305,15 @@ const StudentInfo = ({ students, studentInfo, filteredStudents }) => {
           )}
 
           {showTooltip && (
-            <div className="absolute bg-white p-2 rounded-lg shadow-lg shadow-black right-0">
+            <div
+              className={`absolute bg-secondary  p-2 rounded-lg shadow-lg shadow-black right-0 transition-all transform duration-150 ease `}
+            >
               {hoveredIcon === "edit" ? (
-                <div className="text-black text-center">
+                <div className="text-white/70 text-center">
                   {editMode ? "Exit Edit Mode" : "Edit Student"}
                 </div>
               ) : (
-                <div className="text-black text-center">
+                <div className="text-white/70 text-center">
                   {addStudent ? "Exit Add Student" : "Add Student"}
                 </div>
               )}

@@ -4,10 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import setupWSConnection from "./ws.cjs";
 import { WebSocketServer } from "ws";
-
-const wss = new WebSocketServer({ noServer: true });
-
-wss.on("connection", setupWSConnection);
+import { wsRunCode } from "./Controllers/codeController.js";
 
 dotenv.config();
 // DO NOT TOUCH THIS WHY ARE YOU TOUCHING THIS
@@ -21,6 +18,21 @@ app.get("/interview", (req, res) => {
   console.log("Interview route hit");
   res.sendStatus(200);
 });
+const wss = new WebSocketServer({ noServer: true });
+
+wss.on("connection", setupWSConnection);
+
+wss.on("connection", (ws) => {
+  ws.on("message", (message) => {
+    if (message.constructor === Buffer) {
+      const data = JSON.parse(message.toString());
+      const res = wsRunCode(data.code);
+      const returnData = JSON.stringify({ type: "result", data: res[0] });
+      console.log(returnData);
+      ws.send(returnData);
+    }
+  });
+});
 
 const server = app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);
@@ -28,9 +40,7 @@ const server = app.listen(PORT, () => {
 
 server.on("upgrade", (request, socket, head) => {
   console.log("Parsing session from request...");
-  /**
-   * @param {any} ws
-   */
+
   const handleAuth = (ws) => {
     wss.emit("connection", ws, request);
   };

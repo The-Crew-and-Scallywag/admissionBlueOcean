@@ -15,15 +15,9 @@ const TestEditor = ({ student, students, setStudent }) => {
   const [editorValue, setEditorValue] = useState("// Write your code here..."); // State variable for the initial value of the editor
   const [outputValues, setOutputValues] = useState([]); // State variable for storing the output values
   const [loading, setLoading] = useState(true);
-
-  const handleOutput = async (output) => {
-    const res = await axios.post("api/run", {
-      code: output,
-    });
-    let returnValue = res.data.result;
-
-    setResults([...results, returnValue]); // Update the output state variable
-  };
+  const [type, setType] = useState(null);
+  const [provider, setProvider] = useState(null);
+  const [yResults, setYResults] = useState(null);
 
   const { id } = useParams();
 
@@ -49,22 +43,43 @@ const TestEditor = ({ student, students, setStudent }) => {
     }
   }, [results.length]);
 
+  const handleOutput = async (output) => {
+    axios.post("/api/run", { code: output }).then((res) => {
+      console.log(res.data);
+      const newResult = res.data.result.map((resultItem) => [resultItem]);
+      setResults((prevResults) => [...prevResults, newResult]);
+      yResults.push([res.data.result]);
+    });
+  };
+
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor; // Store the Monaco editor instance reference in the ref
 
     const doc = new Y.Doc(); // Create a new Y.Doc instance for collaborative editing
 
-    const provider = new WebsocketProvider(
+    const wsResults = doc.getArray("wsResults");
+    wsResults.observe((event) => {
+      setResults(event.target.toArray());
+    });
+
+    const room = `interview-${id}`; // Get the room name from the URL
+
+    console.log(doc);
+
+    const newProvider = new WebsocketProvider(
       import.meta.env.VITE_WS,
-      "interview",
+      room,
       doc
-    ); // Create a WebRTC provider for peer-to-peer communication
-    const type = doc.getText("monaco"); // Get a Y.Text type for Monaco editor
+    );
+    setProvider(newProvider);
+    const yType = doc.getText("monaco"); // Get a Y.Text type for Monaco editor
     const binding = new MonacoBinding(
-      type,
+      yType,
       editorRef.current.getModel(),
-      new Set([editorRef.current], provider.awareness)
+      new Set([editorRef.current], newProvider.awareness)
     ); // Create a binding between YJS and Monaco editor to synchronize the document
+    setType(yType);
+    setYResults(wsResults);
 
     // Bind YJS to Monaco editor
   };
@@ -76,6 +91,7 @@ const TestEditor = ({ student, students, setStudent }) => {
     });
     setTimeout(() => {
       setResults([]);
+      yResults.delete(0, yResults.length);
     }, 500);
   };
 
@@ -162,14 +178,14 @@ const TestEditor = ({ student, students, setStudent }) => {
                     <span className="italic text-accent font-bold">
                       Output {index + 1}:{" "}
                     </span>
-                    {item.map((code, index) => (
+                    {item.map((resultItem, index) => (
                       <SyntaxHighlighter
                         language="javascript"
                         style={dark}
                         key={index}
                         className="py-2 m-2 rounded-lg shadow-lg shadow-black  overflow-visible"
                       >
-                        {JSON.stringify(code[0], null)}
+                        {JSON.stringify(resultItem[0], null)}
                       </SyntaxHighlighter>
                     ))}
                   </div>
