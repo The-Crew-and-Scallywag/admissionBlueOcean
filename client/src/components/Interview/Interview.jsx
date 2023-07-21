@@ -1,34 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Editor from "./TestEditor";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import Challenges from "./challenges/Challenges";
+import EndInterview from "./EndInterview";
+import axios from "axios";
 
 const Interview = ({ interviewId }) => {
   const [students, setStudents] = useState([]); // State variable for storing the list of students
-  const [interviewData, setInterviewData] = useState([]);
   const { id } = useParams(); // Extract the "id" parameter from the URL
   const [student, setStudent] = useState(null); // State variable for the selected student
   const [questionNum, setQuestionNum] = useState(0);
   const [showModal, setShowModal] = useState(false);
-
-  console.log(interviewData);
+  const [data, setData] = useState(null);
 
   const name = JSON.parse(localStorage.getItem("name"));
-  useEffect(() => {
-    const getInterviewData = async () => {
-      try {
-        const response = await axios.get("/api/interview/", {
-          interviewId: interviewId,
-        });
-        const data = response.data;
-        setInterviewData(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getInterviewData();
-  }, [interviewId]);
 
   const increment = () => {
     if (questionNum === 3) {
@@ -46,6 +31,19 @@ const Interview = ({ interviewId }) => {
 
   const toggleModal = () => {
     setShowModal((prev) => !prev);
+  };
+
+  const test = async () => {
+    try {
+      const response = await axios.get("/api/interview", {
+        interviewId: interviewId,
+      });
+      const data = response.data;
+      setData(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -80,6 +78,7 @@ const Interview = ({ interviewId }) => {
       <button
         className="absolute bottom-[17%] right-[375px] w-[164px] h-[50px] bg-gray-600 rounded-md text-[22px] text-white hover:scale-[102%]"
         onClick={() => {
+          test();
           toggleModal();
         }}
       >
@@ -87,28 +86,7 @@ const Interview = ({ interviewId }) => {
       </button>
 
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-50 bg-black">
-          <div className="bg-white p-4 rounded-md">
-            <h2 className="text-2xl font-semibold mb-4">Interview Summary</h2>
-            <p className="text-gray-700">{interviewData.s_first_name}</p>
-            <div className="mt-4 flex justify-end">
-              <button
-                className="px-4 py-2 mr-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
-                onClick={toggleModal} // Close the modal when "Cancel" is clicked
-              >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-                onClick={() => {
-                  toggleModal();
-                }}
-              >
-                End Interview
-              </button>
-            </div>
-          </div>
-        </div>
+        <EndInterview toggleModal={toggleModal} interviewId={interviewId} />
       )}
     </div>
   );
