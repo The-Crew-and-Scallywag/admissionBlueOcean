@@ -11,8 +11,8 @@ export default function Answer({ question, questionNum }) {
         <SyntaxHighlighter
           language="javascript"
           style={dark}
+          wrapLines={true}
           wrapLongLines={true}
-          showLineNumbers={true}
         >
           {question[questionNum].questions}
         </SyntaxHighlighter>
