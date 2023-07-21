@@ -45,6 +45,7 @@ const TestEditor = ({ student, students, setStudent }) => {
   }, [results.length]);
 
   const handleOutput = async (output) => {
+    setErrorMessage(null);
     try {
       const res = await axios.post("/api/run", { code: output });
       console.log(res);
@@ -121,9 +122,9 @@ const TestEditor = ({ student, students, setStudent }) => {
           </h1>
           <div
             id="editor"
-            className={`h-[800px] rounded-lg shadow-xl shadow-black bg-bg/20 border-2 border-secondary/50 transform transition-all duration-150 ease ${
+            className={`h-[800px] rounded-lg shadow-xl shadow-black bg-bg/20 border-2 transform transition-all duration-150 ease ${
               results.length ? "w-[700px]" : "w-[900px]"
-            }`}
+            } ${errorMessage ? "border-red-400" : "border-secondary/50"}`}
           >
             <Editor
               height="100%"

@@ -4,7 +4,7 @@ import { materialDark as dark } from "react-syntax-highlighter/dist/esm/styles/p
 
 export default function Answer({ question, questionNum }) {
   return (
-    <div className="text-white/70 p-6 m-4 bg-secondary rounded-md shadow-lg shadow-black text-lg text-left">
+    <div className="text-white/70 p-6 m-4 bg-secondary rounded-md shadow-lg shadow-black text-lg text-left my-6">
       {questionNum !== 1 ? (
         `${question[questionNum].questions}`
       ) : (

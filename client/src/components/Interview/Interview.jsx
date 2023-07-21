@@ -38,7 +38,10 @@ const Interview = ({ interviewId }) => {
         <Editor students={students} student={student} setStudent={setStudent} />
         <div></div> {/* Display the output in the specified <div> */}
       </div>
-      <div id="challenge-container" className="mx-auto text-center">
+      <div
+        id="challenge-container"
+        className="mx-auto text-center bg-bg/50 rounded-md shadow-lg shadow-black p-6"
+      >
         <div className="text-white text-3xl pt-4 relative">
           Challenge #{`${questionNum + 1}`}
           <button
@@ -61,7 +64,7 @@ const Interview = ({ interviewId }) => {
           interviewId={interviewId}
         />
         <button
-          className="relative w-[164px] h-[50px] bg-gray-600 rounded-md text-[22px] text-white hover:scale-[102%]"
+          className="relative bg-bg border-[1px] border-accent p-4 rounded-md w-[200px] text-white/50 hover:scale-[102%] hover:bg-bg/70 hover:border-[1px] hover:border-accent transition-transform duration-300 ease-in-out shadow-lg shadow-black my-4"
           onClick={toggleModal}
         >
           END INTERVIEW

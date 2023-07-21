@@ -35,12 +35,12 @@ export default function Challenge({
       <textarea
         value={notes}
         onChange={handleNotesChange}
-        className="w-full h-20 p-4 border border-gray-300 rounded"
+        className="w-full h-40 bg-bg/50 text-white/70 p-4 rounded-lg shadow-lg shadow-black text-lg text-left resize-none border-[1px] border-accent my-6"
         placeholder={`Notes For Challenge ${questionId}`}
       ></textarea>
       <button
         onClick={handleNoteSubmit}
-        className="bg-bg p-2 w-40 rounded-lg text-white/50 my-12  hover:scale-105 hover:bg-bg/70 hover:border-[1px] hover:border-accent transition-transform duration-300 ease-in-out shadow-lg shadow-black self-center"
+        className="bg-bg p-2 w-40 rounded-lg text-white/50 my-6  hover:scale-105 hover:bg-bg/70 hover:border-[1px] hover:border-accent transition-transform duration-300 ease-in-out shadow-lg shadow-black self-center"
       >
         Submit Note
       </button>
