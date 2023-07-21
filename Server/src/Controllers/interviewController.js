@@ -21,7 +21,8 @@ export const getAllInterviews = async (req, res) => {
 
 export const getInterview = async (req, res) => {
   try {
-    const { interviewId } = req.body;
+    const interviewId = req.params.interviewId;
+    console.log(interviewId);
     Number(interviewId);
     const results = await db.query(interviewsByStudents, [interviewId]);
     res.status(200).json(results.rows[0]);

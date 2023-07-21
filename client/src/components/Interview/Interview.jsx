@@ -11,7 +11,6 @@ const Interview = ({ interviewId }) => {
   const [student, setStudent] = useState(null); // State variable for the selected student
   const [questionNum, setQuestionNum] = useState(0);
   const [showModal, setShowModal] = useState(false);
-  const [data, setData] = useState(null);
 
   const name = JSON.parse(localStorage.getItem("name"));
 
@@ -31,19 +30,6 @@ const Interview = ({ interviewId }) => {
 
   const toggleModal = () => {
     setShowModal((prev) => !prev);
-  };
-
-  const test = async () => {
-    try {
-      const response = await axios.get("/api/interview", {
-        interviewId: interviewId,
-      });
-      const data = response.data;
-      setData(data);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (
@@ -74,16 +60,13 @@ const Interview = ({ interviewId }) => {
           student={student}
           interviewId={interviewId}
         />
+        <button
+          className="relative w-[164px] h-[50px] bg-gray-600 rounded-md text-[22px] text-white hover:scale-[102%]"
+          onClick={toggleModal}
+        >
+          END INTERVIEW
+        </button>
       </div>
-      <button
-        className="absolute bottom-[17%] right-[375px] w-[164px] h-[50px] bg-gray-600 rounded-md text-[22px] text-white hover:scale-[102%]"
-        onClick={() => {
-          test();
-          toggleModal();
-        }}
-      >
-        END INTERVIEW
-      </button>
 
       {showModal && (
         <EndInterview toggleModal={toggleModal} interviewId={interviewId} />
