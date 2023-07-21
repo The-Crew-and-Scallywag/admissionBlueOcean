@@ -38,7 +38,10 @@ const Interview = ({ interviewId }) => {
 
   return (
     <div className="flex flex-col custom:flex-row custom:items-center relative">
-      <div id="editor-container" className="w-[800px] mx-auto">
+      <div
+        id="editor-container"
+        className={`${auth ? "w-[800px]" : "w-[1000px]"} mx-auto`}
+      >
         <Editor students={students} student={student} setStudent={setStudent} />
         <div></div> {/* Display the output in the specified <div> */}
       </div>
