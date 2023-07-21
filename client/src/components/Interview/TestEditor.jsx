@@ -46,13 +46,11 @@ const TestEditor = ({ student, students, setStudent }) => {
   const handleOutput = async (output) => {
     axios.post("/api/run", { code: output }).then((res) => {
       console.log(res.data);
-      res.data.result.forEach((result) => {
-        yResults.push(result);
-      });
+      const newResult = res.data.result.map((resultItem) => [resultItem]);
+      setResults((prevResults) => [...prevResults, newResult]);
+      yResults.push([res.data.result]);
     });
   };
-
-  console.log(results);
 
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor; // Store the Monaco editor instance reference in the ref
@@ -180,15 +178,16 @@ const TestEditor = ({ student, students, setStudent }) => {
                     <span className="italic text-accent font-bold">
                       Output {index + 1}:{" "}
                     </span>
-
-                    <SyntaxHighlighter
-                      language="javascript"
-                      style={dark}
-                      key={index}
-                      className="py-2 m-2 rounded-lg shadow-lg shadow-black  overflow-visible"
-                    >
-                      {JSON.stringify(item, null)}
-                    </SyntaxHighlighter>
+                    {item.map((resultItem, index) => (
+                      <SyntaxHighlighter
+                        language="javascript"
+                        style={dark}
+                        key={index}
+                        className="py-2 m-2 rounded-lg shadow-lg shadow-black  overflow-visible"
+                      >
+                        {JSON.stringify(resultItem[0], null)}
+                      </SyntaxHighlighter>
+                    ))}
                   </div>
                 ))}
             </div>
