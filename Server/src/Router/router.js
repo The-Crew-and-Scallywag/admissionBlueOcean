@@ -42,7 +42,7 @@ router.delete("/student/:id", removeStudent); // deletes student
  *          INTERVIEW ROUTES
  */
 
-router.get("/interview/:id", getInterview); // list of interviews by student id
+router.get("/interview", getInterview); // list of interviews by id
 
 router.post("/interview", addInterview); // adds interview
 

@@ -13,8 +13,8 @@ VALUES
 
 INSERT INTO questions (questions)
 VALUES
-    ('Paste in their solution to one of the codeing chalenges and have them explain it.'),
-    ('How would you be able to access and use the methods in the swissArmyKnife object below? 
+    ('Have student paste in their solution to one of the coding challenges and have them explain the code.'),
+    ('How would you be able to access and use the methods in the swissArmyKnife object below?
     var swissArmyKnife = {
         miniScissors: function(item) {
             return ''cutting '' + item;

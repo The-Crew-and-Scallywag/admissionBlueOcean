@@ -55,7 +55,7 @@ interviews.id AS interview_id, interviews.question_notes AS q_notes, interviews.
 FROM interviews 
 JOIN interviewers ON interviewers.id = interviews.interviewers_id 
 JOIN students ON students.id = interviews.students_id
-WHERE students.id = $1`;
+WHERE interviews.id = $1`;
 
 // adds note to students interview
 export const patchNote = `UPDATE interviews SET notes = $1 WHERE id = $2 RETURNING *`;

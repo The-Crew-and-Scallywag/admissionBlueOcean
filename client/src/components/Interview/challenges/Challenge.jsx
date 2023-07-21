@@ -15,8 +15,8 @@ export default function Challenge({
     setNotes(e.target.value);
   };
 
+  const questionId = questionNum + 1;
   const handleNoteSubmit = async () => {
-    const questionId = questionNum + 1;
     const response = await axios.patch("api/interview/question/notes", {
       questionId: questionId,
       note: notes,
@@ -36,7 +36,7 @@ export default function Challenge({
         value={notes}
         onChange={handleNotesChange}
         className="w-full h-20 p-4 border border-gray-300 rounded"
-        placeholder="Notes..."
+        placeholder={`Notes For Challenge ${questionId}`}
       ></textarea>
       <button
         onClick={handleNoteSubmit}

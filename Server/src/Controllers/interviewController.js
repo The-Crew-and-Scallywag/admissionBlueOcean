@@ -3,7 +3,6 @@ import { db } from "../Database/database.js";
 import {
   allInterviews,
   interviewsByStudents,
-  patchInterviewData,
   patchNote,
   patchQuestionNote,
   patchResult,
@@ -22,9 +21,10 @@ export const getAllInterviews = async (req, res) => {
 
 export const getInterview = async (req, res) => {
   try {
-    const id = req.params.id;
-    const results = await db.query(interviewsByStudents, [id]);
-    res.status(200).json(results.rows);
+    const { interviewId } = req.body;
+    Number(interviewId);
+    const results = await db.query(interviewsByStudents, [interviewId]);
+    res.status(200).json(results.rows[0]);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error Fetching Interview Data" });
