@@ -25,5 +25,5 @@ This project is licensed under the MIT License.
 ## Technologies Used
 
 - **Front-end:** HTML, CSS, JavaScript, React.js, Tailwind, y-JS, Monaco, Websocket
-- **Back-end:** Node.js, Express.js, PostGres, Docker, Router
+- **Back-end:** Node.js, Express.js, PostGres, Docker, Router, Axios
 - **Authentication:** JSON Web Tokens (JWT)
