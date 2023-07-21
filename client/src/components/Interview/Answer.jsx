@@ -1,5 +1,6 @@
 import React from "react";
-import SyntaxHighlighter from "react-syntax-highlighter";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { materialDark as dark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 export default function Answer({ question, questionNum }) {
   return (
@@ -7,7 +8,14 @@ export default function Answer({ question, questionNum }) {
       {questionNum !== 1 ? (
         `${question[questionNum].questions}`
       ) : (
-        <SyntaxHighlighter>{question[questionNum].questions}</SyntaxHighlighter>
+        <SyntaxHighlighter
+          language="javascript"
+          style={dark}
+          wrapLines={true}
+          wrapLongLines={true}
+        >
+          {question[questionNum].questions}
+        </SyntaxHighlighter>
       )}
     </div>
   );
